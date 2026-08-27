@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">SideAsk</title>
+  <defs>
+    <linearGradient id="upper" x1="17" y1="14" x2="45" y2="39" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b69bff"/>
+      <stop offset="1" stop-color="#7466f6"/>
+    </linearGradient>
+    <linearGradient id="lower" x1="20" y1="49" x2="48" y2="25" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4f35f6"/>
+      <stop offset="1" stop-color="#625bf6"/>
+    </linearGradient>
+  </defs>
+  <path d="M48 14H31.5C22.4 14 17 19.7 17 27.4c0 7.2 5.4 11.2 14.2 11.2H35" fill="none" stroke="url(#upper)" stroke-width="6.4" stroke-linecap="round"/>
+  <path d="M20 49h16.2C44.9 49 50 43.4 50 36.2c0-7.1-5.4-10.8-14.1-10.8H32" fill="none" stroke="url(#lower)" stroke-width="6.4" stroke-linecap="round"/>
+  <circle cx="20" cy="49" r="4.4" fill="#4f35f6"/>
+</svg>

@@ -1,0 +1,10 @@
+server/.env
+server/.env.*
+!server/.env.example
+.DS_Store
+Thumbs.db
+*.log
+node_modules/
+dist/
+.idea/
+.vscode/

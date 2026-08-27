@@ -1,0 +1,49 @@
+# SideAsk Short-term Roadmap
+
+路线图只保留接下来三个可独立运行的阶段。每个阶段结束时必须满足：扩展可加载、基本查询可用、本地数据可读、测试通过、README 同步。
+
+## Phase 0 — Stabilize & Brand
+
+状态：**已完成（v0.2.0 MVP）**
+
+目标：为现有 MVP 建立可维护基线，不改变核心使用路径。
+
+- 完成 Current Repository Assessment 和核心设计文档。
+- 落入 canonical Logo、extension icons、正式名称、Slogan 与 design tokens。
+- 建立 Provider Registry skeleton、OpenAI-compatible stream parser 与 error normalizer。
+- 保持 MiniMax CN Token Plan 环境变量和请求行为兼容。
+- 排除敏感 selection/context，清理 URL query/hash。
+- 增加 Node 内置测试与 JS syntax check。
+
+验收：Chrome/Edge 可加载；Generic Web/ChatGPT 划词入口出现；本地 server health 正常；mock stream parser tests 通过。
+
+## Phase 1 — Provider Experience
+
+状态：**已完成（v0.2.0 MVP）**
+
+目标：用户不改源码即可选择和验证模型服务。
+
+- Provider Settings：Add/Edit/Delete/Test/Default/Model。
+- 完整支持 MiniMax CN、MiniMax Global、Custom OpenAI-compatible。
+- Provider config 本地存储、Key 脱敏显示、连接测试与错误指引。
+- 将 Context Builder 与 Provider request contract 稳定下来。
+- 增加 mock gateway integration tests；验证 Chrome + Edge。
+
+验收：三个 Provider 类型可在 UI 配置和切换；MiniMax Token Plan 回归通过；无 Key 出现在仓库、日志或 UI error。
+
+## Phase 2 — Learning Branch Foundation
+
+状态：**已完成 MVP 基础（v0.2.0）**
+
+目标：从扁平历史迁移到可沉淀知识状态的 Learning Branch。
+
+- IndexedDB versioned schema：sessions/branches/messages/knowledge/weaknesses。
+- 旧 `sideaskHistory` 非破坏迁移。
+- `parentId`、understood/unclear/review 状态与“还模糊”。
+- 最小 Knowledge Item consolidation、重复提问计数与 Weakness detection。
+- 知识库/错题本最小列表与关键词搜索。
+- Anchor serialization 与 storage migration tests。
+
+验收：旧历史仍可读取；Branch schema 支持 parent-child；“我懂了/还模糊”能更新知识状态；无复杂图谱、RAG 或云依赖。
+
+当前未进入 MVP 的后续项：ChatGPT 专用 Adapter、跨页面 Anchor 强化、复习交互和 optional sync。

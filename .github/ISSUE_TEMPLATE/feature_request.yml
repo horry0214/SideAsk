@@ -1,0 +1,30 @@
+name: Feature request
+description: Suggest a focused improvement to the SideAsk reading and learning flow.
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What reading, questioning, or learning problem should SideAsk solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed experience
+      description: Describe the smallest useful behavior from the user's point of view.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: principles
+    attributes:
+      label: Product fit
+      options:
+        - label: This keeps the reading surface quiet and context-preserving.
+        - label: This does not require cloud accounts or sync for the basic experience.

@@ -1,0 +1,55 @@
+name: Bug report
+description: Report reproducible SideAsk behavior that is not working as expected.
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve SideAsk. Never paste API keys, private page content, or URLs containing sensitive query parameters.
+  - type: input
+    id: version
+    attributes:
+      label: SideAsk version
+      placeholder: v0.2.5
+    validations:
+      required: true
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      options:
+        - Chrome
+        - Edge
+        - Other Chromium browser
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the visible behavior and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Start the local gateway
+        2. Select text on ...
+        3. Click ...
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Safe diagnostics
+      description: Include normalized error codes or redacted logs only. Do not include keys or private content.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed API keys, personal data, private page content, and sensitive URLs.
+          required: true
