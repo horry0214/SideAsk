@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/readme/sideask-in-action.svg" alt="SideAsk explaining a selected concept beside the page" width="100%">
+  <img src="assets/readme/sideask-in-action.png" alt="SideAsk explaining a selected concept in the real floating panel" width="100%">
 </p>
 
 ## A side question, not a context switch
@@ -33,6 +33,42 @@ Read → Select what is unclear → Ask in SideAsk → Understand → Return →
 ```
 
 Select 2–500 characters, click **✦ Explain**, and get a context-aware answer in a quiet floating panel. Follow up without leaving the page, mark the concept as understood or fuzzy, then jump back to the source.
+
+## See where SideAsk fits
+
+<p align="center">
+  <img src="assets/readme/sideask-use-cases.png" alt="Six SideAsk use cases: technical documentation, long AI answers, papers and formulas, code and GitHub, learning branches, and knowledge review" width="100%">
+</p>
+
+Use it when a small question should stay small: decode an unfamiliar API while reading docs, unpack a formula in a paper, inspect a symbol on GitHub, clarify one paragraph in a long AI answer, or preserve a learning detour for later review.
+
+## The MVP, from question to memory
+
+<table>
+  <tr>
+    <td width="50%"><strong>1 · Ask beside the source</strong><br><sub>Select a phrase, get a safe Markdown answer, and follow up without leaving the page.</sub></td>
+    <td width="50%"><strong>2 · Keep the learning trail</strong><br><sub>Every side question retains its source, branch, state, and return anchor.</sub></td>
+  </tr>
+  <tr>
+    <td><img src="assets/readme/sideask-in-action.png" alt="SideAsk floating panel rendering a Markdown explanation"></td>
+    <td><img src="assets/readme/dashboard.png" alt="SideAsk learning dashboard"></td>
+  </tr>
+  <tr>
+    <td width="50%"><strong>3 · Turn branches into knowledge</strong><br><sub>Browse concepts that are understood and the connections preserved around them.</sub></td>
+    <td width="50%"><strong>4 · Bring your own model</strong><br><sub>Configure MiniMax or an OpenAI-compatible endpoint; keys stay in extension-private storage.</sub></td>
+  </tr>
+  <tr>
+    <td><img src="assets/readme/knowledge-base.png" alt="SideAsk knowledge base"></td>
+    <td><img src="assets/readme/provider-dialog.png" alt="SideAsk provider configuration dialog"></td>
+  </tr>
+</table>
+
+<p align="center">
+  <strong>Still fuzzy becomes a review signal, not a forgotten chat.</strong><br>
+  <img src="assets/readme/weakness-book.png" alt="SideAsk weakness book and review queue" width="100%">
+</p>
+
+<p><sub>Captured from the current MVP interface. Example answers and learning records use isolated demo data.</sub></p>
 
 ## Why SideAsk is different
 

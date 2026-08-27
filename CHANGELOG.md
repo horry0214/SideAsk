@@ -5,7 +5,7 @@
 ### Added
 
 - English-first GitHub README with a linked Simplified Chinese edition.
-- English SideAsk-in-action illustration and expanded visual product introduction.
+- Real SideAsk interface screenshots, a six-scenario overview, and an expanded bilingual visual product introduction.
 - MIT License and GitHub issue / pull request templates for the public repository.
 
 ## 0.2.5 MVP — 2026-08-27

@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/readme/sideask-in-action.svg" alt="SideAsk 在网页旁解释选中的概念" width="100%">
+  <img src="assets/readme/sideask-in-action.png" alt="SideAsk 在真实悬浮窗中解释选中的概念" width="100%">
 </p>
 
 ## 支线提问，而不是切走上下文
@@ -32,6 +32,42 @@ SideAsk 把这条支线留在原文旁边：
 ```
 
 选中 2–500 字后点击 **✦ 解释**，SideAsk 会带上附近必要上下文，在安静的悬浮窗里回答。你可以连续追问、标记“我懂了”或“还模糊”，再一键回到原来的阅读位置。
+
+## SideAsk 适合用在哪里
+
+<p align="center">
+  <img src="assets/readme/sideask-use-cases.png" alt="SideAsk 的六类使用场景：技术文档、AI 长回答、论文公式、代码与 GitHub、学习支线、知识复习" width="100%">
+</p>
+
+当一个小问题不值得打断整条思路时，就交给 SideAsk：读文档时理解陌生 API、看论文时拆解公式、逛 GitHub 时追问符号、在 AI 长回答中澄清一段话，或把一次临时的学习支线保存下来以后复习。
+
+## 从提问到沉淀，真实 MVP 界面
+
+<table>
+  <tr>
+    <td width="50%"><strong>1 · 在原文旁提问</strong><br><sub>划词后直接获得安全渲染的 Markdown 回答，并在原页面连续追问。</sub></td>
+    <td width="50%"><strong>2 · 留住学习轨迹</strong><br><sub>每条支线保存来源、对话、理解状态和回到原文的 Anchor。</sub></td>
+  </tr>
+  <tr>
+    <td><img src="assets/readme/sideask-in-action.png" alt="SideAsk 悬浮窗展示 Markdown 解释"></td>
+    <td><img src="assets/readme/dashboard.png" alt="SideAsk 学习仪表盘"></td>
+  </tr>
+  <tr>
+    <td width="50%"><strong>3 · 把支线变成知识</strong><br><sub>整理已经掌握的概念，并保留它们之间的上下文联系。</sub></td>
+    <td width="50%"><strong>4 · 使用自己的模型</strong><br><sub>配置 MiniMax 或 OpenAI-compatible 服务，Key 留在扩展私有存储中。</sub></td>
+  </tr>
+  <tr>
+    <td><img src="assets/readme/knowledge-base.png" alt="SideAsk 知识库"></td>
+    <td><img src="assets/readme/provider-dialog.png" alt="SideAsk Provider 配置窗口"></td>
+  </tr>
+</table>
+
+<p align="center">
+  <strong>“还模糊”不会变成被遗忘的聊天，而会进入复习线索。</strong><br>
+  <img src="assets/readme/weakness-book.png" alt="SideAsk 错题本与复习候选" width="100%">
+</p>
+
+<p><sub>截图来自当前 MVP 界面；其中的回答和学习记录使用隔离的演示数据。</sub></p>
 
 ## MVP 能做什么
 
