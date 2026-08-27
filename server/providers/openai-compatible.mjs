@@ -9,10 +9,11 @@ function normalizedBaseUrl(value) {
   return String(value || "").trim().replace(/\/+$/, "");
 }
 
-function isHttpUrl(value) {
+function isSecureProviderUrl(value) {
   try {
     const parsed = new URL(value);
-    return parsed.protocol === "http:" || parsed.protocol === "https:";
+    if (parsed.protocol === "https:") return true;
+    return parsed.protocol === "http:" && ["localhost", "127.0.0.1", "[::1]", "::1"].includes(parsed.hostname);
   } catch {
     return false;
   }
@@ -128,7 +129,7 @@ export function createOpenAICompatibleProvider(definition) {
       if (!String(config?.apiKey || "").trim()) issues.push("apiKey");
       if (!String(config?.model || "").trim()) issues.push("model");
       const endpoint = config?.endpoint || config?.baseUrl;
-      if (!isHttpUrl(endpoint)) issues.push(config?.endpoint ? "endpoint" : "baseUrl");
+      if (!isSecureProviderUrl(endpoint)) issues.push(config?.endpoint ? "endpoint" : "baseUrl");
       return { ok: issues.length === 0, issues };
     },
 

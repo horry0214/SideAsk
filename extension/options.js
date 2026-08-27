@@ -317,6 +317,14 @@ async function chooseLocale(nextLocale) {
   await Promise.allSettled([refreshGateway(), showSection(currentSection)]);
 }
 
+async function openWelcome() {
+  if (previewBridge) {
+    window.location.href = "/preview/welcome.html?preview=ready";
+    return;
+  }
+  await send("sideask-open-welcome");
+}
+
 $$('.nav-item').forEach(button => button.addEventListener("click", () => showSection(button.dataset.section)));
 $$('[data-go]').forEach(button => button.addEventListener("click", () => showSection(button.dataset.go)));
 $("#add-provider").addEventListener("click", () => openProviderDialog());
@@ -325,6 +333,7 @@ $("#provider-form").addEventListener("submit", saveProvider);
 $$('[data-close-dialog]').forEach(button => button.addEventListener("click", () => $("#provider-dialog").close()));
 $$(".language-switch [data-locale]").forEach(button => button.addEventListener("click", guarded(() => chooseLocale(button.dataset.locale))));
 $("#refresh-gateway").addEventListener("click", guarded(refreshGateway));
+$("#open-welcome").addEventListener("click", guarded(openWelcome));
 $("#branch-search").addEventListener("input", guarded(loadBranches));
 $("#branch-status").addEventListener("change", guarded(loadBranches));
 $("#knowledge-search").addEventListener("input", guarded(loadKnowledge));
@@ -332,6 +341,10 @@ $("#knowledge-status").addEventListener("change", guarded(loadKnowledge));
 
 locale = await I18N.loadLocale();
 applyLocale(locale);
+
+const query = new URLSearchParams(window.location.search);
+const requestedSection = query.get("section");
+if (requestedSection && Object.hasOwn(TITLES, requestedSection)) currentSection = requestedSection;
 
 if (extensionRuntime && chrome.storage?.onChanged) {
   chrome.storage.onChanged.addListener((changes, areaName) => {
@@ -343,4 +356,5 @@ if (extensionRuntime && chrome.storage?.onChanged) {
   });
 }
 
-await Promise.allSettled([refreshGateway(), loadOverview()]);
+await Promise.allSettled([refreshGateway(), showSection(currentSection)]);
+if (currentSection === "providers" && query.get("add") === "1") openProviderDialog();

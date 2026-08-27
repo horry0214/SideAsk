@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "SideAsk"
+  },
+  "extensionDescription": {
+    "message": "Ask AI about selected text without losing your place. Local-first, BYOK, and built for learning."
+  },
+  "actionTitle": {
+    "message": "SideAsk — Ask aside. Stay on track."
+  }
+}

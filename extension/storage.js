@@ -48,6 +48,16 @@ function cleanUrl(value) {
   }
 }
 
+function isSecureProviderUrl(value) {
+  try {
+    const url = new URL(value);
+    if (url.protocol === "https:") return true;
+    return url.protocol === "http:" && ["localhost", "127.0.0.1", "[::1]", "::1"].includes(url.hostname);
+  } catch {
+    return false;
+  }
+}
+
 export function normalizeConcept(value) {
   return cleanText(value, 500).replace(/\s+/g, " ").toLocaleLowerCase();
 }
@@ -256,7 +266,9 @@ export class SideAskStorage {
     const baseUrl = cleanText(input?.baseUrl || existing?.baseUrl, 2000).replace(/\/+$/, "");
     if (!apiKey) throw new Error("请填写 API Key。");
     if (!model) throw new Error("请填写模型名称。");
-    if (type === "openai-compatible" && !/^https?:\/\//i.test(baseUrl)) throw new Error("请填写有效的 HTTP(S) Base URL。");
+    if (type === "openai-compatible" && !isSecureProviderUrl(baseUrl)) {
+      throw new Error("Provider Base URL 必须使用 HTTPS；仅 localhost/127.0.0.1 可使用 HTTP。");
+    }
 
     const provider = {
       id: existing?.id || crypto.randomUUID(),

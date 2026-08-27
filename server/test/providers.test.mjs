@@ -9,6 +9,7 @@ import {
   redactSensitiveText,
   resolveProviderRuntime,
 } from "../providers/index.mjs";
+import { createOpenAICompatibleProvider } from "../providers/openai-compatible.mjs";
 
 test("default registry exposes the first three provider types", () => {
   const ids = createProviderRegistry().list().map(provider => provider.id);
@@ -37,6 +38,17 @@ test("custom OpenAI-compatible configuration is selected without core branching"
   assert.equal(provider.id, "openai-compatible");
   assert.equal(config.baseUrl, "https://example.test/v1");
   assert.deepEqual(provider.validateConfig(config), { ok: true, issues: [] });
+});
+
+test("custom providers require HTTPS except for loopback development", () => {
+  const provider = createOpenAICompatibleProvider({
+    id: "secure-test",
+    displayName: "Secure test",
+    allowCustomBaseUrl: true,
+  });
+  assert.equal(provider.validateConfig({ apiKey: "test", model: "model", baseUrl: "http://example.test/v1" }).ok, false);
+  assert.equal(provider.validateConfig({ apiKey: "test", model: "model", baseUrl: "http://127.0.0.1:9000/v1" }).ok, true);
+  assert.equal(provider.validateConfig({ apiKey: "test", model: "model", baseUrl: "https://example.test/v1" }).ok, true);
 });
 
 test("OpenAI-compatible SSE parser only forwards answer content", () => {

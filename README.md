@@ -86,6 +86,7 @@ Use it when a small question should stay small: decode an unfamiliar API while r
 - **Context-aware side questions** — selection, nearby paragraphs, source metadata, and recent branch messages.
 - **Streaming Markdown answers** — safe headings, lists, tables, links, quotes, inline code, and fenced code blocks.
 - **English / 简体中文 UI** — one persistent switch keeps the dashboard and floating panel in sync; answer language follows the selected UI language.
+- **Guided first run** — checks the local Gateway and Provider, explains data flow, requests optional website access, and opens a real selection practice page.
 - **Multi-turn follow-ups** — continue the branch in the same lightweight panel.
 - **Return-to-source anchors** — live DOM range → selector + text → text lookup → scroll fallback.
 - **Learning Branches** — preserve where a question came from, not just what was asked.
@@ -116,9 +117,11 @@ When the terminal prints `SideAsk Local Gateway running: http://127.0.0.1:8787`:
 1. Open `chrome://extensions/` or `edge://extensions/`.
 2. Enable **Developer mode**.
 3. Choose **Load unpacked** and select the repository's `extension/` folder.
-4. Open the SideAsk dashboard → **Model Providers** → add, test, and set a default provider.
-5. Use the **中文 / EN** switch in the dashboard or floating panel if you want to change the interface and default answer language.
-6. Select text on a regular web page or ChatGPT and click **✦ Explain**.
+4. SideAsk opens its setup guide automatically. Review the data disclosure, confirm the Gateway, and add a default Provider.
+5. Choose **Enable on websites** when you are ready; broad HTTP/HTTPS access is optional and can be revoked from the same guide.
+6. Open the bundled practice page, select **phi node**, and click **✦ Explain** to complete the real first-use flow.
+
+Store-ready Chrome, Edge, Gateway, images, listing copy, privacy declarations, and reviewer notes are documented in the [store submission kit](store/README.md). Until the public listings are approved, matching ZIP packages are published with each GitHub release.
 
 For a dashboard-only demo, run `npm run preview` and open `http://127.0.0.1:8788/preview/`. Preview data is isolated and does not call a real provider.
 

@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "SideAsk"
+  },
+  "extensionDescription": {
+    "message": "不中断当前阅读主线的 AI 支线提问层。划词、解释、追问，再一键回到原文。"
+  },
+  "actionTitle": {
+    "message": "SideAsk：问题走支线，思路留主线"
+  }
+}

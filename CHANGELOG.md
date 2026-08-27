@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.1 Store RC — 2026-08-28
+
+### Added
+
+- Bilingual first-run guide that verifies the Local Gateway and Provider, captures an explicit data disclosure acknowledgment, and opens the real selection experience on a bundled practice page.
+- Optional HTTP/HTTPS website access with in-product grant and revoke controls; toolbar-only `activeTab` access remains available after consent.
+- Localized manifest metadata for English and Simplified Chinese store listings.
+- Chrome Web Store and Microsoft Edge Add-ons upload ZIPs, five localized screenshots per language, required promotional tiles, Edge logo, listing copy, privacy declarations, reviewer notes, and submission checklists.
+- Stable `sideask-gateway.zip` companion package for the setup guide and store reviewers.
+
+### Security
+
+- Broad website access is no longer required at installation and is activated only after the user reads the data disclosure and grants the optional permission.
+- Dynamic content-script registration is synchronized with the user's website-access choice.
+
 ## 0.3.0 MVP — 2026-08-28
 
 ### Added

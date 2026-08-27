@@ -81,6 +81,7 @@ SideAsk 把这条支线留在原文旁边：
 - **知识与薄弱点**：“我懂了”沉淀知识，“还模糊”生成复习候选。
 - **开放 Provider**：MiniMax CN、MiniMax Global、Custom OpenAI-compatible。
 - **Local-first**：历史、Provider 和学习状态默认保存在扩展私有 IndexedDB。
+- **首次使用引导**：自动检查 Gateway 与 Provider，说明数据流，按需申请网页权限，并打开真实划词练习页。
 - **零构建依赖**：原生 JavaScript/CSS 和零依赖 Node.js 本地网关。
 
 <details>
@@ -104,9 +105,11 @@ npm start
 1. 打开 `chrome://extensions/` 或 `edge://extensions/`。
 2. 开启“开发者模式”。
 3. 点击“加载已解压的扩展程序”，选择仓库的 `extension/` 文件夹。
-4. 在 SideAsk 管理页进入“模型服务”，添加、测试并设为默认 Provider。
-5. 可在管理页或悬浮窗使用 **中文 / EN** 切换界面和 AI 默认回答语言。
-6. 在普通网页或 ChatGPT 中划词，点击 **✦ 解释**。
+4. SideAsk 会自动打开设置引导；阅读数据说明、确认 Gateway，并添加默认 Provider。
+5. 准备好后点击“在网页中启用”。普通 HTTP/HTTPS 网页访问是可选权限，可以从同一引导页撤销。
+6. 打开内置练习页，选中 **phi node** 并点击 **✦ 解释**，完成真实首次体验。
+
+Chrome、Edge、Gateway、商店图片、双语上架文案、隐私声明与审核说明都已整理在[商店提交包](store/README.md)中。在公开商店审核通过前，每个 GitHub Release 会提供对应 ZIP。
 
 只预览管理页时可运行 `npm run preview`，再打开 `http://127.0.0.1:8788/preview/`。预览数据完全隔离，不会调用真实 Provider。
 

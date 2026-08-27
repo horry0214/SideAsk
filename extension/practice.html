@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SideAsk selection practice</title>
+  <link rel="stylesheet" href="practice.css">
+  <link rel="stylesheet" href="content.css">
+</head>
+<body>
+  <header><a href="welcome.html"><img src="assets/icons/sideask-mark.svg" alt=""><span><b>SideAsk</b><small data-practice="back">Back to setup</small></span></a><span class="practice-badge" data-practice="badge">FIRST SELECTION</span></header>
+  <main>
+    <section class="instructions"><p data-practice="kicker">TRY THE REAL INTERACTION</p><h1 data-practice="title">Select “phi node” below.</h1><p data-practice="body">Release your mouse, choose <b>✦ Explain</b>, and SideAsk will open the same floating panel you will use on any webpage.</p><div class="steps"><span><i>1</i><b data-practice="step1">Select the words</b></span><span>→</span><span><i>2</i><b data-practice="step2">Click Explain</b></span><span>→</span><span><i>3</i><b data-practice="step3">Ask a follow-up</b></span></div></section>
+    <article class="paper">
+      <div class="paper-meta"><span>LLVM COMPILER NOTES</span><span>4 MIN READ</span></div>
+      <h2>Static Single Assignment (SSA)</h2>
+      <p>In SSA form, every variable is assigned exactly once. At control-flow merge points, a <strong>phi node</strong> selects the value that corresponds to the predecessor block actually taken.</p>
+      <pre><code>if (cond) x = 1; else x = 2;
+x2 = phi(x0, x1)</code></pre>
+      <p>Phi nodes are not normal functions executed at runtime. They are a representation used by the compiler to make data flow explicit before later optimization passes.</p>
+      <aside><b data-practice="tipTitle">Tip</b><span data-practice="tipBody">If the Explain button does not appear, select the two words only—not the whole paragraph.</span></aside>
+    </article>
+  </main>
+  <script src="i18n.js"></script>
+  <script src="practice.js"></script>
+  <script src="markdown.js"></script>
+  <script src="content.js"></script>
+</body>
+</html>

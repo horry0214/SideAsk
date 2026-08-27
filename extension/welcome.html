@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Set up SideAsk</title>
+  <link rel="stylesheet" href="welcome.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="welcome.html" aria-label="SideAsk setup home">
+      <img src="assets/icons/sideask-mark.svg" alt="">
+      <span><strong>SideAsk</strong><small data-copy="brandTagline">Ask aside. Stay on track.</small></span>
+    </a>
+    <div class="header-actions">
+      <div class="language-switch" role="group" aria-label="Interface language">
+        <button type="button" data-locale="zh-CN">中文</button>
+        <button type="button" data-locale="en">EN</button>
+      </div>
+      <button class="ghost-button" id="open-dashboard" type="button" data-copy="dashboard">Open dashboard</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span></span><b data-copy="eyebrow">THREE-MINUTE SETUP</b></div>
+        <h1 data-copy="heroTitle">Get your first side answer flowing.</h1>
+        <p data-copy="heroBody">Connect the local Gateway, add the model you already use, then try SideAsk on a real selection.</p>
+        <div class="trust-row">
+          <span data-copy="trustLocal">✓ Local-first history</span>
+          <span data-copy="trustKey">✓ Bring your own key</span>
+          <span data-copy="trustNoAccount">✓ No SideAsk account</span>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="browser-card">
+          <div class="browser-top"><i></i><i></i><i></i></div>
+          <p class="line short"></p><p class="line"></p>
+          <p class="sample"><mark>phi node</mark> <span>selects the value from the predecessor block.</span></p>
+          <div class="explain-pill">✦ <span data-copy="explain">Explain</span></div>
+        </div>
+        <div class="answer-card"><img src="assets/icons/sideask-mark.svg" alt=""><div><b data-copy="answerTitle">A question, without a detour</b><p data-copy="answerBody">Your answer opens beside the page and stays attached to its source.</p></div></div>
+      </div>
+    </section>
+
+    <section class="disclosure" id="disclosure-card">
+      <div class="disclosure-icon">◎</div>
+      <div class="disclosure-copy">
+        <h2 data-copy="disclosureTitle">Before SideAsk reads a selection</h2>
+        <p data-copy="disclosureBody">Only text you deliberately select, a small amount of nearby readable context, the source URL without query or hash, and messages in this side branch are sent through your local Gateway to the AI Provider you choose. Passwords, form fields and editor drafts are excluded. Provider keys and learning history stay in extension-private storage. SideAsk has no telemetry, ads or cloud database.</p>
+        <a href="https://github.com/horry0214/sideask/blob/main/PRIVACY.md" target="_blank" rel="noreferrer" data-copy="privacyLink">Read the full privacy policy ↗</a>
+      </div>
+      <button class="primary-button" id="accept-disclosure" type="button" data-copy="acceptDisclosure">I understand — continue</button>
+    </section>
+
+    <section class="setup" aria-labelledby="setup-title">
+      <div class="setup-head">
+        <div><p class="section-kicker" data-copy="setupKicker">FIRST-RUN CHECKLIST</p><h2 id="setup-title" data-copy="setupTitle">Three things, checked as you go</h2></div>
+        <div class="overall-progress"><span id="progress-label">0 / 3</span><div><i id="progress-bar"></i></div></div>
+      </div>
+
+      <article class="step-card" id="gateway-step">
+        <div class="step-number">1</div>
+        <div class="step-main">
+          <div class="step-heading"><div><h3 data-copy="gatewayTitle">Start the local Gateway</h3><p data-copy="gatewayBody">The Gateway keeps Provider calls outside the web page and listens only on your computer.</p></div><span class="status-badge checking" id="gateway-status" data-copy="checking">Checking…</span></div>
+          <div class="command-row"><code>npm start</code><button type="button" class="copy-button" id="copy-command" data-copy="copy">Copy</button></div>
+          <p class="step-detail" id="gateway-detail" data-copy="gatewayDetail">Run this command inside the downloaded SideAsk folder, then keep the terminal open.</p>
+          <div class="step-actions"><button type="button" class="secondary-button" id="download-gateway" data-copy="downloadGateway">Download Gateway</button><button type="button" class="text-button" id="check-gateway" data-copy="checkAgain">Check again</button></div>
+        </div>
+      </article>
+
+      <article class="step-card" id="provider-step">
+        <div class="step-number">2</div>
+        <div class="step-main">
+          <div class="step-heading"><div><h3 data-copy="providerTitle">Connect your AI Provider</h3><p data-copy="providerBody">Choose MiniMax CN, MiniMax Global, or any OpenAI-compatible endpoint. Your API key stays local.</p></div><span class="status-badge checking" id="provider-status" data-copy="checking">Checking…</span></div>
+          <p class="provider-summary" id="provider-detail" data-copy="providerMissing">No browser Provider is configured yet.</p>
+          <div class="step-actions"><button type="button" class="secondary-button" id="add-provider" data-copy="addProvider">Add Provider</button><button type="button" class="text-button" id="check-provider" data-copy="refresh">Refresh</button></div>
+        </div>
+      </article>
+
+      <article class="step-card" id="selection-step">
+        <div class="step-number">3</div>
+        <div class="step-main">
+          <div class="step-heading"><div><h3 data-copy="selectionTitle">Enable selection and try it once</h3><p data-copy="selectionBody">Grant website access only when you are ready. You can revoke it here at any time.</p></div><span class="status-badge checking" id="selection-status" data-copy="waiting">Waiting</span></div>
+          <div class="access-box"><span class="access-dot" id="access-dot"></span><div><b id="access-title" data-copy="accessOff">Website access is off</b><p id="access-detail" data-copy="accessOffDetail">SideAsk will not run automatically on websites until you enable it.</p></div></div>
+          <div class="step-actions"><button type="button" class="secondary-button" id="toggle-access" disabled data-copy="enableAccess">Enable on websites</button><button type="button" class="primary-button" id="open-practice" disabled data-copy="trySelection">Try your first selection</button></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="ready-card" id="ready-card" hidden>
+      <div class="ready-mark">✓</div><div><h2 data-copy="readyTitle">SideAsk is ready.</h2><p data-copy="readyBody">Select text on any regular web page and choose “✦ Explain”. Your first Learning Branch is already saved locally.</p></div><button type="button" class="primary-button" id="ready-dashboard" data-copy="viewDashboard">View learning dashboard</button>
+    </section>
+  </main>
+
+  <footer><span>SideAsk · MIT License</span><a href="https://github.com/horry0214/sideask" target="_blank" rel="noreferrer">GitHub ↗</a></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="i18n.js"></script>
+  <script type="module" src="welcome.js"></script>
+</body>
+</html>

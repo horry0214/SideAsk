@@ -1,6 +1,9 @@
 import { sideAskStorage } from "./storage.js";
 
 const SERVER_URL = "http://127.0.0.1:8787";
+const PAGE_ORIGINS = ["http://*/*", "https://*/*"];
+const PAGE_SCRIPT_ID = "sideask-page";
+const CONSENT_KEY = "sideaskDataConsentV1";
 
 async function readJsonResponse(response) {
   const text = await response.text();
@@ -57,6 +60,57 @@ async function injectIntoTab(tabId) {
   }
 }
 
+async function hasDataConsent() {
+  const state = await chrome.storage.local.get(CONSENT_KEY);
+  return state[CONSENT_KEY]?.accepted === true;
+}
+
+async function hasWebsiteAccess() {
+  return chrome.permissions.contains({ origins: PAGE_ORIGINS });
+}
+
+async function performPageContentScriptSync({ injectExisting = false } = {}) {
+  const [consented, permitted, registered] = await Promise.all([
+    hasDataConsent(),
+    hasWebsiteAccess(),
+    chrome.scripting.getRegisteredContentScripts({ ids: [PAGE_SCRIPT_ID] }),
+  ]);
+
+  if (registered.length) {
+    await chrome.scripting.unregisterContentScripts({ ids: [PAGE_SCRIPT_ID] });
+  }
+
+  if (!consented || !permitted) return false;
+
+  await chrome.scripting.registerContentScripts([{
+    id: PAGE_SCRIPT_ID,
+    matches: PAGE_ORIGINS,
+    js: ["i18n.js", "markdown.js", "content.js"],
+    css: ["content.css"],
+    runAt: "document_idle",
+    allFrames: false,
+    persistAcrossSessions: true,
+  }]);
+
+  if (injectExisting) {
+    const tabs = await chrome.tabs.query({});
+    await Promise.allSettled(tabs.map(tab => injectIntoTab(tab.id)));
+  }
+  return true;
+}
+
+let contentScriptSyncQueue = Promise.resolve(false);
+function syncPageContentScript(options = {}) {
+  contentScriptSyncQueue = contentScriptSyncQueue
+    .catch(() => false)
+    .then(() => performPageContentScriptSync(options));
+  return contentScriptSyncQueue;
+}
+
+async function openWelcome() {
+  await chrome.tabs.create({ url: chrome.runtime.getURL("welcome.html") });
+}
+
 async function ensureInjected(tabId) {
   if (!tabId) return false;
   try {
@@ -69,12 +123,27 @@ async function ensureInjected(tabId) {
 
 chrome.runtime.onInstalled.addListener(async details => {
   await storageReady;
-  const tabs = await chrome.tabs.query({});
-  await Promise.allSettled(tabs.map(tab => injectIntoTab(tab.id)));
-  if (details.reason === "install") await chrome.runtime.openOptionsPage();
+  await syncPageContentScript();
+  if (details.reason === "install") await openWelcome();
+});
+
+chrome.runtime.onStartup.addListener(() => {
+  syncPageContentScript().catch(error => console.error(`[Permissions] ${error.message}`));
+});
+
+chrome.permissions.onAdded.addListener(() => {
+  syncPageContentScript({ injectExisting: true }).catch(error => console.error(`[Permissions] ${error.message}`));
+});
+
+chrome.permissions.onRemoved.addListener(() => {
+  syncPageContentScript().catch(error => console.error(`[Permissions] ${error.message}`));
 });
 
 chrome.action.onClicked.addListener(async tab => {
+  if (!await hasDataConsent()) {
+    await openWelcome();
+    return;
+  }
   await ensureInjected(tab.id);
   try {
     await chrome.tabs.sendMessage(tab.id, { type: "sideask-toggle" });
@@ -87,6 +156,18 @@ async function handleExtensionMessage(message) {
     case "sideask-open-dashboard":
       await chrome.runtime.openOptionsPage();
       return { ok: true };
+    case "sideask-open-welcome":
+      await openWelcome();
+      return { ok: true };
+    case "sideask-consent-state":
+      return { ok: true, data: { accepted: await hasDataConsent() } };
+    case "sideask-consent-save":
+      await chrome.storage.local.set({ [CONSENT_KEY]: { accepted: true, acceptedAt: Date.now(), version: 1 } });
+      return { ok: true, data: { accepted: true } };
+    case "sideask-site-access-state":
+      return { ok: true, data: { granted: await hasWebsiteAccess() } };
+    case "sideask-site-access-sync":
+      return { ok: true, data: { granted: await syncPageContentScript({ injectExisting: true }) } };
     case "sideask-gateway-health":
       return { ok: true, data: await requestGateway("/health") };
     case "sideask-provider-state":
