@@ -19,7 +19,8 @@
 </p>
 
 <p align="center">
-  <img src="assets/readme/sideask-in-action.png" alt="SideAsk explaining a selected concept in the real floating panel" width="100%">
+  <img src="assets/readme/sideask-demo.gif" alt="23-second SideAsk walkthrough: ask beside a page, preserve learning branches, build knowledge, configure a provider, and switch between English and Chinese" width="100%">
+  <br><sub>A 23-second walkthrough captured from the real MVP interface.</sub>
 </p>
 
 ## A side question, not a context switch
@@ -50,22 +51,22 @@ Use it when a small question should stay small: decode an unfamiliar API while r
     <td width="50%"><strong>2 · Keep the learning trail</strong><br><sub>Every side question retains its source, branch, state, and return anchor.</sub></td>
   </tr>
   <tr>
-    <td><img src="assets/readme/sideask-in-action.png" alt="SideAsk floating panel rendering a Markdown explanation"></td>
-    <td><img src="assets/readme/dashboard.png" alt="SideAsk learning dashboard"></td>
+    <td><img src="assets/readme/sideask-in-action-en.png" alt="SideAsk floating panel rendering a Markdown explanation in English"></td>
+    <td><img src="assets/readme/dashboard-en.png" alt="SideAsk English learning dashboard"></td>
   </tr>
   <tr>
     <td width="50%"><strong>3 · Turn branches into knowledge</strong><br><sub>Browse concepts that are understood and the connections preserved around them.</sub></td>
     <td width="50%"><strong>4 · Bring your own model</strong><br><sub>Configure MiniMax or an OpenAI-compatible endpoint; keys stay in extension-private storage.</sub></td>
   </tr>
   <tr>
-    <td><img src="assets/readme/knowledge-base.png" alt="SideAsk knowledge base"></td>
-    <td><img src="assets/readme/provider-dialog.png" alt="SideAsk provider configuration dialog"></td>
+    <td><img src="assets/readme/knowledge-base-en.png" alt="SideAsk English knowledge base"></td>
+    <td><img src="assets/readme/provider-dialog-en.png" alt="SideAsk English provider configuration dialog"></td>
   </tr>
 </table>
 
 <p align="center">
   <strong>Still fuzzy becomes a review signal, not a forgotten chat.</strong><br>
-  <img src="assets/readme/weakness-book.png" alt="SideAsk weakness book and review queue" width="100%">
+  <img src="assets/readme/weakness-book-en.png" alt="SideAsk English weakness book and review queue" width="100%">
 </p>
 
 <p><sub>Captured from the current MVP interface. Example answers and learning records use isolated demo data.</sub></p>
@@ -84,6 +85,7 @@ Use it when a small question should stay small: decode an unfamiliar API while r
 
 - **Context-aware side questions** — selection, nearby paragraphs, source metadata, and recent branch messages.
 - **Streaming Markdown answers** — safe headings, lists, tables, links, quotes, inline code, and fenced code blocks.
+- **English / 简体中文 UI** — one persistent switch keeps the dashboard and floating panel in sync; answer language follows the selected UI language.
 - **Multi-turn follow-ups** — continue the branch in the same lightweight panel.
 - **Return-to-source anchors** — live DOM range → selector + text → text lookup → scroll fallback.
 - **Learning Branches** — preserve where a question came from, not just what was asked.
@@ -115,7 +117,8 @@ When the terminal prints `SideAsk Local Gateway running: http://127.0.0.1:8787`:
 2. Enable **Developer mode**.
 3. Choose **Load unpacked** and select the repository's `extension/` folder.
 4. Open the SideAsk dashboard → **Model Providers** → add, test, and set a default provider.
-5. Select text on a regular web page or ChatGPT and click **✦ Explain**.
+5. Use the **中文 / EN** switch in the dashboard or floating panel if you want to change the interface and default answer language.
+6. Select text on a regular web page or ChatGPT and click **✦ Explain**.
 
 For a dashboard-only demo, run `npm run preview` and open `http://127.0.0.1:8788/preview/`. Preview data is isolated and does not call a real provider.
 
@@ -163,7 +166,7 @@ Read the full [Privacy Policy](PRIVACY.md) and [Security Policy](SECURITY.md).
 
 ## Project status
 
-Current release: **v0.2.5 MVP**.
+Current release: **v0.3.0 MVP**.
 
 The working MVP covers the selection flow, streaming answers, Markdown rendering, provider management, local Learning Branch storage, basic knowledge consolidation, weakness tracking, history, and anchor restoration.
 

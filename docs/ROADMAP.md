@@ -46,4 +46,18 @@
 
 验收：旧历史仍可读取；Branch schema 支持 parent-child；“我懂了/还模糊”能更新知识状态；无复杂图谱、RAG 或云依赖。
 
+## Phase 3 — Bilingual Experience & Open-source Showcase
+
+状态：**已完成（v0.3.0 MVP）**
+
+目标：让中英文用户都能直接理解、配置并使用 SideAsk。
+
+- 管理页与网页悬浮窗支持 English / 简体中文切换。
+- 语言偏好持久保存，并在扩展页面之间同步。
+- 快捷提问和 Gateway system prompt 跟随所选语言。
+- README 使用双语真实界面截图和 23 秒演示 GIF。
+- 增加 locale normalization、translation fallback 和 bilingual prompt tests。
+
+验收：切换后刷新仍保持；管理页和悬浮窗语言一致；英文快捷提问得到英文 system prompt；中英文 README 素材均可加载。
+
 当前未进入 MVP 的后续项：ChatGPT 专用 Adapter、跨页面 Anchor 强化、复习交互和 optional sync。

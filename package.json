@@ -1,6 +1,6 @@
 {
   "name": "sideask",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "description": "SideAsk — AI side-question layer. Ask aside. Stay on track.",
@@ -18,7 +18,7 @@
     "start": "node server/server.mjs",
     "preview": "node server/server.mjs --port 8788",
     "test": "node --test --test-isolation=none server/test/*.test.mjs",
-    "check": "node --check extension/background.js && node --check extension/content.js && node --check extension/markdown.js && node --check extension/options.js && node --check extension/preview-data.js && node --check extension/storage.js && node --check server/server.mjs && node scripts/verify-mvp.mjs && node --test --test-isolation=none server/test/*.test.mjs"
+    "check": "node --check extension/background.js && node --check extension/content.js && node --check extension/i18n.js && node --check extension/markdown.js && node --check extension/options.js && node --check extension/preview-data.js && node --check extension/storage.js && node --check server/prompt.mjs && node --check server/server.mjs && node scripts/verify-mvp.mjs && node --test --test-isolation=none server/test/*.test.mjs"
   },
   "engines": {
     "node": ">=20"

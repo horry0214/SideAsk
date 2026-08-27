@@ -51,7 +51,7 @@ async function injectIntoTab(tabId) {
   if (!tabId) return;
   try {
     await chrome.scripting.insertCSS({ target: { tabId }, files: ["content.css"] });
-    await chrome.scripting.executeScript({ target: { tabId }, files: ["content.js"] });
+    await chrome.scripting.executeScript({ target: { tabId }, files: ["i18n.js", "markdown.js", "content.js"] });
   } catch (_) {
     // Protected pages reject injection.
   }

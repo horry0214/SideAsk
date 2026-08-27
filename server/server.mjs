@@ -8,6 +8,7 @@ import {
   publicProviderError,
   resolveProviderRuntime,
 } from "./providers/index.mjs";
+import { systemPrompt } from "./prompt.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const extensionDir = path.resolve(__dirname, "../extension");
@@ -100,35 +101,6 @@ async function readJson(req, maxBytes = 500_000) {
   }
 }
 
-function systemPrompt(payload) {
-  const selected = String(payload.selection || "").trim();
-  const context = String(payload.context || "").trim();
-  const title = String(payload.sourceTitle || "").trim();
-  const url = String(payload.sourceUrl || "").trim();
-
-  return `你是 SideAsk，一个 AI 支线提问助手。问题走支线，思路留主线。
-
-你的任务不是写百科，而是结合用户正在阅读的局部上下文，快速解决当前卡点，让用户能尽快回到主线。
-
-回答规则：
-1. 默认使用中文，除非用户明确要求其他语言。
-2. 先给直觉，再解释当前上下文中的具体含义。
-3. 默认简洁，通常 120-350 个中文字符；只有用户要求深入时才展开。
-4. 遇到术语时可保留必要英文原词。
-5. 不要重复大段原文，不要离题扩展。
-6. 如果上下文不足以确定特殊含义，明确说“这里更可能指……”，不要假装确定。
-7. 不要输出你的内部推理过程。
-
-当前页面：${title || "未知"}
-URL：${url || "未知"}
-用户选中的内容：${selected || "（无明确划词）"}
-
-附近阅读上下文：
----
-${context || "（未能提取上下文）"}
----`;
-}
-
 function cleanMessages(messages) {
   if (!Array.isArray(messages)) return [];
   return messages
@@ -172,7 +144,13 @@ async function handleChat(req, res) {
   const history = cleanMessages(payload.messages);
   if (!history.length || history[history.length - 1].role !== "user") {
     return json(res, 400, {
-      error: { code: "invalid_request", message: "messages 必须以 user 消息结束。", retryable: false },
+      error: {
+        code: "invalid_request",
+        message: String(payload.locale || "").toLowerCase().startsWith("en")
+          ? "The final message must use the user role."
+          : "messages 必须以 user 消息结束。",
+        retryable: false,
+      },
     });
   }
 

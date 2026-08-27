@@ -108,6 +108,7 @@
   width:30px; height:30px; border-radius:8px; font-size:15px;
 }
 .sideask-icon-btn:hover { background:#f0f0f4; color:#18181b; }
+.sideask-language-btn { font-size:10px; font-weight:800; letter-spacing:-.2px; }
 
 .sideask-context {
   padding: 11px 13px 8px;

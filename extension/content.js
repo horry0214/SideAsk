@@ -2,6 +2,10 @@
   if (window.__SIDEASK_MVP_LOADED__) return;
   window.__SIDEASK_MVP_LOADED__ = true;
 
+  const I18N = globalThis.SideAskI18n;
+  let locale = I18N.detectLocale();
+  const t = (key, params) => I18N.t(locale, key, params);
+
   const state = {
     selectedText: "",
     context: "",
@@ -30,7 +34,8 @@
   bubble.id = "sideask-bubble";
   bubble.type = "button";
   bubble.setAttribute("aria-label", "用 SideAsk 解释选中的内容");
-  bubble.innerHTML = '<span aria-hidden="true">✦</span><span>解释</span>';
+  bubble.dataset.i18nAria = "content.explainAria";
+  bubble.innerHTML = '<span aria-hidden="true">✦</span><span data-i18n="content.explain">解释</span>';
   document.documentElement.appendChild(bubble);
 
   const statusDot = document.createElement("button");
@@ -38,7 +43,9 @@
   statusDot.type = "button";
   statusDot.appendChild(brandImage());
   statusDot.title = "SideAsk 已在当前页面运行。点击打开。";
+  statusDot.dataset.i18nTitle = "content.statusTitle";
   statusDot.setAttribute("aria-label", "打开 SideAsk");
+  statusDot.dataset.i18nAria = "content.open";
   document.documentElement.appendChild(statusDot);
 
   const panel = document.createElement("div");
@@ -46,6 +53,7 @@
   panel.setAttribute("role", "dialog");
   panel.setAttribute("aria-modal", "false");
   panel.setAttribute("aria-label", "SideAsk 支线提问");
+  panel.dataset.i18nAria = "content.dialogAria";
   panel.setAttribute("aria-hidden", "true");
   panel.tabIndex = -1;
   panel.innerHTML = `
@@ -53,40 +61,41 @@
       <div class="sideask-logo" aria-hidden="true"><img src="${brandMarkUrl}" alt=""></div>
       <div class="sideask-title-wrap">
         <div class="sideask-title">SideAsk</div>
-        <div class="sideask-subtitle">问题走支线，思路留主线</div>
+        <div class="sideask-subtitle" data-i18n="brand.tagline">问题走支线，思路留主线</div>
       </div>
-      <button class="sideask-icon-btn" id="sideask-dashboard-btn" title="打开 SideAsk 管理页" aria-label="打开 SideAsk 管理页">⌂</button>
-      <button class="sideask-icon-btn" id="sideask-history-btn" title="历史支线" aria-label="查看历史支线">☰</button>
-      <button class="sideask-icon-btn" id="sideask-min-btn" title="收起" aria-label="收起 SideAsk">—</button>
-      <button class="sideask-icon-btn" id="sideask-close-btn" title="关闭" aria-label="关闭 SideAsk">×</button>
+      <button class="sideask-icon-btn sideask-language-btn" id="sideask-language-btn" title="Switch to English" aria-label="Switch to English">EN</button>
+      <button class="sideask-icon-btn" id="sideask-dashboard-btn" title="打开 SideAsk 管理页" aria-label="打开 SideAsk 管理页" data-i18n-title="content.dashboardTitle" data-i18n-aria="content.dashboardAria">⌂</button>
+      <button class="sideask-icon-btn" id="sideask-history-btn" title="历史支线" aria-label="查看历史支线" data-i18n-title="content.historyTitle" data-i18n-aria="content.historyAria">☰</button>
+      <button class="sideask-icon-btn" id="sideask-min-btn" title="收起" aria-label="收起 SideAsk" data-i18n-title="content.minimize" data-i18n-aria="content.minimize">—</button>
+      <button class="sideask-icon-btn" id="sideask-close-btn" title="关闭" aria-label="关闭 SideAsk" data-i18n-title="content.close" data-i18n-aria="content.close">×</button>
     </div>
     <div class="sideask-context" id="sideask-context-card">
       <div class="sideask-context-meta">
-        <div class="sideask-context-label">你选中了</div>
+        <div class="sideask-context-label" data-i18n="content.selected">你选中了</div>
         <div class="sideask-source" id="sideask-source"></div>
       </div>
       <div class="sideask-selection" id="sideask-selection"></div>
       <div class="sideask-actions">
-        <button class="sideask-chip" data-action="simple">简单解释</button>
-        <button class="sideask-chip" data-action="example">举个例子</button>
-        <button class="sideask-chip" data-action="why">为什么重要</button>
-        <button class="sideask-chip" data-action="deep">深入理解</button>
+        <button class="sideask-chip" data-action="simple" data-i18n="content.simple">简单解释</button>
+        <button class="sideask-chip" data-action="example" data-i18n="content.example">举个例子</button>
+        <button class="sideask-chip" data-action="why" data-i18n="content.why">为什么重要</button>
+        <button class="sideask-chip" data-action="deep" data-i18n="content.deep">深入理解</button>
       </div>
     </div>
     <div class="sideask-body" id="sideask-body">
-      <div class="sideask-empty">划词后点击「解释」，我会只带上附近必要上下文，帮助你处理支线问题而不离开当前页面。</div>
+      <div class="sideask-empty" data-i18n="content.empty">划词后点击「解释」，我会只带上附近必要上下文，帮助你处理支线问题而不离开当前页面。</div>
     </div>
     <div class="sideask-history" id="sideask-history"></div>
     <div class="sideask-footer" id="sideask-footer">
       <div class="sideask-input-row">
-        <textarea class="sideask-input" id="sideask-input" rows="1" placeholder="继续追问…"></textarea>
-        <button class="sideask-send" id="sideask-send" title="发送" aria-label="发送问题">↑</button>
+        <textarea class="sideask-input" id="sideask-input" rows="1" placeholder="继续追问…" data-i18n-placeholder="content.followUp"></textarea>
+        <button class="sideask-send" id="sideask-send" title="发送" aria-label="发送问题" data-i18n-title="content.send" data-i18n-aria="content.send">↑</button>
       </div>
       <div class="sideask-bottom-actions">
         <div>
           <button class="sideask-link-btn sideask-understood" id="sideask-understood">✓ 我懂了</button>
           <button class="sideask-link-btn sideask-unclear" id="sideask-unclear">? 还模糊</button>
-          <button class="sideask-link-btn" id="sideask-return">↩ 回到原文</button>
+          <button class="sideask-link-btn" id="sideask-return" data-i18n="content.return">↩ 回到原文</button>
         </div>
         <span class="sideask-status" id="sideask-status">本地保存</span>
       </div>
@@ -100,6 +109,24 @@
   const inputEl = $("#sideask-input");
   const sendEl = $("#sideask-send");
   const statusEl = $("#sideask-status");
+
+  function applyLocale(nextLocale) {
+    locale = I18N.normalizeLocale(nextLocale);
+    I18N.apply(bubble, locale);
+    I18N.apply(statusDot, locale);
+    I18N.apply(panel, locale);
+    const languageButton = $("#sideask-language-btn");
+    languageButton.textContent = locale === "zh-CN" ? "EN" : "中";
+    languageButton.title = t("content.languageSwitch");
+    languageButton.setAttribute("aria-label", t("content.languageSwitch"));
+    updateStatusControls();
+    if (!state.historyMode) renderMessages();
+  }
+
+  I18N.apply(bubble, locale);
+  I18N.apply(statusDot, locale);
+  I18N.apply(panel, locale);
+  I18N.loadLocale().then(applyLocale).catch(() => applyLocale(locale));
 
   const SENSITIVE_SELECTOR = [
     "input",
@@ -285,7 +312,7 @@
     panel.style.display = "flex";
     panel.setAttribute("aria-hidden", "false");
     $("#sideask-source").textContent = state.sourceTitle || location.hostname;
-    $("#sideask-selection").textContent = state.selectedText || "自由提问";
+    $("#sideask-selection").textContent = state.selectedText || t("content.freeQuestion");
     state.historyMode = false;
     showChatMode();
     renderMessages();
@@ -320,11 +347,17 @@
   $("#sideask-dashboard-btn").addEventListener("click", () => {
     chrome.runtime.sendMessage({ type: "sideask-open-dashboard" });
   });
+  $("#sideask-language-btn").addEventListener("click", async () => {
+    const next = locale === "zh-CN" ? "en" : "zh-CN";
+    const saved = await I18N.saveLocale(next);
+    applyLocale(saved);
+    if (state.historyMode) showHistoryMode().catch(() => {});
+  });
 
   function renderMessages() {
     bodyEl.innerHTML = "";
     if (!state.messages.length) {
-      bodyEl.innerHTML = `<div class="sideask-empty">正在围绕「${escapeHtml(state.selectedText || "当前内容") }」建立一条支线问题。</div>`;
+      bodyEl.innerHTML = `<div class="sideask-empty">${escapeHtml(t("content.branchBuilding", { selection: state.selectedText || t("content.currentContent") }))}</div>`;
       return;
     }
     for (const message of state.messages) {
@@ -360,23 +393,19 @@
     panel.querySelectorAll(".sideask-chip").forEach(btn => btn.disabled = on);
     $("#sideask-understood").disabled = on;
     $("#sideask-unclear").disabled = on;
-    statusEl.textContent = on ? "AI 正在回答…" : ({
-      understood: "已沉淀到知识库",
-      unclear: "已加入薄弱点",
-      review: "等待复习",
-      active: "本地保存",
+    statusEl.textContent = on ? t("content.answering") : ({
+      understood: t("content.savedKnowledge"),
+      unclear: t("content.savedWeakness"),
+      review: t("content.waitingReview"),
+      active: t("content.localSaved"),
     })[state.status];
   }
 
-  const ACTION_QUESTIONS = {
-    simple: "请用最容易理解的方式解释这个概念，先讲直觉，再讲它在当前上下文里的含义。",
-    example: "请给我一个具体、尽量小的例子来理解这个概念，并把例子和当前上下文联系起来。",
-    why: "这个概念为什么重要？请重点解释它在当前上下文里解决了什么问题。",
-    deep: "请深入解释这个概念：核心机制、前置知识、与相邻概念的区别，以及当前上下文中最值得注意的点。"
-  };
+  const ACTIONS = ["simple", "example", "why", "deep"];
+  const actionQuestion = action => t(`prompt.${ACTIONS.includes(action) ? action : "simple"}`);
 
   function runQuickAction(action) {
-    sendQuestion(ACTION_QUESTIONS[action] || ACTION_QUESTIONS.simple, true);
+    sendQuestion(actionQuestion(action), true);
   }
 
   panel.querySelectorAll(".sideask-chip").forEach(btn => {
@@ -406,7 +435,7 @@
     const armResponseTimer = () => {
       clearTimeout(responseTimer);
       responseTimer = setTimeout(() => {
-        showRequestError("等待回答超时，请检查网络、Gateway 和 Provider 后重试。");
+        showRequestError(t("content.timeout"));
         try { port.disconnect(); } catch (_) {}
       }, RESPONSE_TIMEOUT_MS);
     };
@@ -417,7 +446,7 @@
       clearTimeout(responseTimer);
       const current = state.messages[state.messages.length - 1];
       current.streaming = false;
-      current.content = assistantText || `回答失败：${message}\n\n请打开 SideAsk 管理页，在「模型服务」中确认默认 Provider 并测试连接。`;
+      current.content = assistantText || t("content.answerFailed", { message });
       setStreaming(false);
       renderMessages();
     };
@@ -435,7 +464,7 @@
       } else if (msg.type === "done") {
         if (settled) return;
         if (!assistantText.trim()) {
-          showRequestError("Provider 返回了空响应。请检查模型、额度或内容安全限制后重试。");
+          showRequestError(t("content.emptyResponse"));
           port.disconnect();
           return;
         }
@@ -448,19 +477,19 @@
         try {
           await saveSession();
         } catch (error) {
-          statusEl.textContent = error instanceof Error ? error.message : "保存支线失败";
+          statusEl.textContent = error instanceof Error ? error.message : t("content.saveFailed");
         } finally {
           port.disconnect();
         }
       } else if (msg.type === "error") {
-        showRequestError(msg.message || "SideAsk 请求失败。");
+        showRequestError(msg.message || t("content.requestFailed"));
         port.disconnect();
       }
     });
 
     port.onDisconnect.addListener(() => {
       if (settled) return;
-      showRequestError("与扩展后台的连接意外中断，请重新加载扩展并刷新网页后重试。");
+      showRequestError(t("content.disconnected"));
     });
 
     port.postMessage({
@@ -470,16 +499,17 @@
         context: state.context,
         sourceTitle: state.sourceTitle,
         sourceUrl: safeSourceUrl(),
+        locale,
         messages: historyForModel,
       }
     });
   }
 
   function actionLabel(full) {
-    if (full === ACTION_QUESTIONS.simple) return "简单解释";
-    if (full === ACTION_QUESTIONS.example) return "举个例子";
-    if (full === ACTION_QUESTIONS.why) return "为什么重要";
-    if (full === ACTION_QUESTIONS.deep) return "深入理解";
+    if (full === actionQuestion("simple")) return t("content.simple");
+    if (full === actionQuestion("example")) return t("content.example");
+    if (full === actionQuestion("why")) return t("content.why");
+    if (full === actionQuestion("deep")) return t("content.deep");
     return full;
   }
 
@@ -509,18 +539,18 @@
       updatedAt: Date.now(),
     };
     const response = await chrome.runtime.sendMessage({ type: "sideask-branch-save", branch });
-    if (!response?.ok) throw new Error(response?.error || "保存支线失败。");
+    if (!response?.ok) throw new Error(response?.error || t("content.saveFailed"));
     return response.data;
   }
 
   function updateStatusControls() {
     const understood = state.status === "understood";
     const unclear = state.status === "unclear";
-    $("#sideask-understood").textContent = understood ? "✓ 已理解" : "✓ 我懂了";
+    $("#sideask-understood").textContent = understood ? t("content.understood") : t("content.gotIt");
     $("#sideask-understood").setAttribute("aria-pressed", String(understood));
-    $("#sideask-unclear").textContent = unclear ? "? 仍模糊" : "? 还模糊";
+    $("#sideask-unclear").textContent = unclear ? t("content.stillFuzzy") : t("content.fuzzy");
     $("#sideask-unclear").setAttribute("aria-pressed", String(unclear));
-    statusEl.textContent = understood ? "已沉淀到知识库" : (unclear ? "已加入薄弱点" : "本地保存");
+    statusEl.textContent = understood ? t("content.savedKnowledge") : (unclear ? t("content.savedWeakness") : t("content.localSaved"));
   }
 
   async function setBranchStatus(status) {
@@ -530,7 +560,7 @@
     try {
       await saveSession();
     } catch (error) {
-      statusEl.textContent = error instanceof Error ? error.message : "保存失败";
+      statusEl.textContent = error instanceof Error ? error.message : t("content.genericSaveFailed");
     }
   }
 
@@ -594,9 +624,9 @@
     $("#sideask-history-btn").textContent = "←";
     const response = await chrome.runtime.sendMessage({ type: "sideask-branches-list", query: { limit: 100 } });
     const branches = response?.ok ? response.data : [];
-    historyEl.innerHTML = `<div class="sideask-history-head">最近支线</div>`;
+    historyEl.innerHTML = `<div class="sideask-history-head">${escapeHtml(t("content.recentBranches"))}</div>`;
     if (!branches.length) {
-      historyEl.innerHTML += `<div class="sideask-history-empty">还没有历史记录。随便划一个概念开始第一条支线吧。</div>`;
+      historyEl.innerHTML += `<div class="sideask-history-empty">${escapeHtml(t("content.noHistory"))}</div>`;
       return;
     }
     branches.forEach(branch => {
@@ -612,7 +642,7 @@
         state.sessionId = branch.sessionId;
         state.selectedText = branch.selectedText;
         state.context = branch.sourceContext || "";
-        state.sourceTitle = branch.sourceTitle || "历史支线";
+        state.sourceTitle = branch.sourceTitle || t("content.historyBranch");
         state.anchor = branch.anchor || null;
         state.liveRange = null;
         state.messages = branch.messages || [];
@@ -638,7 +668,7 @@
   $("#sideask-history-btn").addEventListener("click", () => {
     if (state.historyMode) showChatMode();
     else showHistoryMode().catch(error => {
-      statusEl.textContent = error instanceof Error ? error.message : "读取历史失败";
+      statusEl.textContent = error instanceof Error ? error.message : t("content.historyReadFailed");
       showChatMode();
     });
   });
@@ -652,6 +682,14 @@
       if (panel.style.display === "flex") closePanel();
       else openPanel({ focusInput: true });
     }
+  });
+
+  chrome.storage?.onChanged?.addListener?.((changes, areaName) => {
+    if (areaName !== "local" || !changes[I18N.STORAGE_KEY]?.newValue) return;
+    const next = I18N.normalizeLocale(changes[I18N.STORAGE_KEY].newValue);
+    if (next === locale) return;
+    applyLocale(next);
+    if (state.historyMode) showHistoryMode().catch(() => {});
   });
 
   document.addEventListener("keydown", event => {

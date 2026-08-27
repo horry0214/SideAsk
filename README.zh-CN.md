@@ -18,7 +18,8 @@
 </p>
 
 <p align="center">
-  <img src="assets/readme/sideask-in-action.png" alt="SideAsk 在真实悬浮窗中解释选中的概念" width="100%">
+  <img src="assets/readme/sideask-demo.gif" alt="SideAsk 23 秒演示：在原文旁提问、保存学习支线、沉淀知识、配置 Provider，并切换中英文" width="100%">
+  <br><sub>来自真实 MVP 界面的 23 秒产品演示。</sub>
 </p>
 
 ## 支线提问，而不是切走上下文
@@ -73,6 +74,7 @@ SideAsk 把这条支线留在原文旁边：
 
 - **上下文感知解释**：选中文字、当前可读块、前后少量内容、来源和支线消息。
 - **流式 Markdown**：安全显示标题、列表、表格、链接、引用和代码块。
+- **English / 简体中文**：语言偏好会持久保存，并同步到管理页、网页悬浮窗和 AI 默认回答语言。
 - **多轮追问**：不离开当前页面，继续同一条支线。
 - **Anchor 恢复**：Live Range → selector + text → text lookup → scroll fallback。
 - **Learning Branch**：保存问题来源、上下文、消息、Anchor 与理解状态。
@@ -103,7 +105,8 @@ npm start
 2. 开启“开发者模式”。
 3. 点击“加载已解压的扩展程序”，选择仓库的 `extension/` 文件夹。
 4. 在 SideAsk 管理页进入“模型服务”，添加、测试并设为默认 Provider。
-5. 在普通网页或 ChatGPT 中划词，点击 **✦ 解释**。
+5. 可在管理页或悬浮窗使用 **中文 / EN** 切换界面和 AI 默认回答语言。
+6. 在普通网页或 ChatGPT 中划词，点击 **✦ 解释**。
 
 只预览管理页时可运行 `npm run preview`，再打开 `http://127.0.0.1:8788/preview/`。预览数据完全隔离，不会调用真实 Provider。
 
@@ -142,7 +145,7 @@ SideAsk 默认只发送用户主动选择的文本、当前可读块和少量附
 
 ## 当前状态
 
-当前版本：**v0.2.5 MVP**。
+当前版本：**v0.3.0 MVP**。
 
 下一阶段将重点增强 ChatGPT/PDF Adapter、跨页面 Anchor、快捷键和最小复习闭环。完整规划见 [路线图](docs/ROADMAP.md)。
 

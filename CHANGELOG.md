@@ -1,11 +1,14 @@
 # Changelog
 
-## Unreleased
+## 0.3.0 MVP — 2026-08-28
 
 ### Added
 
 - English-first GitHub README with a linked Simplified Chinese edition.
 - Real SideAsk interface screenshots, a six-scenario overview, and an expanded bilingual visual product introduction.
+- Persistent English / Simplified Chinese switching across the dashboard and page-side floating panel.
+- Locale-aware quick prompts and Gateway system prompts so the answer language follows the interface.
+- A 23-second real-interface walkthrough GIF for the GitHub project page.
 - MIT License and GitHub issue / pull request templates for the public repository.
 
 ## 0.2.5 MVP — 2026-08-27

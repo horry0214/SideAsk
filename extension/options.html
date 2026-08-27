@@ -11,39 +11,43 @@
     <aside class="sidebar">
       <div class="brand">
         <img src="assets/icons/icon-128.png" alt="">
-        <div><strong>SideAsk</strong><span>问题走支线，思路留主线</span></div>
+        <div><strong>SideAsk</strong><span data-i18n="brand.tagline">问题走支线，思路留主线</span></div>
       </div>
-      <div class="preview-badge" id="preview-badge" hidden>交互预览 · 数据不会保存</div>
-      <nav aria-label="主导航">
-        <button class="nav-item active" data-section="overview"><span>⌂</span>概览</button>
-        <button class="nav-item" data-section="branches"><span>⑂</span>历史支线</button>
-        <button class="nav-item" data-section="knowledge"><span>▣</span>知识库</button>
-        <button class="nav-item" data-section="weaknesses"><span>?</span>薄弱点</button>
-        <button class="nav-item" data-section="providers"><span>◇</span>模型服务</button>
-        <button class="nav-item" data-section="settings"><span>⚙</span>设置</button>
+      <div class="preview-badge" id="preview-badge" hidden data-i18n="preview.badge">交互预览 · 数据不会保存</div>
+      <nav aria-label="主导航" data-i18n-aria="nav.aria">
+        <button class="nav-item active" data-section="overview"><span>⌂</span><b data-i18n="nav.overview">概览</b></button>
+        <button class="nav-item" data-section="branches"><span>⑂</span><b data-i18n="nav.branches">历史支线</b></button>
+        <button class="nav-item" data-section="knowledge"><span>▣</span><b data-i18n="nav.knowledge">知识库</b></button>
+        <button class="nav-item" data-section="weaknesses"><span>?</span><b data-i18n="nav.weaknesses">薄弱点</b></button>
+        <button class="nav-item" data-section="providers"><span>◇</span><b data-i18n="nav.providers">模型服务</b></button>
+        <button class="nav-item" data-section="settings"><span>⚙</span><b data-i18n="nav.settings">设置</b></button>
       </nav>
+      <div class="language-switch" role="group" aria-label="界面语言" data-i18n-aria="language.aria">
+        <button type="button" data-locale="zh-CN" data-i18n="language.zh">中文</button>
+        <button type="button" data-locale="en" data-i18n="language.en">EN</button>
+      </div>
       <div class="sidebar-foot">Local-first · BYOK</div>
     </aside>
 
     <main class="main">
       <header class="topbar">
         <div><h1 id="page-title">概览</h1><p id="page-description">你的支线学习状态都保存在本地。</p></div>
-        <div class="gateway-pill" id="gateway-pill"><span></span><b>检查 Gateway…</b></div>
+        <div class="gateway-pill" id="gateway-pill"><span></span><b data-i18n="gateway.checking">检查 Gateway…</b></div>
       </header>
 
       <section class="page-section active" id="section-overview">
         <div class="stat-grid" id="stat-grid"></div>
         <div class="panel">
-          <div class="panel-head"><div><h2>最近支线</h2><p>从哪里遇到问题，以及现在理解到哪一步。</p></div><button class="text-btn" data-go="branches">查看全部</button></div>
+          <div class="panel-head"><div><h2 data-i18n="overview.recent">最近支线</h2><p data-i18n="overview.recentDescription">从哪里遇到问题，以及现在理解到哪一步。</p></div><button class="text-btn" data-go="branches" data-i18n="overview.viewAll">查看全部</button></div>
           <div class="record-list" id="overview-branches"></div>
         </div>
       </section>
 
       <section class="page-section" id="section-branches">
         <div class="toolbar">
-          <label class="search"><span>⌕</span><input id="branch-search" type="search" placeholder="搜索概念、来源或上下文…"></label>
-          <select id="branch-status" aria-label="筛选支线状态">
-            <option value="">全部状态</option><option value="active">进行中</option><option value="understood">已理解</option><option value="unclear">还模糊</option>
+          <label class="search"><span>⌕</span><input id="branch-search" type="search" placeholder="搜索概念、来源或上下文…" data-i18n-placeholder="filter.branchPlaceholder"></label>
+          <select id="branch-status" aria-label="筛选支线状态" data-i18n-aria="filter.branchAria">
+            <option value="" data-i18n="filter.allStatuses">全部状态</option><option value="active" data-i18n="filter.active">进行中</option><option value="understood" data-i18n="filter.understood">已理解</option><option value="unclear" data-i18n="filter.unclear">还模糊</option>
           </select>
         </div>
         <div class="panel record-list" id="branch-list"></div>
@@ -51,33 +55,33 @@
 
       <section class="page-section" id="section-knowledge">
         <div class="toolbar">
-          <label class="search"><span>⌕</span><input id="knowledge-search" type="search" placeholder="搜索知识…"></label>
-          <select id="knowledge-status" aria-label="筛选理解状态">
-            <option value="">全部状态</option><option value="understood">已理解</option><option value="weak">薄弱</option><option value="learning">学习中</option>
+          <label class="search"><span>⌕</span><input id="knowledge-search" type="search" placeholder="搜索知识…" data-i18n-placeholder="filter.knowledgePlaceholder"></label>
+          <select id="knowledge-status" aria-label="筛选理解状态" data-i18n-aria="filter.knowledgeAria">
+            <option value="" data-i18n="filter.allStatuses">全部状态</option><option value="understood" data-i18n="filter.understood">已理解</option><option value="weak" data-i18n="filter.weak">薄弱</option><option value="learning" data-i18n="filter.learning">学习中</option>
           </select>
         </div>
         <div class="knowledge-grid" id="knowledge-list"></div>
       </section>
 
       <section class="page-section" id="section-weaknesses">
-        <div class="section-intro"><h2>需要再看一眼</h2><p>来自“还模糊”和重复提问的本地证据，不是对你的评价。</p></div>
+        <div class="section-intro"><h2 data-i18n="weakness.title">需要再看一眼</h2><p data-i18n="weakness.description">来自“还模糊”和重复提问的本地证据，不是对你的评价。</p></div>
         <div class="panel record-list" id="weakness-list"></div>
       </section>
 
       <section class="page-section" id="section-providers">
         <div class="section-actions">
-          <div><h2>Model Providers</h2><p>Key 只保存在扩展私有 IndexedDB，并通过本机 Gateway 发起请求。</p></div>
-          <button class="primary-btn" id="add-provider">＋ 添加 Provider</button>
+          <div><h2 data-i18n="providers.heading">Model Providers</h2><p data-i18n="providers.description">Key 只保存在扩展私有 IndexedDB，并通过本机 Gateway 发起请求。</p></div>
+          <button class="primary-btn" id="add-provider" data-i18n="providers.add">＋ 添加 Provider</button>
         </div>
         <div class="provider-grid" id="provider-list"></div>
       </section>
 
       <section class="page-section" id="section-settings">
         <div class="settings-grid">
-          <div class="panel setting-card"><h2>SideAsk Local Gateway</h2><p id="gateway-detail">正在检查 127.0.0.1:8787…</p><button class="secondary-btn" id="refresh-gateway">重新检查</button></div>
-          <div class="panel setting-card"><h2>隐私边界</h2><p>默认只发送选中文字、必要附近上下文和当前支线消息。密码、表单、编辑器草稿以及 URL query/hash 会被排除。</p></div>
-          <div class="panel setting-card"><h2>本地数据</h2><p>Learning Branch、知识状态、薄弱点和 Provider 配置保存在扩展的 IndexedDB 中，不需要账户或云数据库。</p></div>
-          <div class="panel setting-card"><h2>版本</h2><p>SideAsk v0.2.5 MVP<br>Ask aside. Stay on track.</p></div>
+          <div class="panel setting-card"><h2 data-i18n="settings.gateway">SideAsk Local Gateway</h2><p id="gateway-detail" data-i18n="settings.gatewayChecking">正在检查 127.0.0.1:8787…</p><button class="secondary-btn" id="refresh-gateway" data-i18n="settings.refresh">重新检查</button></div>
+          <div class="panel setting-card"><h2 data-i18n="settings.privacy">隐私边界</h2><p data-i18n="settings.privacyBody">默认只发送选中文字、必要附近上下文和当前支线消息。密码、表单、编辑器草稿以及 URL query/hash 会被排除。</p></div>
+          <div class="panel setting-card"><h2 data-i18n="settings.localData">本地数据</h2><p data-i18n="settings.localDataBody">Learning Branch、知识状态、薄弱点和 Provider 配置保存在扩展的 IndexedDB 中，不需要账户或云数据库。</p></div>
+          <div class="panel setting-card"><h2 data-i18n="settings.version">版本</h2><p id="version-detail">SideAsk v0.3.0 MVP<br>Ask aside. Stay on track.</p></div>
         </div>
       </section>
     </main>
@@ -85,19 +89,20 @@
 
   <dialog id="provider-dialog">
     <form method="dialog" id="provider-form">
-      <div class="dialog-head"><div><h2 id="provider-dialog-title">添加 Provider</h2><p>Bring Your Own Key · 仅保存在本地</p></div><button class="icon-close" type="button" data-close-dialog aria-label="关闭">×</button></div>
+      <div class="dialog-head"><div><h2 id="provider-dialog-title">添加 Provider</h2><p data-i18n="dialog.subtitle">Bring Your Own Key · 仅保存在本地</p></div><button class="icon-close" type="button" data-close-dialog aria-label="关闭" data-i18n-aria="dialog.close">×</button></div>
       <input type="hidden" id="provider-id">
-      <label>Provider 类型<select id="provider-type" required><option value="minimax-cn">MiniMax CN</option><option value="minimax-global">MiniMax Global</option><option value="openai-compatible">Custom OpenAI-compatible</option></select></label>
-      <label>显示名称<input id="provider-name" maxlength="120" required placeholder="例如：我的 MiniMax"></label>
+      <label><span data-i18n="dialog.providerType">Provider 类型</span><select id="provider-type" required><option value="minimax-cn">MiniMax CN</option><option value="minimax-global">MiniMax Global</option><option value="openai-compatible">Custom OpenAI-compatible</option></select></label>
+      <label><span data-i18n="dialog.displayName">显示名称</span><input id="provider-name" maxlength="120" required placeholder="例如：我的 MiniMax" data-i18n-placeholder="dialog.namePlaceholder"></label>
       <label id="base-url-field">Base URL<input id="provider-base-url" type="url" maxlength="2000" placeholder="https://api.example.com/v1"></label>
-      <label>API Key<input id="provider-api-key" type="password" maxlength="10000" autocomplete="off" placeholder="只保存在本地"></label>
+      <label>API Key<input id="provider-api-key" type="password" maxlength="10000" autocomplete="off" placeholder="只保存在本地" data-i18n-placeholder="dialog.keyPlaceholder"></label>
       <label>Model<input id="provider-model" maxlength="300" required placeholder="MiniMax-M2.7"></label>
       <div class="form-note" id="provider-form-note">MiniMax CN 默认使用 https://api.minimaxi.com/v1</div>
-      <div class="dialog-actions"><button class="secondary-btn" type="button" data-close-dialog>取消</button><button class="primary-btn" id="save-provider" type="submit">保存 Provider</button></div>
+      <div class="dialog-actions"><button class="secondary-btn" type="button" data-close-dialog data-i18n="dialog.cancel">取消</button><button class="primary-btn" id="save-provider" type="submit" data-i18n="dialog.save">保存 Provider</button></div>
     </form>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="i18n.js"></script>
   <script type="module" src="options.js"></script>
 </body>
 </html>

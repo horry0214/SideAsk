@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "SideAsk",
-  "version": "0.2.5",
-  "version_name": "0.2.5 MVP",
+  "version": "0.3.0",
+  "version_name": "0.3.0 MVP",
   "description": "不中断当前阅读主线的 AI 支线提问层。划词、解释、追问，再一键回到原文。",
   "permissions": ["storage", "scripting"],
   "host_permissions": [
@@ -27,7 +27,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["markdown.js", "content.js"],
+      "js": ["i18n.js", "markdown.js", "content.js"],
       "css": ["content.css"],
       "run_at": "document_idle",
       "all_frames": false
