@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SideAsk — selection to understanding</title>
+  <style>
+    :root{font-family:Inter,"Segoe UI",Arial,sans-serif;color:#111827;background:#f7f7fc;--primary:#625bf6;--primary-dark:#4438d5;--lavender:#efedff;--line:#e4e7ec;--muted:#667085;--ink:#101828;--success:#16884f}
+    *{box-sizing:border-box}body{margin:0;width:1280px;min-width:1280px;background:#f7f7fc}.stage{position:relative;width:1280px;height:800px;overflow:hidden;padding:34px 38px 25px;background:radial-gradient(circle at 7% 0%,#e5e0ff 0,transparent 29%),radial-gradient(circle at 96% 84%,#e2eaff 0,transparent 30%),linear-gradient(145deg,#fbfbff,#f3f4fa)}
+    .stage:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(98,91,246,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(98,91,246,.025) 1px,transparent 1px);background-size:30px 30px;mask-image:linear-gradient(to bottom,#000,transparent 72%);pointer-events:none}
+    .story{position:relative;display:flex;align-items:flex-start;justify-content:space-between;height:135px;padding:0 7px}.kicker{display:flex;align-items:center;gap:8px;margin-bottom:10px;color:var(--primary-dark);font-size:11px;font-weight:850;letter-spacing:1.5px}.kicker:before{content:"";width:24px;height:3px;border-radius:99px;background:var(--primary)}h1{margin:0;max-width:790px;font-size:40px;line-height:1.08;letter-spacing:-1.7px}h1 em{color:var(--primary);font-style:normal}.story p{margin:9px 0 0;color:var(--muted);font-size:15px}.promise{display:flex;gap:8px;padding-top:12px}.promise span,.proof span{white-space:nowrap;border:1px solid #dcd9ff;border-radius:999px;background:rgba(255,255,255,.76);color:#4c45cb;font-size:10px;font-weight:750}.promise span{padding:8px 11px}
+    .demo{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:18px;height:565px}.browser,.panel{border:1px solid rgba(210,214,224,.95);background:#fff;box-shadow:0 22px 60px rgba(16,24,40,.11)}.browser{position:relative;overflow:hidden;border-radius:20px}.browser-top{height:49px;display:flex;align-items:center;gap:7px;padding:0 17px;border-bottom:1px solid #eceef3;background:#fafbfc}.browser-top i{width:8px;height:8px;border-radius:50%;background:#adb5c3}.address{width:390px;height:25px;margin-left:15px;border:1px solid #e6e8ed;border-radius:99px;background:#fff}.page-label{margin-left:auto;color:#8a92a1;font-size:10px}.paper{padding:39px 50px}.paper .meta{margin:0 0 12px;color:#625bf6;font-size:10px;font-weight:850;letter-spacing:1.2px}.paper h2{margin:0 0 22px;font-family:Georgia,serif;font-size:31px;letter-spacing:-.5px}.paper p{max-width:730px;margin:0 0 17px;color:#344054;font-family:Georgia,serif;font-size:17px;line-height:1.75}.selected{position:relative;display:inline-block;padding:0 4px;border-radius:4px;background:#dcd8ff;color:#332aa7;font-family:inherit;font-weight:800}.selection-tail{background:linear-gradient(90deg,rgba(98,91,246,.14),transparent);border-radius:3px}.explain{position:absolute;left:575px;top:222px;padding:10px 14px;border-radius:11px;background:#171927;color:#fff;font-size:11px;font-weight:850;box-shadow:0 10px 23px rgba(17,24,39,.28)}.explain:before{content:"✦";margin-right:6px}.explain:after{content:"";position:absolute;right:100%;top:50%;width:102px;border-top:2px dashed #8c84ff}.code{margin-top:21px;padding:18px 22px;border:1px solid #e3e6ec;border-radius:13px;background:#f8f9fb;color:#344054;font-family:Consolas,monospace;font-size:13px;line-height:1.75}.code b{color:#625bf6}.context-note{position:absolute;left:48px;bottom:22px;display:flex;align-items:center;gap:9px;color:#777e8d;font-size:10px}.context-note i{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px #eaf8ef}.context-note strong{color:#475467}
+    .panel{position:relative;overflow:hidden;border-radius:20px}.panel-head{height:61px;display:flex;align-items:center;gap:10px;padding:0 15px;border-bottom:1px solid #eceef3}.panel-head img{width:33px;height:33px}.panel-head strong{display:block;font-size:14px}.panel-head small{display:block;margin-top:2px;color:#858c99;font-size:8px}.window-actions{margin-left:auto;color:#7b8290;font-size:14px;letter-spacing:9px}.selection-box{padding:12px 14px 10px;border-bottom:1px solid #eceef3}.selection-box label{display:flex;justify-content:space-between;margin-bottom:7px;color:#8a92a1;font-size:8px;text-transform:uppercase;letter-spacing:.6px}.selection-value{padding:9px 11px;border-radius:9px;background:#efedff;color:#342fa9;font-size:13px;font-weight:850}.chips{display:flex;gap:6px;margin-top:9px}.chips span{padding:5px 8px;border:1px solid #e0e3ea;border-radius:999px;color:#4f5665;font-size:8px;background:#fff}.chips span:first-child{border-color:#625bf6;background:#625bf6;color:#fff}.answer-wrap{height:344px;padding:14px;background:#f9fafb}.answer{padding:15px 15px 14px;border:1px solid #e2e5eb;border-radius:12px;background:#fff;box-shadow:0 5px 15px rgba(16,24,40,.035)}.answer h3{margin:0 0 7px;font-size:13px}.answer p{margin:0 0 10px;color:#475467;font-size:10px;line-height:1.55}.answer h4{margin:12px 0 7px;font-size:10px}.answer pre{margin:0 0 9px;padding:9px 10px;border-radius:8px;background:#161a25;color:#f6f7fb;font-family:Consolas,monospace;font-size:9px}.answer ul{margin:0;padding-left:18px;color:#475467;font-size:9px;line-height:1.65}.answer blockquote{margin:10px 0 0;padding:7px 9px;border-left:3px solid #8077ff;background:#f6f4ff;color:#555d6c;font-size:9px;line-height:1.45}.composer{position:absolute;left:0;right:0;bottom:0;padding:11px 13px;border-top:1px solid #e4e7ec;background:#fff}.input{display:flex;align-items:center;justify-content:space-between;height:38px;padding-left:11px;border:1px solid #dce0e7;border-radius:10px;color:#98a2b3;font-size:9px}.send{width:31px;height:31px;display:grid;place-items:center;margin-right:3px;border-radius:9px;background:#625bf6;color:#fff;font-size:16px}.panel-actions{display:flex;gap:15px;margin-top:8px;color:#667085;font-size:8px}.panel-actions b{color:#5149e8}.saved{margin-left:auto;color:#98a2b3}
+    .proof{position:relative;height:51px;display:flex;align-items:center;justify-content:center;gap:10px}.proof span{padding:7px 12px}.proof b{color:#111827}.proof i{color:#625bf6;font-style:normal;margin-right:5px}
+    .motion .explain{animation:explain 8s infinite}.motion .selected{animation:selection 8s infinite}.motion .panel{animation:panel 8s infinite}.motion .reveal{animation:reveal 8s infinite both}.motion .r1{animation-delay:.2s}.motion .r2{animation-delay:.55s}.motion .r3{animation-delay:.9s}.motion .r4{animation-delay:1.25s}.motion .r5{animation-delay:1.6s}.motion .composer{animation:composer 8s 1.8s infinite both}.motion .proof{animation:proof 8s 2s infinite both}
+    @keyframes selection{0%,7%{background:#b9d3ff;color:#143d8e;box-shadow:0 0 0 0 rgba(98,91,246,0)}12%,88%{background:#dcd8ff;color:#332aa7;box-shadow:0 0 0 5px rgba(98,91,246,.08)}94%,100%{background:#b9d3ff;color:#143d8e;box-shadow:none}}
+    @keyframes explain{0%,7%{opacity:0;transform:translateY(6px) scale(.96)}12%,22%{opacity:1;transform:none}29%,100%{opacity:0;transform:translateX(14px)}}
+    @keyframes panel{0%,20%{opacity:0;transform:translateX(35px)}28%,91%{opacity:1;transform:none}97%,100%{opacity:0;transform:translateX(12px)}}
+    @keyframes reveal{0%,25%{opacity:0;transform:translateY(7px)}32%,91%{opacity:1;transform:none}97%,100%{opacity:0}}
+    @keyframes composer{0%,30%{opacity:0;transform:translateY(8px)}38%,91%{opacity:1;transform:none}97%,100%{opacity:0}}
+    @keyframes proof{0%,34%{opacity:0;transform:translateY(5px)}42%,91%{opacity:1;transform:none}97%,100%{opacity:0}}
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <header class="story">
+      <div>
+        <div class="kicker" data-t="kicker">ONE SELECTION. ONE SIDE ANSWER.</div>
+        <h1 data-t="headline">Select it. <em>Understand it.</em> Keep reading.</h1>
+        <p data-t="subhead">Ask AI about any passage without leaving the page or losing your place.</p>
+      </div>
+      <div class="promise"><span>Local-first</span><span>BYOK</span><span data-t="noAccount">No account</span></div>
+    </header>
+    <section class="demo">
+      <article class="browser">
+        <div class="browser-top"><i></i><i></i><i></i><div class="address"></div><span class="page-label">LLVM Language Reference</span></div>
+        <div class="paper">
+          <div class="meta">COMPILER NOTES · SSA</div>
+          <h2>Static Single Assignment</h2>
+          <p data-t="paragraph1">In SSA form, every variable is assigned exactly once, making optimization and data-flow analysis easier.</p>
+          <p data-t="paragraph2">At control-flow merge points, a <span class="selected">phi node</span> selects the value associated with the predecessor block that was actually taken.</p>
+          <div class="explain" data-t="explain">Explain</div>
+          <div class="code"><b>entry:</b><br>&nbsp;&nbsp;if (cond) x = 1; else x = 2;<br><br><b>merge:</b><br>&nbsp;&nbsp;x₂ = phi(x₀, x₁)</div>
+        </div>
+        <div class="context-note"><i></i><span data-t="context"><strong>Context-aware:</strong> selection + nearby paragraph + source</span></div>
+      </article>
+      <aside class="panel">
+        <div class="panel-head"><img src="../../../extension/assets/icons/sideask-mark.svg" alt=""><div><strong>SideAsk</strong><small data-t="tagline">Ask aside. Stay on track.</small></div><div class="window-actions">⌂ ≡ − ×</div></div>
+        <div class="selection-box"><label><span data-t="selectedLabel">You selected</span><span>LLVM Language Reference</span></label><div class="selection-value" data-t="term">phi node</div><div class="chips"><span data-t="simple">Simple</span><span data-t="example">Example</span><span data-t="why">Why it matters</span><span data-t="deeper">Go deeper</span></div></div>
+        <div class="answer-wrap"><div class="answer">
+          <h3 class="reveal r1" data-t="answerTitle">The intuition</h3>
+          <p class="reveal r2" data-t="answerBody">A <b>phi node</b> is a value selector at a control-flow merge. It does not run like a normal function.</p>
+          <h4 class="reveal r3" data-t="exampleTitle">In this example</h4>
+          <pre class="reveal r3">x₂ = phi(x₀, x₁)</pre>
+          <ul class="reveal r4"><li data-t="item1">Arrived from block A → choose x₀</li><li data-t="item2">Arrived from block B → choose x₁</li></ul>
+          <blockquote class="reveal r5" data-t="callout">SSA keeps one assignment per variable version while still representing merged control flow.</blockquote>
+        </div></div>
+        <div class="composer"><div class="input"><span data-t="followup">Ask a follow-up…</span><span class="send">↑</span></div><div class="panel-actions"><b data-t="favorite">☆ Favorite</b><span data-t="back">↩ Back to source</span><span class="saved" data-t="saved">Saved locally</span></div></div>
+      </aside>
+    </section>
+    <footer class="proof"><span><i>1</i><b data-t="step1">Select</b></span><span>→</span><span><i>2</i><b data-t="step2">Explain</b></span><span>→</span><span><i>3</i><b data-t="step3">Follow up</b></span><span>→</span><span><i>4</i><b data-t="step4">Return</b></span></footer>
+  </main>
+  <script>
+    const copy={
+      en:{kicker:"ONE SELECTION. ONE SIDE ANSWER.",headline:'Select it. <em>Understand it.</em> Keep reading.',subhead:"Ask AI about any passage without leaving the page or losing your place.",noAccount:"No account",paragraph1:"In SSA form, every variable is assigned exactly once, making optimization and data-flow analysis easier.",paragraph2:'At control-flow merge points, a <span class="selected">phi node</span> selects the value associated with the predecessor block that was actually taken.',explain:"Explain",context:"<strong>Context-aware:</strong> selection + nearby paragraph + source",tagline:"Ask aside. Stay on track.",selectedLabel:"You selected",term:"phi node",simple:"Simple",example:"Example",why:"Why it matters",deeper:"Go deeper",answerTitle:"The intuition",answerBody:"A <b>phi node</b> is a value selector at a control-flow merge. It does not run like a normal function.",exampleTitle:"In this example",item1:"Arrived from block A → choose x₀",item2:"Arrived from block B → choose x₁",callout:"SSA keeps one assignment per variable version while still representing merged control flow.",followup:"Ask a follow-up…",favorite:"☆ Favorite",back:"↩ Back to source",saved:"Saved locally",step1:"Select",step2:"Explain",step3:"Follow up",step4:"Return"},
+      zh:{kicker:"一次划词，一条支线回答",headline:'划一下，<em>不跳页。</em>答案就在原文旁。',subhead:"让 AI 结合附近上下文解释、举例和回答追问，然后继续阅读。",noAccount:"无需账号",paragraph1:"在 SSA 形式中，每个变量只被赋值一次，从而让优化和数据流分析更容易。",paragraph2:'当多条控制流路径汇合时，<span class="selected">phi 指令</span> 会根据程序实际经过的前驱基本块，选择对应的变量版本。',explain:"解释",context:"<strong>理解上下文：</strong>划词 + 附近段落 + 来源",tagline:"问题走支线，思路留主线",selectedLabel:"你选中了",term:"phi 指令",simple:"简单解释",example:"举个例子",why:"为什么重要",deeper:"深入理解",answerTitle:"直觉理解",answerBody:"可以把 <b>phi 指令</b> 看成控制流汇合处的“选择器”：程序从哪条路径过来，就选择那条路径提供的值。",exampleTitle:"在当前例子中",item1:"从分支 A 进入 → 选择 x₀",item2:"从分支 B 进入 → 选择 x₁",callout:"它不是普通函数调用，而是 SSA 对控制流合并的表达。",followup:"继续追问…",favorite:"☆ 收藏",back:"↩ 回到原文",saved:"本地保存",step1:"划词",step2:"解释",step3:"继续追问",step4:"回到原文"}
+    };
+    const params=new URLSearchParams(location.search);const lang=params.get("lang")==="zh"?"zh":"en";document.documentElement.lang=lang==="zh"?"zh-CN":"en";document.querySelectorAll("[data-t]").forEach(el=>{const value=copy[lang][el.dataset.t];if(value!=null)el.innerHTML=value});if(params.get("motion")==="1")document.querySelector(".stage").classList.add("motion");if(params.has("time")){requestAnimationFrame(()=>document.getAnimations().forEach(animation=>{animation.pause();animation.currentTime=Number(params.get("time"))||0}))}
+  </script>
+</body>
+</html>

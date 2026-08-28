@@ -3,8 +3,8 @@
 </p>
 
 <p align="center">
-  <strong>问题走支线，思路留主线。</strong><br>
-  一个简单、local-first 的网页 AI 支线提问层。
+  <strong>划一下，不跳页。答案就在原文旁。</strong><br>
+  AI 结合附近上下文解释、举例和回答追问，然后继续阅读。
 </p>
 
 <p align="center">
@@ -19,11 +19,11 @@
 </p>
 
 <p align="center">
-  <img src="assets/readme/simple-core.png" alt="SideAsk Simple Core：最近、收藏和设置" width="100%">
-  <br><sub>SideAsk v0.4 Simple Core · 来自真实交互预览的数据</sub>
+  <img src="assets/readme/sideask-demo-zh.gif" alt="选中 phi 指令，让 SideAsk 结合附近上下文解释、继续追问并回到原文" width="100%">
+  <br><sub>划词 → 结合附近上下文解释 → 继续追问 → 回到原文</sub>
 </p>
 
-## 一个小问题，就让它保持小
+## 一次划词，不应该变成一次上下文切换
 
 你正在阅读技术文档、论文、GitHub 或 AI 的长回答，一个短语突然卡住你。打开新标签页或新对话，会把一条很小的支线变成上下文切换。
 
@@ -36,6 +36,17 @@ SideAsk 把问题留在原文旁边：
 
 选中 2–500 字并点击 **✦ 解释**。SideAsk 只携带必要的附近上下文，在悬浮窗中流式显示安全 Markdown 回答，让你不离开当前页面也能继续追问。
 
+## 就在这些卡住你的瞬间
+
+| 你正在看 | 你选中了 | SideAsk 帮你 |
+| --- | --- | --- |
+| 技术文档 | 陌生 API、编译器术语或系统概念 | 结合附近段落和代码例子解释它 |
+| 论文或公式 | 难懂的论断、符号或方程 | 换成直白表达，拆解各部分并说明为什么重要 |
+| AI 的长回答 | ChatGPT、Claude 或 Gemini 回答中的一句话 | 不新开对话，直接澄清当前这句话 |
+| 代码或 GitHub 页面 | 函数、报错、Diff 或陌生写法 | 在源码旁理解它，然后继续阅读同一文件 |
+
+你可以选择**简单解释、举个例子、为什么重要、深入理解**，随后继续追问；真正有用时收藏，弄懂后回到原文。
+
 ## Simple Core
 
 - **在原文旁提问**：简单解释、举个例子、为什么重要或深入理解。
@@ -45,6 +56,11 @@ SideAsk 把问题留在原文旁边：
 - **设置不打扰主流程**：Provider、Gateway、语言、隐私和首次引导集中在一起。
 
 主界面只有三个入口：**最近、收藏、设置**。SideAsk 不要求账户，不依赖云数据库，也不会让用户维护知识图谱、薄弱点或复习队列。
+
+<p align="center">
+  <img src="assets/readme/simple-core.png" alt="SideAsk 用简单的最近、收藏和设置管理支线问题" width="100%">
+  <br><sub>管理界面退居次要位置：最近、收藏和设置。</sub>
+</p>
 
 ## 快速开始
 

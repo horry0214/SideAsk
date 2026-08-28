@@ -24,6 +24,8 @@ if (packageJson.license !== "MIT") fail(`Unexpected package license: ${packageJs
   "SECURITY.md", "SECURITY.zh-CN.md", "PRIVACY.md", "PRIVACY.zh-CN.md", "CODE_OF_CONDUCT.md", "CODE_OF_CONDUCT.zh-CN.md",
   ".github/ISSUE_TEMPLATE/bug_report.yml", ".github/ISSUE_TEMPLATE/feature_request.yml", ".github/PULL_REQUEST_TEMPLATE.md",
   "docs/PRODUCT.md", "docs/ARCHITECTURE.md", "docs/PROVIDERS.md", "docs/KNOWLEDGE_MODEL.md", "docs/ROADMAP.md",
+  "assets/readme/sideask-demo-en.gif", "assets/readme/sideask-demo-zh.gif",
+  "assets/readme/sideask-hero-en.jpg", "assets/readme/sideask-hero.jpg", "assets/readme/source/sideask-hero.html",
   "extension/background.js", "extension/content.js", "extension/content.css", "extension/markdown.js", "extension/storage.js",
   "extension/provider-catalog.js",
   "extension/options.html", "extension/options.js", "extension/options.css", "extension/preview-data.js",
@@ -88,6 +90,16 @@ for (const locale of ["en", "zh-CN"]) {
 for (const [relativePath, expected] of expectedPngSizes) {
   const actual = pngSize(relativePath).join("x");
   if (actual !== expected) fail(`Unexpected image size for ${relativePath}: ${actual}, expected ${expected}`);
+}
+
+for (const relativePath of ["assets/readme/sideask-demo-en.gif", "assets/readme/sideask-demo-zh.gif"]) {
+  const data = fs.readFileSync(path.join(root, relativePath));
+  if (!/^GIF8[79]a$/.test(data.toString("ascii", 0, 6))) fail(`Not a GIF: ${relativePath}`);
+  if (data.length > 1_500_000) fail(`README demo is too large: ${relativePath}`);
+}
+for (const relativePath of ["assets/readme/sideask-hero-en.jpg", "assets/readme/sideask-hero.jpg"]) {
+  const data = fs.readFileSync(path.join(root, relativePath));
+  if (data[0] !== 0xff || data[1] !== 0xd8) fail(`Not a JPEG: ${relativePath}`);
 }
 
 const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");

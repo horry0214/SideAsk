@@ -3,8 +3,8 @@
 </p>
 
 <p align="center">
-  <strong>Ask aside. Stay on track.</strong><br>
-  A simple, local-first AI side-question layer for the web.
+  <strong>Select it. Understand it. Keep reading.</strong><br>
+  Context-aware AI explanations beside the source—without a tab switch.
 </p>
 
 <p align="center">
@@ -20,11 +20,11 @@
 </p>
 
 <p align="center">
-  <img src="assets/readme/simple-core-en.png" alt="SideAsk Simple Core with Recent, Favorites, and Settings" width="100%">
-  <br><sub>SideAsk v0.4 Simple Core · real interactive preview data</sub>
+  <img src="assets/readme/sideask-demo-en.gif" alt="Select phi node, ask SideAsk to explain it with nearby context, follow up, and return to the source" width="100%">
+  <br><sub>Select → explain with nearby context → follow up → return to the source</sub>
 </p>
 
-## One small question should stay small
+## One selection should not become a context switch
 
 You are reading documentation, a paper, GitHub, or a long AI answer. One phrase is unclear. Opening another tab or chat turns a tiny detour into a context switch.
 
@@ -37,6 +37,17 @@ Read → Select → Ask → Follow up → Return
 
 Select 2–500 characters and choose **✦ Explain**. SideAsk sends only the minimum nearby context needed, streams a safe Markdown answer in a floating panel, and lets you continue without leaving the page.
 
+## Built for the moment you get stuck
+
+| You are looking at… | You select… | SideAsk helps you… |
+| --- | --- | --- |
+| Technical documentation | an unfamiliar API, compiler term, or system concept | explain it using the nearby paragraph and code sample |
+| A paper or formula | a dense claim, symbol, or equation | restate it plainly, define the parts, and show why it matters |
+| A long AI answer | one sentence inside ChatGPT, Claude, or Gemini | clarify that sentence without starting another disconnected chat |
+| Code or a GitHub page | a function, error, diff, or unfamiliar pattern | understand it beside the source and continue reading the same file |
+
+Choose **Simple**, **Example**, **Why it matters**, or **Go deeper**; then ask a follow-up, favorite the answer if it is useful, or return to the exact source.
+
 ## Simple Core
 
 - **Ask beside the page** — explain, request an example, ask why it matters, or go deeper.
@@ -46,6 +57,11 @@ Select 2–500 characters and choose **✦ Explain**. SideAsk sends only the min
 - **Settings stay out of the way** — Provider, Gateway, language, privacy, and setup live in one place.
 
 The main interface has only three destinations: **Recent**, **Favorites**, and **Settings**. There is no SideAsk account, cloud database, knowledge graph, review queue, or required sync.
+
+<p align="center">
+  <img src="assets/readme/simple-core-en.png" alt="SideAsk keeps recent questions, favorites, and settings simple" width="100%">
+  <br><sub>The management interface stays secondary: Recent, Favorites, and Settings.</sub>
+</p>
 
 ## Quick start
 
