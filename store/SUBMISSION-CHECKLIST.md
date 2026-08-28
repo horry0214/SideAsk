@@ -5,7 +5,7 @@
 - [ ] Register and verify the publisher/developer accounts.
 - [ ] Enable two-step verification on the Chrome Web Store publisher account.
 - [ ] Confirm that `manifest.json` is at the root of each upload ZIP.
-- [ ] Confirm version `0.4.0` is greater than any previously uploaded version.
+- [ ] Confirm version `0.5.0` is greater than any previously uploaded version.
 - [ ] Upload the stable `sideask-gateway.zip` asset to the matching public GitHub release.
 - [ ] Verify both privacy-policy URLs are publicly accessible.
 - [ ] Verify support and homepage links.
@@ -13,7 +13,7 @@
 
 ## Chrome Web Store
 
-- [ ] Upload `sideask-chrome-web-store-v0.4.0.zip`.
+- [ ] Upload `sideask-chrome-web-store-v0.5.0.zip`.
 - [ ] Add English and Simplified Chinese listing copy.
 - [ ] Upload `store-assets/shared/icon-128.png`.
 - [ ] Upload `store-assets/shared/promo-small-440x280.png`.
@@ -26,7 +26,7 @@
 
 ## Microsoft Edge Add-ons
 
-- [ ] Upload `sideask-edge-addons-v0.4.0.zip` in Partner Center.
+- [ ] Upload `sideask-edge-addons-v0.5.0.zip` in Partner Center.
 - [ ] Select Productivity and the intended markets.
 - [ ] Complete the Privacy page using `PRIVACY-DECLARATIONS.md`.
 - [ ] Add the Edge privacy-policy URL.

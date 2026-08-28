@@ -1,4 +1,4 @@
-# SideAsk v0.4.0 Simple Core Acceptance
+# SideAsk v0.5.0 Provider Catalog Acceptance
 
 评估日期：2026-08-28。
 
@@ -7,8 +7,8 @@
 - Manifest V3 extension、正式品牌和扩展图标。
 - Generic Web / ChatGPT 通用 selection、context、floating UI 和多轮 streaming 链路。
 - Anchor：Live Range → selector/text → text lookup → scrollY。
-- MiniMax CN / Global 与 Custom OpenAI-compatible Provider Registry。
-- Provider Add/Edit/Delete/Test/Default/Model 管理闭环。
+- 25 个声明式 Provider Profile；Anthropic 原生 Messages adapter 与共享 OpenAI-compatible adapter。
+- Provider Add/Edit/Delete/Test/Default/Model 管理闭环，以及未保存草稿的实时模型发现。
 - Key 隔离：Content Script 不可见；扩展私有 IndexedDB → Service Worker → loopback gateway。
 - 旧扁平历史非破坏迁移。
 - 最近提问自动保存；收藏可以添加与取消。
@@ -20,7 +20,7 @@
 ## Automated evidence
 
 - `npm run check`：通过。
-- 27 个 Node regression tests：通过。
+- 30 个 Node regression tests：通过。
 - Manifest 路径、Options DOM 引用、README link、credential scan：通过。
 - Gateway smoke：health 200、web origin 403、non-JSON 415、invalid provider config 400。
 
@@ -33,4 +33,4 @@
 
 ## MVP boundaries
 
-PDF 专用 adapter、ChatGPT 专用 adapter、复习调度、跨设备同步、云账户、完整对话导入、复杂 RAG 和知识图谱不属于 v0.4.0 Simple Core。
+PDF 专用 adapter、ChatGPT 专用 adapter、复习调度、跨设备同步、云账户、完整对话导入、复杂 RAG 和知识图谱不属于 v0.5.0 Provider Catalog。

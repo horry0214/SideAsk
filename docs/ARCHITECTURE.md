@@ -42,7 +42,7 @@ Configured Provider
 
 ### Provider
 
-Provider 通过 Registry 注册。Core 只依赖统一接口，不使用 `if (provider === ...)` 分支。MiniMax CN、MiniMax Global 和 Custom OpenAI-compatible 共享兼容协议实现，但拥有独立配置默认值。
+Provider 通过 Registry 注册。Core 只依赖统一接口，不使用 `if (provider === ...)` 分支。25 个预设由 `extension/provider-catalog.js` 单一来源驱动；Anthropic 使用原生 Messages adapter，其余官方兼容服务、本地模型与自定义端点复用 OpenAI-compatible adapter。
 
 ## Context Builder
 

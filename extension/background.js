@@ -188,6 +188,20 @@ async function handleExtensionMessage(message) {
       });
       return { ok: true, data };
     }
+    case "sideask-provider-test-draft": {
+      const existing = message.providerId ? await sideAskStorage.getProvider(message.providerId) : null;
+      const draft = {
+        ...(existing || {}),
+        ...(message.provider || {}),
+        apiKey: message.provider?.apiKey || existing?.apiKey || "",
+      };
+      const data = await requestGateway("/api/providers/test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider: providerForGateway(draft) }),
+      });
+      return { ok: true, data };
+    }
     case "sideask-branch-save":
       return { ok: true, data: await sideAskStorage.saveBranch(message.branch) };
     case "sideask-branch-status":

@@ -1,3 +1,5 @@
+import { getProviderProfile } from "./provider-catalog.js";
+
 const now = Date.now();
 
 const branches = [
@@ -175,6 +177,11 @@ export function createPreviewBridge() {
           return true;
         case "sideask-provider-test":
           return { ok: true, modelAvailable: true };
+        case "sideask-provider-test-draft": {
+          const profile = getProviderProfile(payload.provider?.type);
+          const models = [...(profile?.suggestedModels || [])];
+          return { ok: true, modelAvailable: true, models, discoveredModels: models.length };
+        }
         default:
           throw new Error(`预览模式暂不支持：${type}`);
       }

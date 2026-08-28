@@ -70,11 +70,13 @@ Store-ready Chrome, Edge, Gateway, listing, privacy, and reviewer materials are 
 
 ## Bring your own model
 
-| Provider | Status | Default endpoint |
-| --- | --- | --- |
-| MiniMax CN | Supported, including Token Plan keys | <code>https://api.minimaxi.com/v1</code> |
-| MiniMax Global | Supported | <code>https://api.minimax.io/v1</code> |
-| Custom OpenAI-compatible | Supported | You provide the Base URL |
+SideAsk v0.5 ships a Hermes-inspired declarative Provider Catalog with 25 presets:
+
+- First-party: OpenAI, Anthropic, Google Gemini, xAI, MiniMax, DeepSeek, Alibaba Qwen, Z.AI / BigModel, and SiliconFlow.
+- Routers and inference: OpenRouter, Vercel AI Gateway, Perplexity, Hugging Face, Fireworks AI, Groq, Mistral, Together AI, Cerebras, and NVIDIA NIM.
+- Local and custom: Ollama, LM Studio, and any OpenAI-compatible endpoint.
+
+Anthropic uses its native Messages streaming protocol. The other presets share a tested OpenAI-compatible transport where the vendor officially supports it. **Test and fetch models** validates credentials without creating a paid chat completion and fills model suggestions from the Provider's live model catalog.
 
 Provider keys stay in extension-private IndexedDB and are attached by the service worker only when calling the loopback Gateway. They are not exposed to page scripts, logs, or the repository.
 
@@ -111,9 +113,9 @@ SideAsk uses vanilla JavaScript and CSS with a zero-dependency Node.js Gateway. 
 
 ## Project status
 
-Current release candidate: **v0.4.0 Simple Core**.
+Current release candidate: **v0.5.0 Provider Catalog**.
 
-The working release covers selection, streaming Markdown answers, multi-turn follow-ups, return-to-source anchors, automatic recent history, explicit favorites, bilingual UI, Provider management, optional website permission, and first-run setup.
+The working release covers selection, streaming Markdown answers, multi-turn follow-ups, return-to-source anchors, automatic recent history, explicit favorites, bilingual UI, 25 Provider presets, live model discovery, optional website permission, and first-run setup.
 
 Small improvements can be added later when they reduce friction without adding a new workflow. See the [roadmap](docs/ROADMAP.md).
 

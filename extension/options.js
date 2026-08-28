@@ -1,4 +1,9 @@
 import { createPreviewBridge } from "./preview-data.js";
+import {
+  PROVIDER_CATALOG,
+  getProviderProfile,
+  providerNote,
+} from "./provider-catalog.js";
 
 const I18N = globalThis.SideAskI18n;
 let locale = I18N.detectLocale();
@@ -8,12 +13,6 @@ const TITLES = {
   recent: ["page.recent.title", "page.recent.description"],
   favorites: ["page.favorites.title", "page.favorites.description"],
   settings: ["page.settings.title", "page.settings.simpleDescription"],
-};
-
-const PROVIDER_DEFAULTS = {
-  "minimax-cn": { name: "MiniMax CN", model: "MiniMax-M2.7", noteKey: "providers.note.cn" },
-  "minimax-global": { name: "MiniMax Global", model: "MiniMax-M2.7", noteKey: "providers.note.global" },
-  "openai-compatible": { name: "OpenAI-compatible", model: "", noteKey: "providers.note.custom" },
 };
 
 const $ = selector => document.querySelector(selector);
@@ -185,7 +184,36 @@ async function refreshGateway() {
 }
 
 function providerLabel(type) {
-  return ({ "minimax-cn": "MiniMax CN", "minimax-global": "MiniMax Global", "openai-compatible": "OpenAI-compatible" })[type] || type;
+  return getProviderProfile(type)?.displayName || type;
+}
+
+function populateProviderTypes() {
+  const select = $("#provider-type");
+  select.replaceChildren();
+  const groups = new Map();
+  for (const profile of PROVIDER_CATALOG) {
+    if (!groups.has(profile.group)) {
+      const group = document.createElement("optgroup");
+      group.label = t(`providers.group.${profile.group}`);
+      groups.set(profile.group, group);
+      select.appendChild(group);
+    }
+    const option = document.createElement("option");
+    option.value = profile.id;
+    option.textContent = profile.displayName;
+    groups.get(profile.group).appendChild(option);
+  }
+}
+
+function populateModelSuggestions(profile, discovered = []) {
+  const datalist = $("#provider-model-options");
+  const models = [...new Set([...(discovered || []), ...(profile?.suggestedModels || [])])].slice(0, 200);
+  datalist.replaceChildren(...models.map(model => {
+    const option = document.createElement("option");
+    option.value = model;
+    return option;
+  }));
+  return models;
 }
 
 async function loadProviders() {
@@ -278,14 +306,20 @@ async function deleteProvider(id) {
 
 function updateProviderForm() {
   const type = $("#provider-type").value;
-  const defaults = PROVIDER_DEFAULTS[type];
-  const custom = type === "openai-compatible";
-  $("#base-url-field").hidden = !custom;
-  $("#provider-base-url").required = custom;
-  $("#provider-form-note").textContent = t(defaults.noteKey);
+  const profile = getProviderProfile(type) || PROVIDER_CATALOG[0];
+  $("#base-url-field").hidden = !profile.baseUrlEditable;
+  $("#provider-base-url").required = profile.baseUrlEditable && !profile.defaultBaseUrl;
+  $("#provider-form-note").textContent = providerNote(profile, locale);
+  const hasStoredKey = Boolean($("#provider-id").value && providerState.providers.find(item => item.id === $("#provider-id").value)?.apiKeyConfigured);
+  $("#provider-api-key").required = profile.apiKeyRequired && !hasStoredKey;
+  $("#provider-api-key").placeholder = hasStoredKey
+    ? t("dialog.keyKeepPlaceholder")
+    : (profile.apiKeyRequired ? t("dialog.keyPlaceholder") : t("dialog.keyOptionalPlaceholder"));
+  populateModelSuggestions(profile);
   if (!$("#provider-id").value) {
-    $("#provider-name").value = defaults.name;
-    $("#provider-model").value = defaults.model;
+    $("#provider-name").value = profile.displayName;
+    $("#provider-model").value = profile.defaultModel;
+    $("#provider-base-url").value = profile.defaultBaseUrl;
   }
 }
 
@@ -295,14 +329,42 @@ function openProviderDialog(provider = null) {
   $("#provider-type").value = provider?.type || "minimax-cn";
   $("#provider-type").disabled = Boolean(provider);
   $("#provider-name").value = provider?.displayName || "";
-  $("#provider-base-url").value = provider?.baseUrl || "";
+  const profile = getProviderProfile(provider?.type || "minimax-cn");
+  $("#provider-base-url").value = provider?.baseUrl || profile?.defaultBaseUrl || "";
   $("#provider-api-key").value = "";
-  $("#provider-api-key").required = !provider?.apiKeyConfigured;
-  $("#provider-api-key").placeholder = provider?.apiKeyConfigured ? t("dialog.keyKeepPlaceholder") : t("dialog.keyPlaceholder");
   $("#provider-model").value = provider?.model || "";
   $("#provider-dialog-title").textContent = provider ? t("dialog.editProvider") : t("dialog.addProvider");
   updateProviderForm();
   $("#provider-dialog").showModal();
+}
+
+async function discoverProviderModels() {
+  const button = $("#discover-models");
+  const before = button.textContent;
+  button.disabled = true;
+  button.textContent = t("providers.testing");
+  try {
+    const provider = {
+      type: $("#provider-type").value,
+      displayName: $("#provider-name").value,
+      baseUrl: $("#provider-base-url").value,
+      apiKey: $("#provider-api-key").value,
+      model: $("#provider-model").value,
+    };
+    const result = await send("sideask-provider-test-draft", {
+      providerId: $("#provider-id").value || undefined,
+      provider,
+    });
+    const models = populateModelSuggestions(getProviderProfile(provider.type), result.models || []);
+    if (!$("#provider-model").value && models[0]) $("#provider-model").value = models[0];
+    $("#provider-form-note").textContent = result.discoveredModels
+      ? t("providers.modelsFound", { count: result.discoveredModels })
+      : t("providers.connectedNoModels");
+    toast(t("providers.testSuccess"));
+  } finally {
+    button.disabled = false;
+    button.textContent = before;
+  }
 }
 
 async function saveProvider(event) {
@@ -345,6 +407,7 @@ async function showSection(name) {
 }
 
 function applyLocale(nextLocale) {
+  const selectedProviderType = $("#provider-type").value || "minimax-cn";
   locale = I18N.normalizeLocale(nextLocale);
   document.documentElement.lang = locale;
   I18N.apply(document, locale);
@@ -355,7 +418,9 @@ function applyLocale(nextLocale) {
   });
   $("#page-title").textContent = t(TITLES[currentSection][0]);
   $("#page-description").textContent = t(TITLES[currentSection][1]);
-  const version = extensionRuntime ? (chrome.runtime.getManifest().version_name || chrome.runtime.getManifest().version) : "0.4.0 Simple Core";
+  populateProviderTypes();
+  $("#provider-type").value = getProviderProfile(selectedProviderType)?.id || "minimax-cn";
+  const version = extensionRuntime ? (chrome.runtime.getManifest().version_name || chrome.runtime.getManifest().version) : "0.5.0 Provider Catalog";
   $("#version-detail").innerHTML = `SideAsk v${String(version).replace(/^v/, "")}<br>Ask aside. Stay on track.`;
 }
 
@@ -377,6 +442,7 @@ $$(".nav-item").forEach(button => button.addEventListener("click", () => showSec
 $("#add-provider").addEventListener("click", () => openProviderDialog());
 $("#provider-type").addEventListener("change", updateProviderForm);
 $("#provider-form").addEventListener("submit", saveProvider);
+$("#discover-models").addEventListener("click", guarded(discoverProviderModels));
 $$("[data-close-dialog]").forEach(button => button.addEventListener("click", () => $("#provider-dialog").close()));
 $$(".language-switch [data-locale]").forEach(button => button.addEventListener("click", guarded(() => chooseLocale(button.dataset.locale))));
 $("#refresh-gateway").addEventListener("click", guarded(refreshGateway));

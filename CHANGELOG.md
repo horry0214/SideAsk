@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.5.0 Provider Catalog — 2026-08-28
+
+### Added
+
+- Added a shared declarative catalog with 25 first-party, router, inference, local, and custom Provider profiles.
+- Added native Anthropic Messages API streaming and model discovery.
+- Added official OpenAI-compatible presets for OpenAI, Gemini, xAI, OpenRouter, Vercel AI Gateway, Perplexity, DeepSeek, Qwen, Z.AI, Groq, Fireworks AI, Mistral, Together AI, Cerebras, Hugging Face, SiliconFlow, and NVIDIA NIM.
+- Added keyless local Ollama and LM Studio profiles.
+- Added draft connection testing and live model discovery in the Provider dialog.
+
+### Compatibility
+
+- Existing MiniMax and custom OpenAI-compatible records continue to work; missing historical Base URLs resolve to catalog defaults.
+- MiniMax Token Plan environment variables and request defaults remain compatible.
+
 ## 0.4.0 Simple Core — 2026-08-28
 
 ### Changed

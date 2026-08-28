@@ -4,6 +4,7 @@ import {
   ProviderErrorCode,
   consumeOpenAISseStream,
   createProviderRegistry,
+  parseAnthropicSseLine,
   parseOpenAISseLine,
   providerHttpError,
   redactSensitiveText,
@@ -11,9 +12,12 @@ import {
 } from "../providers/index.mjs";
 import { createOpenAICompatibleProvider } from "../providers/openai-compatible.mjs";
 
-test("default registry exposes the first three provider types", () => {
+test("default registry exposes the catalog of first-party, router, inference, and local providers", () => {
   const ids = createProviderRegistry().list().map(provider => provider.id);
-  assert.deepEqual(ids, ["minimax-cn", "minimax-global", "openai-compatible"]);
+  assert.equal(ids.length, 25);
+  for (const id of ["minimax-cn", "openai", "anthropic", "gemini", "openrouter", "vercel-ai-gateway", "perplexity", "deepseek", "qwen-cn", "groq", "fireworks", "ollama", "lm-studio", "openai-compatible"]) {
+    assert.equal(ids.includes(id), true, `missing ${id}`);
+  }
 });
 
 test("legacy MiniMax CN Token Plan configuration remains compatible", () => {
@@ -51,10 +55,46 @@ test("custom providers require HTTPS except for loopback development", () => {
   assert.equal(provider.validateConfig({ apiKey: "test", model: "model", baseUrl: "https://example.test/v1" }).ok, true);
 });
 
+test("local OpenAI-compatible profiles do not require an API key", () => {
+  const provider = createProviderRegistry().get("ollama");
+  const config = provider.resolveClientConfig({ model: "qwen3:8b" });
+  assert.equal(config.baseUrl, "http://127.0.0.1:11434/v1");
+  assert.deepEqual(provider.validateConfig(config), { ok: true, issues: [] });
+});
+
 test("OpenAI-compatible SSE parser only forwards answer content", () => {
   assert.equal(parseOpenAISseLine('data: {"choices":[{"delta":{"content":"你好"}}]}'), "你好");
   assert.equal(parseOpenAISseLine('data: {"choices":[{"delta":{"reasoning_content":"hidden"}}]}'), "");
   assert.equal(parseOpenAISseLine("data: [DONE]"), "");
+});
+
+test("Anthropic SSE parser only forwards text deltas", () => {
+  assert.equal(parseAnthropicSseLine('data: {"type":"content_block_delta","delta":{"type":"text_delta","text":"SideAsk"}}'), "SideAsk");
+  assert.equal(parseAnthropicSseLine('data: {"type":"content_block_delta","delta":{"type":"thinking_delta","thinking":"hidden"}}'), "");
+});
+
+test("Anthropic adapter normalizes system messages and streamed text", async () => {
+  const provider = createProviderRegistry().get("anthropic");
+  const config = provider.resolveClientConfig({ apiKey: "anthropic-test", model: "claude-sonnet-5" });
+  let captured;
+  const output = [];
+  await provider.chatStream({
+    messages: [
+      { role: "system", content: "Stay concise." },
+      { role: "user", content: "hello" },
+    ],
+  }, config, { onDelta: delta => output.push(delta) }, async (url, options) => {
+    captured = { url, options };
+    return new Response('event: content_block_delta\ndata: {"type":"content_block_delta","delta":{"type":"text_delta","text":"world"}}\n\n', {
+      headers: { "content-type": "text/event-stream" },
+    });
+  });
+  const body = JSON.parse(captured.options.body);
+  assert.equal(captured.url, "https://api.anthropic.com/v1/messages");
+  assert.equal(captured.options.headers["x-api-key"], "anthropic-test");
+  assert.equal(body.system, "Stay concise.");
+  assert.deepEqual(body.messages, [{ role: "user", content: "hello" }]);
+  assert.equal(output.join(""), "world");
 });
 
 test("SSE parser survives arbitrary network chunk boundaries", async () => {

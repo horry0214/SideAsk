@@ -4,7 +4,7 @@
 
 ## Phase 0 — Stabilize & Brand
 
-状态：**已完成（v0.2.0 MVP）**
+状态：**已完成并在 v0.5.0 扩展**
 
 目标：为现有 MVP 建立可维护基线，不改变核心使用路径。
 
@@ -24,12 +24,14 @@
 目标：用户不改源码即可选择和验证模型服务。
 
 - Provider Settings：Add/Edit/Delete/Test/Default/Model。
-- 完整支持 MiniMax CN、MiniMax Global、Custom OpenAI-compatible。
+- 声明式 Provider Catalog：25 个预设，覆盖主流官方服务、路由、高速推理、本地模型与 Custom OpenAI-compatible。
+- Anthropic 原生 Messages/SSE adapter；其余官方兼容服务复用 OpenAI-compatible adapter。
+- Provider 草稿连接测试、实时模型发现与 Catalog 模型建议。
 - Provider config 本地存储、Key 脱敏显示、连接测试与错误指引。
 - 将 Context Builder 与 Provider request contract 稳定下来。
 - 增加 mock gateway integration tests；验证 Chrome + Edge。
 
-验收：三个 Provider 类型可在 UI 配置和切换；MiniMax Token Plan 回归通过；无 Key 出现在仓库、日志或 UI error。
+验收：25 个 Provider 类型可在 UI 配置和切换；本地模型允许无 Key；MiniMax Token Plan 回归通过；Anthropic 与 OpenAI-compatible stream tests 通过；无 Key 出现在仓库、日志或 UI error。
 
 ## Phase 2 — Learning Branch Foundation
 

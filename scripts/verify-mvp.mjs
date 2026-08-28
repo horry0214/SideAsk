@@ -25,6 +25,7 @@ if (packageJson.license !== "MIT") fail(`Unexpected package license: ${packageJs
   ".github/ISSUE_TEMPLATE/bug_report.yml", ".github/ISSUE_TEMPLATE/feature_request.yml", ".github/PULL_REQUEST_TEMPLATE.md",
   "docs/PRODUCT.md", "docs/ARCHITECTURE.md", "docs/PROVIDERS.md", "docs/KNOWLEDGE_MODEL.md", "docs/ROADMAP.md",
   "extension/background.js", "extension/content.js", "extension/content.css", "extension/markdown.js", "extension/storage.js",
+  "extension/provider-catalog.js",
   "extension/options.html", "extension/options.js", "extension/options.css", "extension/preview-data.js",
   "extension/welcome.html", "extension/welcome.js", "extension/welcome.css", "extension/practice.html", "extension/practice.js", "extension/practice.css",
   "extension/_locales/en/messages.json", "extension/_locales/zh_CN/messages.json", "server/server.mjs",

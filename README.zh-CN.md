@@ -69,11 +69,13 @@ Chrome、Edge、Gateway、商店文案、隐私声明与审核说明都整理在
 
 ## 使用自己的模型
 
-| Provider | 状态 | 默认地址 |
-| --- | --- | --- |
-| MiniMax CN | 支持，兼容 Token Plan Key | <code>https://api.minimaxi.com/v1</code> |
-| MiniMax Global | 支持 | <code>https://api.minimax.io/v1</code> |
-| Custom OpenAI-compatible | 支持 | 用户填写 Base URL |
+SideAsk v0.5 按照 Hermes 的思路加入声明式 Provider Catalog，共 25 个预设：
+
+- 官方服务：OpenAI、Anthropic、Google Gemini、xAI、MiniMax、DeepSeek、阿里 Qwen、Z.AI / 智谱和 SiliconFlow。
+- 路由与推理：OpenRouter、Vercel AI Gateway、Perplexity、Hugging Face、Fireworks AI、Groq、Mistral、Together AI、Cerebras 和 NVIDIA NIM。
+- 本地与自定义：Ollama、LM Studio，以及任意 OpenAI-compatible 地址。
+
+Anthropic 使用原生 Messages 流协议；其他预设在供应商官方支持时共用经过测试的 OpenAI-compatible 传输。“检测连接并获取模型”不会发起付费对话，并可从 Provider 的实时模型目录补充建议。
 
 Key 保存在扩展私有 IndexedDB，只由 Service Worker 在调用 loopback Gateway 时附加，不会进入网页脚本、日志或仓库。
 
@@ -108,9 +110,9 @@ SideAsk 使用原生 JavaScript/CSS 与零依赖 Node.js Gateway。升级时不�
 
 ## 当前状态
 
-当前候选版本：**v0.4.0 Simple Core**。
+当前候选版本：**v0.5.0 Provider Catalog**。
 
-已覆盖划词、流式 Markdown、多轮追问、回到原文、自动最近记录、主动收藏、中英文切换、Provider 管理、可选网页权限和首次引导。
+已覆盖划词、流式 Markdown、多轮追问、回到原文、自动最近记录、主动收藏、中英文切换、25 个 Provider 预设、实时模型发现、可选网页权限和首次引导。
 
 后续只加入能够降低摩擦、且不会创造新工作流的小功能。完整规划见[路线图](docs/ROADMAP.md)。
 

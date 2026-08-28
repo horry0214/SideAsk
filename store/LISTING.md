@@ -28,7 +28,7 @@ Why SideAsk:
 - Ask beside the page and stay in context.
 - Safe Markdown answers with code, lists, tables, quotes, and links.
 - Simple Recent, Favorites, and Settings views.
-- MiniMax CN, MiniMax Global, and custom OpenAI-compatible Providers.
+- 25 Provider presets including OpenAI, Anthropic, Gemini, OpenRouter, Vercel AI Gateway, Perplexity, Fireworks AI, DeepSeek, Qwen, local Ollama, and custom OpenAI-compatible endpoints.
 - Bring your own API key; no SideAsk account is required.
 - English and Simplified Chinese interface and answer language.
 - Open source under the MIT License.
@@ -39,7 +39,7 @@ Only text you deliberately select, a small amount of nearby readable context, a 
 
 ### Search terms
 
-AI reading assistant, explain selected text, reading, productivity, favorites, BYOK, local first, MiniMax, OpenAI compatible
+AI reading assistant, explain selected text, reading, productivity, favorites, BYOK, local first, OpenAI, Claude, Gemini, OpenRouter, Ollama
 
 ## 简体中文
 
@@ -58,7 +58,7 @@ SideAsk 可以帮你：
 - 在原文旁提问，保持阅读与思考上下文。
 - 安全显示 Markdown、代码、列表、表格、引用与链接。
 - 简洁的“最近、收藏、设置”三个页面。
-- 使用 MiniMax CN、MiniMax Global 或自定义 OpenAI-compatible Provider。
+- 25 个 Provider 预设，覆盖 OpenAI、Anthropic、Gemini、OpenRouter、Vercel AI Gateway、Perplexity、Fireworks AI、DeepSeek、Qwen、本机 Ollama 与自定义 OpenAI-compatible 地址。
 - 使用自己的 API Key，不需要 SideAsk 账户。
 - 在中文与英文界面、回答语言之间切换。
 - 以 MIT License 完全开源。
@@ -69,4 +69,4 @@ SideAsk 需要免费的本地 Gateway，以及一个受支持 Provider 的 API K
 
 ### 搜索词
 
-AI 阅读助手，划词解释，阅读，效率，收藏，BYOK，本地优先，MiniMax，OpenAI compatible
+AI 阅读助手，划词解释，阅读，效率，收藏，BYOK，本地优先，OpenAI，Claude，Gemini，OpenRouter，Ollama

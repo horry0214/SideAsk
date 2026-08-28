@@ -33,7 +33,7 @@
 - 轻量浮窗、快捷提问、多轮追问。
 - Generic DOM Context Extractor。
 - Anchor 恢复。
-- MiniMax / OpenAI-compatible 流式问答。
+- 25 个主流、路由、本地与自定义 Provider；支持 OpenAI-compatible 与 Anthropic 原生流式问答。
 - 自动最近记录与主动收藏。
 - “最近、收藏、设置”三入口。
 

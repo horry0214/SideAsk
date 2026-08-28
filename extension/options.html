@@ -62,7 +62,7 @@
           <div class="panel setting-card"><h2 data-i18n="settings.gateway">SideAsk Local Gateway</h2><p id="gateway-detail" data-i18n="settings.gatewayChecking">正在检查 127.0.0.1:8787…</p><button class="secondary-btn" id="refresh-gateway" data-i18n="settings.refresh">重新检查</button></div>
           <div class="panel setting-card"><h2 data-i18n="settings.privacy">隐私边界</h2><p data-i18n="settings.privacyBody">默认只发送选中文字、必要附近上下文和当前支线消息。密码、表单、编辑器草稿以及 URL query/hash 会被排除。</p></div>
           <div class="panel setting-card"><h2 data-i18n="settings.localData">本地数据</h2><p data-i18n="settings.simpleLocalDataBody">最近提问、收藏、来源位置和 Provider 配置保存在扩展私有 IndexedDB 中，不需要账户。</p></div>
-          <div class="panel setting-card"><h2 data-i18n="settings.version">版本</h2><p id="version-detail">SideAsk v0.4.0 Simple Core<br>Ask aside. Stay on track.</p></div>
+          <div class="panel setting-card"><h2 data-i18n="settings.version">版本</h2><p id="version-detail">SideAsk v0.5.0 Provider Catalog<br>Ask aside. Stay on track.</p></div>
         </div>
       </section>
     </main>
@@ -72,13 +72,13 @@
     <form method="dialog" id="provider-form">
       <div class="dialog-head"><div><h2 id="provider-dialog-title">添加 Provider</h2><p data-i18n="dialog.subtitle">Bring Your Own Key · 仅保存在本地</p></div><button class="icon-close" type="button" data-close-dialog aria-label="关闭" data-i18n-aria="dialog.close">×</button></div>
       <input type="hidden" id="provider-id">
-      <label><span data-i18n="dialog.providerType">Provider 类型</span><select id="provider-type" required><option value="minimax-cn">MiniMax CN</option><option value="minimax-global">MiniMax Global</option><option value="openai-compatible">Custom OpenAI-compatible</option></select></label>
+      <label><span data-i18n="dialog.providerType">Provider 类型</span><select id="provider-type" required><option value="minimax-cn">MiniMax CN</option></select></label>
       <label><span data-i18n="dialog.displayName">显示名称</span><input id="provider-name" maxlength="120" required placeholder="例如：我的 MiniMax" data-i18n-placeholder="dialog.namePlaceholder"></label>
       <label id="base-url-field">Base URL<input id="provider-base-url" type="url" maxlength="2000" placeholder="https://api.example.com/v1"></label>
       <label>API Key<input id="provider-api-key" type="password" maxlength="10000" autocomplete="off" placeholder="只保存在本地" data-i18n-placeholder="dialog.keyPlaceholder"></label>
-      <label>Model<input id="provider-model" maxlength="300" required placeholder="MiniMax-M2.7"></label>
+      <label>Model<input id="provider-model" list="provider-model-options" maxlength="300" required placeholder="MiniMax-M2.7"><datalist id="provider-model-options"></datalist></label>
       <div class="form-note" id="provider-form-note">MiniMax CN 默认使用 https://api.minimaxi.com/v1</div>
-      <div class="dialog-actions"><button class="secondary-btn" type="button" data-close-dialog data-i18n="dialog.cancel">取消</button><button class="primary-btn" id="save-provider" type="submit" data-i18n="dialog.save">保存 Provider</button></div>
+      <div class="dialog-actions dialog-actions-split"><button class="secondary-btn" id="discover-models" type="button" data-i18n="providers.discoverModels">检测连接并获取模型</button><span class="dialog-actions-spacer"></span><button class="secondary-btn" type="button" data-close-dialog data-i18n="dialog.cancel">取消</button><button class="primary-btn" id="save-provider" type="submit" data-i18n="dialog.save">保存 Provider</button></div>
     </form>
   </dialog>
 

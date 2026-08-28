@@ -5,11 +5,11 @@ import {
   providerHttpError,
 } from "./errors.mjs";
 
-function normalizedBaseUrl(value) {
+export function normalizedBaseUrl(value) {
   return String(value || "").trim().replace(/\/+$/, "");
 }
 
-function isSecureProviderUrl(value) {
+export function isSecureProviderUrl(value) {
   try {
     const parsed = new URL(value);
     if (parsed.protocol === "https:") return true;
@@ -90,6 +90,7 @@ export async function consumeOpenAISseStream(body, onDelta) {
 }
 
 export function createOpenAICompatibleProvider(definition) {
+  const apiKeyRequired = definition.apiKeyRequired !== false;
   const capabilities = Object.freeze({
     streaming: true,
     reasoning: Boolean(definition.capabilities?.reasoning),
@@ -119,14 +120,16 @@ export function createOpenAICompatibleProvider(definition) {
         displayName: String(input.displayName || definition.displayName).trim().slice(0, 120),
         apiKey: String(input.apiKey || "").trim().slice(0, 10_000),
         model: String(input.model || definition.defaultModel || "").trim().slice(0, 300),
-        baseUrl: normalizedBaseUrl(allowCustomBaseUrl ? input.baseUrl : definition.defaultBaseUrl),
+        baseUrl: normalizedBaseUrl(allowCustomBaseUrl
+          ? (input.baseUrl || definition.defaultBaseUrl)
+          : definition.defaultBaseUrl),
         endpoint: "",
       };
     },
 
     validateConfig(config) {
       const issues = [];
-      if (!String(config?.apiKey || "").trim()) issues.push("apiKey");
+      if (apiKeyRequired && !String(config?.apiKey || "").trim()) issues.push("apiKey");
       if (!String(config?.model || "").trim()) issues.push("model");
       const endpoint = config?.endpoint || config?.baseUrl;
       if (!isSecureProviderUrl(endpoint)) issues.push(config?.endpoint ? "endpoint" : "baseUrl");
@@ -145,8 +148,8 @@ export function createOpenAICompatibleProvider(definition) {
     },
 
     async testConnection(config, fetchImpl = globalThis.fetch) {
-      const validation = this.validateConfig(config);
-      if (!validation.ok) {
+      const endpoint = config?.endpoint || config?.baseUrl;
+      if ((apiKeyRequired && !String(config?.apiKey || "").trim()) || !isSecureProviderUrl(endpoint)) {
         throw new ProviderError(ProviderErrorCode.INVALID_PROVIDER_CONFIG, { providerId: definition.id });
       }
       const baseUrl = normalizedBaseUrl(config.baseUrl)
@@ -158,7 +161,10 @@ export function createOpenAICompatibleProvider(definition) {
       try {
         response = await fetchImpl(`${baseUrl}/models`, {
           method: "GET",
-          headers: { "Authorization": `Bearer ${config.apiKey}` },
+          headers: {
+            ...(config.apiKey ? { "Authorization": `Bearer ${config.apiKey}` } : {}),
+            ...(definition.requestHeaders || {}),
+          },
           signal: AbortSignal.timeout(15_000),
         });
       } catch (error) {
@@ -184,8 +190,9 @@ export function createOpenAICompatibleProvider(definition) {
         ok: true,
         providerId: definition.id,
         model: config.model,
-        modelAvailable: models.length ? models.includes(config.model) : null,
+        modelAvailable: config.model && models.length ? models.includes(config.model) : null,
         discoveredModels: models.length,
+        models,
       };
     },
 
@@ -218,8 +225,9 @@ export function createOpenAICompatibleProvider(definition) {
         response = await fetchImpl(endpoint, {
           method: "POST",
           headers: {
-            "Authorization": `Bearer ${config.apiKey}`,
+            ...(config.apiKey ? { "Authorization": `Bearer ${config.apiKey}` } : {}),
             "Content-Type": "application/json",
+            ...(definition.requestHeaders || {}),
           },
           body: JSON.stringify(requestBody),
           signal: request.signal,

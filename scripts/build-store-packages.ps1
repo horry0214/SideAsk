@@ -43,6 +43,8 @@ try {
   $gatewayStage = Join-Path $stageRoot 'gateway'
   New-Item -ItemType Directory -Force -Path $gatewayStage | Out-Null
   Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'server') -Destination (Join-Path $gatewayStage 'server') -Recurse
+  New-Item -ItemType Directory -Force -Path (Join-Path $gatewayStage 'extension') | Out-Null
+  Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'extension\provider-catalog.js') -Destination (Join-Path $gatewayStage 'extension\provider-catalog.js')
   $privateEnv = Join-Path $gatewayStage 'server\.env'
   if (Test-Path -LiteralPath $privateEnv) { Remove-Item -LiteralPath $privateEnv -Force }
   Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'package.json') -Destination (Join-Path $gatewayStage 'package.json')

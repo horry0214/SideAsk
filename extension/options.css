@@ -111,7 +111,8 @@ dialog::backdrop{background:rgba(17,24,39,.38)}
 #provider-form input,#provider-form select{width:100%;border:1px solid var(--border);border-radius:10px;padding:9px 10px;outline:0;background:#fff;color:var(--ink);font-size:12px}
 #provider-form input:focus,#provider-form select:focus{border-color:#9690ff;box-shadow:0 0 0 3px rgba(98,91,246,.09)}
 .form-note{padding:10px;border-radius:9px;background:#f9fafb;color:var(--muted);font-size:10px;line-height:1.5}
-.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px;flex-wrap:wrap}
+.dialog-actions-split{align-items:center}.dialog-actions-spacer{flex:1 1 16px}
 .toast{position:fixed;right:24px;bottom:24px;max-width:360px;padding:11px 14px;border-radius:11px;background:#111827;color:#fff;box-shadow:0 12px 40px rgba(17,24,39,.2);font-size:11px;opacity:0;pointer-events:none;transform:translateY(20px);transition:.18s ease}
 .toast.show{opacity:1;transform:translateY(0)}
 .toast.error{background:#991b1b}

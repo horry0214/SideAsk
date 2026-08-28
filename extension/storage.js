@@ -1,3 +1,5 @@
+import { getProviderProfile, isKnownProvider } from "./provider-catalog.js";
+
 const DB_NAME = "sideask";
 const DB_VERSION = 1;
 
@@ -12,7 +14,6 @@ const STORE = Object.freeze({
 });
 
 const BRANCH_STATUSES = new Set(["active", "understood", "unclear", "review"]);
-const PROVIDER_TYPES = new Set(["minimax-cn", "minimax-global", "openai-compatible"]);
 
 function requestValue(request) {
   return new Promise((resolve, reject) => {
@@ -261,25 +262,22 @@ export class SideAskStorage {
     const now = Date.now();
     const existing = input?.id ? await this.getProvider(input.id) : null;
     const type = cleanText(input?.type || existing?.type, 80);
-    if (!PROVIDER_TYPES.has(type)) throw new Error("不支持的 Provider 类型。");
+    if (!isKnownProvider(type)) throw new Error("不支持的 Provider 类型。");
+    const profile = getProviderProfile(type);
     const apiKey = cleanText(input?.apiKey, 10_000) || existing?.apiKey || "";
     const model = cleanText(input?.model || existing?.model, 300);
-    const baseUrl = cleanText(input?.baseUrl || existing?.baseUrl, 2000).replace(/\/+$/, "");
-    if (!apiKey) throw new Error("请填写 API Key。");
+    const baseUrl = cleanText(input?.baseUrl || existing?.baseUrl || profile.defaultBaseUrl, 2000).replace(/\/+$/, "");
+    if (profile.apiKeyRequired && !apiKey) throw new Error("请填写 API Key。");
     if (!model) throw new Error("请填写模型名称。");
-    if (type === "openai-compatible" && !isSecureProviderUrl(baseUrl)) {
+    if (!isSecureProviderUrl(baseUrl)) {
       throw new Error("Provider Base URL 必须使用 HTTPS；仅 localhost/127.0.0.1 可使用 HTTP。");
     }
 
     const provider = {
       id: existing?.id || crypto.randomUUID(),
       type,
-      displayName: cleanText(input?.displayName || existing?.displayName, 120) || ({
-        "minimax-cn": "MiniMax CN",
-        "minimax-global": "MiniMax Global",
-        "openai-compatible": "OpenAI-compatible",
-      })[type],
-      baseUrl: type === "openai-compatible" ? baseUrl : "",
+      displayName: cleanText(input?.displayName || existing?.displayName, 120) || profile.displayName,
+      baseUrl,
       apiKey,
       model,
       createdAt: existing?.createdAt || now,
@@ -292,7 +290,7 @@ export class SideAskStorage {
     const defaultSetting = await this.getSetting("defaultProviderId");
     if (!defaultSetting?.value) await this.setDefaultProvider(provider.id);
     const { apiKey: _secret, ...safe } = provider;
-    return { ...safe, apiKeyConfigured: true };
+    return { ...safe, apiKeyConfigured: Boolean(apiKey) };
   }
 
   async deleteProvider(id) {

@@ -1,26 +1,41 @@
 # Provider Architecture
 
-## 目标
+## Design
 
-Provider 层把供应商差异限制在注册项和 adapter 内。主业务只处理 normalized request、delta text 和 normalized error。
+SideAsk follows the useful part of the [Hermes Agent provider design](https://github.com/NousResearch/hermes-agent/blob/main/website/docs/developer-guide/model-provider-plugin.md): Provider metadata is declarative, while transport-specific behavior stays in a small adapter layer.
 
 ```text
-Provider Registry
-├── Auth/config validation
-├── Model/config defaults
-├── Capability declaration
-├── Request normalization
-├── Stream normalization
-└── Error normalization
+extension/provider-catalog.js
+  └─ id · display name · protocol · default Base URL · model suggestions · auth policy
+       └─ Provider Registry
+            ├─ OpenAI-compatible adapter
+            └─ Anthropic Messages adapter
 ```
 
-## 当前接口
+The extension settings UI, IndexedDB validation, Gateway registry, environment-variable fallback, and store package all use the same catalog. Adding another compatible service normally requires one profile rather than UI, storage, and server branches.
+
+## Included profiles
+
+| Group | Profiles |
+| --- | --- |
+| Global first-party | MiniMax Global, OpenAI, Anthropic, Google Gemini, xAI, Alibaba Qwen Global, Z.AI |
+| China and Asia | MiniMax CN, DeepSeek, Alibaba Qwen China, BigModel, SiliconFlow |
+| Routers | OpenRouter, Vercel AI Gateway, Perplexity, Hugging Face Inference Providers |
+| Inference | Groq, Fireworks AI, Mistral AI, Together AI, Cerebras, NVIDIA NIM |
+| Local | Ollama, LM Studio |
+| Custom | Any OpenAI-compatible Base URL |
+
+The catalog contains 25 profiles. All Base URLs can be overridden so users can select a region, workspace endpoint, proxy, or self-hosted deployment without editing code. Only HTTPS is accepted, except loopback HTTP for local services.
+
+Official compatibility references include [Google Gemini](https://ai.google.dev/gemini-api/docs/partner-integration), [OpenRouter](https://openrouter.ai/docs/quickstart), [Vercel AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis), [Perplexity](https://docs.perplexity.ai/docs/sonar/openai-compatibility), [Fireworks AI](https://docs.fireworks.ai/tools-sdks/openai-compatibility), [DeepSeek](https://api-docs.deepseek.com/), [Groq](https://console.groq.com/docs/openai), [Together AI](https://docs.together.ai/docs/inference/openai-compatibility), [Cerebras](https://inference-docs.cerebras.ai/resources/openai), [Hugging Face](https://huggingface.co/docs/inference-providers/en/index), [Alibaba Model Studio](https://help.aliyun.com/en/model-studio/compatibility-of-openai-with-dashscope), [Z.AI](https://docs.z.ai/guides/develop/http/introduction), and [NVIDIA NIM](https://docs.api.nvidia.com/nim/reference/llm-apis).
+
+## Provider contract
 
 ```ts
 interface Provider {
   id: string
   displayName: string
-  apiMode: "openai-compatible" | "anthropic" | "gemini" | "ollama" | "custom"
+  apiMode: "openai-compatible" | "anthropic"
   capabilities: {
     streaming: boolean
     reasoning?: boolean
@@ -29,23 +44,23 @@ interface Provider {
     modelDiscovery?: boolean
   }
   validateConfig(config): ValidationResult
+  testConnection(config): Promise<ModelDiscoveryResult>
   chatStream(request, config, callbacks, fetchImpl?): Promise<void>
 }
 ```
 
-`callbacks.onReady()` 只在上游确认可读后触发，因此 gateway 可以在写入 HTTP 200 之前返回正确的 normalized error。
+`callbacks.onReady()` fires only after readable answer text arrives. This lets the Gateway return a normalized error before committing an HTTP 200 response.
 
-连接测试使用 OpenAI-compatible `GET /v1/models`，不会为了测试产生聊天请求。MiniMax CN 与 Global 均提供该接口：[CN 文档](https://platform.minimaxi.com/docs/api-reference/models/openai/list-models)、[Global 文档](https://platform.minimax.io/docs/api-reference/models/openai/list-models)。
+## Model discovery
 
-## 本轮注册项
+The Provider dialog can test an unsaved draft and fetch a live model list. The test uses a model-list endpoint and does not create a chat completion:
 
-- `minimax-cn`：默认 `https://api.minimaxi.com/v1`，兼容 Token Plan Key。
-- `minimax-global`：默认 `https://api.minimax.io/v1`。
-- `openai-compatible`：用户提供 Display Name、Base URL、API Key、Model。
+- OpenAI-compatible profiles: `GET {baseUrl}/models`
+- Anthropic: `GET {baseUrl}/models?limit=100` with `x-api-key` and `anthropic-version`
 
-MiniMax 继续兼容原有 `MINIMAX_*` 环境变量。管理页已支持 Add/Edit/Delete/Test/Default/Model；配置保存在扩展私有 IndexedDB，由 Service Worker 在请求时发送给 loopback gateway。若浏览器没有默认 Provider，Gateway 回退到 `.env`。
+If a Provider does not expose model discovery, the user can still enter a model ID manually. Catalog suggestions are only onboarding defaults; the live Provider response remains authoritative.
 
-## Normalized request
+## Normalized request and stream
 
 ```ts
 interface NormalizedChatRequest {
@@ -58,32 +73,12 @@ interface NormalizedChatRequest {
 }
 ```
 
-Context Builder 在 request 进入 Provider 前完成。Provider 不读取 DOM、历史存储或 Anchor。
+The OpenAI-compatible parser forwards answer content from `choices[0].delta.content` and ignores reasoning traces. The Anthropic adapter separates system instructions from conversation messages and forwards only `content_block_delta` events whose delta type is `text_delta`.
 
-## Stream normalization
+## Configuration and compatibility
 
-OpenAI-compatible parser 接受任意 chunk 边界，只向 UI 转发 `choices[0].delta.content`（以及兼容的文本 content part），忽略 reasoning content 和未知 event。`[DONE]` 终止事件不进入 UI。
+Browser profiles are stored in extension-private IndexedDB. The Service Worker adds the selected profile only when calling the loopback Gateway; API keys never enter the page content script.
 
-## Error normalization
+When no browser profile is configured, the Gateway uses `.env`. Every catalog profile accepts the generic `SIDEASK_API_KEY`, `SIDEASK_MODEL`, and `SIDEASK_BASE_URL` variables, plus profile-specific names derived from its ID, such as `ANTHROPIC_API_KEY`. MiniMax and Custom OpenAI-compatible legacy variables remain supported.
 
-公开错误码：
-
-```text
-invalid_api_key
-model_not_found
-rate_limited
-quota_exhausted
-provider_unreachable
-network_failure
-invalid_provider_config
-invalid_provider_response
-request_aborted
-```
-
-UI 只接收短、可执行的中文提示。日志记录 provider id、HTTP status 与 error code，但不记录 API Key、Authorization header、完整请求或未经清理的上游正文。
-
-## 下一步
-
-1. 根据真实用户需求增加 Anthropic、Gemini、Ollama；不让 Core 出现供应商条件分支。
-2. 为支持的 Provider 增加可选模型发现和更精确的 capability metadata。
-3. 评估 OS credential store / native host，进一步强化本地 Key at-rest 保护。
+Local profiles do not require an API key. Remote profiles do. Provider errors are normalized and logs never contain credentials, Authorization headers, prompts, or raw upstream error bodies.
