@@ -131,7 +131,7 @@
   },
   "scripts": {
     "check": "node --check src/extension.js && node --check src/context.js && node --check src/gateway.js && node --check src/provider-catalog.js && node --check media/main.js && node --check media/markdown.js && node --check scripts/prepare-package.mjs",
-    "test": "npm run check && node --test --test-isolation=none test/*.test.js",
+    "test": "npm run check && node test/run.cjs",
     "prepackage": "node scripts/prepare-package.mjs",
     "package": "vsce package --no-dependencies --out ../dist/sideask-vscode-0.6.0.vsix"
   },
