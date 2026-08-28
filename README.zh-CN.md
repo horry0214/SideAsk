@@ -13,6 +13,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-625BF6.svg" alt="MIT License"></a>
+  <a href="https://github.com/horry0214/sideask/releases/latest"><img src="https://img.shields.io/github/v/release/horry0214/sideask?color=625BF6" alt="最新版本"></a>
   <img src="https://img.shields.io/badge/Chrome%20%2F%20Edge-Manifest%20V3-7C6CFF.svg" alt="Chrome and Edge Manifest V3">
   <img src="https://img.shields.io/badge/local--first-BYOK-22C55E.svg" alt="Local-first and BYOK">
 </p>
@@ -66,6 +67,12 @@ npm start
 只预览管理页时可运行 <code>npm run preview</code>，再打开 <code>http://127.0.0.1:8788/preview/</code>。预览数据完全隔离，不会调用真实 Provider。
 
 Chrome、Edge、Gateway、商店文案、隐私声明与审核说明都整理在[商店提交包](store/README.md)中。
+
+## 更新
+
+商店安装会在新版审核发布后自动更新；Git Clone 与“加载已解压扩展”的用户需要拉取或覆盖文件、重启 Gateway，并在浏览器扩展管理页点击“重新加载”。应尽量保持开发版扩展的原路径，以便继续使用同一个扩展 ID 对应的本地数据。
+
+请阅读完整的[中文更新指南](UPDATING.zh-CN.md)，也可以切换到[英文版](UPDATING.md)。只想接收正式版本通知时，可在 GitHub 选择 **Watch → Custom → Releases**。
 
 ## 使用自己的模型
 

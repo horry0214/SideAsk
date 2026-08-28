@@ -13,6 +13,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-625BF6.svg" alt="MIT License"></a>
+  <a href="https://github.com/horry0214/sideask/releases/latest"><img src="https://img.shields.io/github/v/release/horry0214/sideask?color=625BF6" alt="Latest release"></a>
   <img src="https://img.shields.io/badge/Chrome%20%2F%20Edge-Manifest%20V3-7C6CFF.svg" alt="Chrome and Edge Manifest V3">
   <img src="https://img.shields.io/badge/local--first-BYOK-22C55E.svg" alt="Local-first and BYOK">
   <img src="https://img.shields.io/badge/dependencies-zero-111827.svg" alt="Zero runtime dependencies">
@@ -67,6 +68,12 @@ When the terminal prints <code>SideAsk Local Gateway running: http://127.0.0.1:8
 For a dashboard-only demo, run <code>npm run preview</code> and open <code>http://127.0.0.1:8788/preview/</code>. Preview data is isolated and never calls a real Provider.
 
 Store-ready Chrome, Edge, Gateway, listing, privacy, and reviewer materials are documented in the [store submission kit](store/README.md).
+
+## Updating
+
+Store installations update automatically after a reviewed release is published. Git clone and unpacked installations require a pull or file replacement, a Gateway restart, and **Reload** on the browser extensions page. Keep an unpacked extension at the same path whenever possible so its local storage remains attached to the same extension ID.
+
+Follow the complete [English update guide](UPDATING.md), or open the [Chinese guide](UPDATING.zh-CN.md). To hear only about published versions, choose **Watch → Custom → Releases** on GitHub.
 
 ## Bring your own model
 
