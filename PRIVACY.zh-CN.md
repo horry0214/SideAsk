@@ -1,6 +1,6 @@
 # SideAsk 隐私说明
 
-SideAsk v0.3.1 是 local-first 浏览器扩展，没有账户、遥测、广告 SDK 或由 SideAsk 运营的云数据库。
+SideAsk v0.4.0 是 local-first 浏览器扩展，没有账户、遥测、广告 SDK 或由 SideAsk 运营的云数据库。
 
 ## 同意与网页访问
 
@@ -9,8 +9,8 @@ SideAsk v0.3.1 是 local-first 浏览器扩展，没有账户、遥测、广告 
 ## 本地保存
 
 - Provider 配置与 API Key。
-- Learning Session / Branch、消息、Anchor。
-- Knowledge Item、Weakness Item 和理解状态。
+- 最近支线提问、消息与来源 Anchor。
+- 用户主动选择的收藏。
 
 这些数据保存在浏览器扩展私有 IndexedDB。旧 `sideaskHistory` 只用于一次性非破坏迁移。
 
@@ -40,4 +40,4 @@ Provider 可在管理页逐条删除；网页访问权可以在首次使用引�
 
 ## 有限使用
 
-SideAsk 仅将网页内容与其他用户数据用于商店介绍所说明的支线提问、返回原文与本地学习记录功能；不会出售数据、用于广告，也不会允许 SideAsk 维护者读取这些内容。SideAsk 对浏览器 API 信息的使用遵守 Chrome Web Store User Data Policy（包括 Limited Use 要求）。
+SideAsk 仅将网页内容与其他用户数据用于商店介绍所说明的支线提问、返回原文、最近记录与收藏功能；不会出售数据、用于广告，也不会允许 SideAsk 维护者读取这些内容。SideAsk 对浏览器 API 信息的使用遵守 Chrome Web Store User Data Policy（包括 Limited Use 要求）。

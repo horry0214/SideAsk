@@ -15,19 +15,19 @@
 
 ### Short description
 
-Ask AI about selected text without losing your place. Local-first, BYOK, and built for learning.
+Ask AI about selected text without losing your place. Simple, local-first, and BYOK.
 
 ### Full description
 
 SideAsk is an open-source AI side-question layer for reading, learning, writing, and coding. Select a term or passage on a regular web page, choose “Explain,” and a focused answer opens beside the source—without sending you into a new tab or losing your train of thought.
 
-Every question becomes a local Learning Branch with its source, nearby context, follow-ups, and understanding state. Mark an answer “Got it” to consolidate it into your knowledge base, or “Still fuzzy” to keep it available for review. A return-to-source anchor brings you back to the passage that started the question.
+Questions are saved locally with their source, nearby context, follow-ups, and return anchor. There is nothing to organize: recent questions appear automatically, and you favorite only the answers worth revisiting.
 
 Why SideAsk:
 
 - Ask beside the page and stay in context.
 - Safe Markdown answers with code, lists, tables, quotes, and links.
-- Local dashboard for branches, knowledge, and weak spots.
+- Simple Recent, Favorites, and Settings views.
 - MiniMax CN, MiniMax Global, and custom OpenAI-compatible Providers.
 - Bring your own API key; no SideAsk account is required.
 - English and Simplified Chinese interface and answer language.
@@ -35,11 +35,11 @@ Why SideAsk:
 
 SideAsk requires the free local Gateway and an API key for a supported Provider. The first-run guide checks the Gateway, opens Provider setup, explains data handling, requests optional website access, and includes a real selection practice page.
 
-Only text you deliberately select, a small amount of nearby readable context, a sanitized source URL, and the active branch messages are sent through the Gateway to the Provider you choose. Passwords, form fields, editor drafts, unrelated history, telemetry, and advertising data are excluded. Provider keys and learning history remain in extension-private local storage.
+Only text you deliberately select, a small amount of nearby readable context, a sanitized source URL, and the active side-question messages are sent through the Gateway to the Provider you choose. Passwords, form fields, editor drafts, unrelated history, telemetry, and advertising data are excluded. Provider keys, recent questions, and favorites remain in extension-private local storage.
 
 ### Search terms
 
-AI reading assistant, explain selected text, learning, study, knowledge base, BYOK, local first, MiniMax, OpenAI compatible
+AI reading assistant, explain selected text, reading, productivity, favorites, BYOK, local first, MiniMax, OpenAI compatible
 
 ## 简体中文
 
@@ -51,13 +51,13 @@ AI reading assistant, explain selected text, learning, study, knowledge base, BY
 
 SideAsk 是一个开源的 AI 支线提问层，适合阅读、学习、写作与编程。你只需在普通网页中选中术语或段落并点击“解释”，答案就会在原文旁展开，不必跳到新标签页，也不会打断当前思路。
 
-每次提问都会成为一条本地 Learning Branch，保留来源、必要附近上下文、追问和理解状态。点击“我懂了”可将解释沉淀到知识库；点击“还模糊”则会留下复习线索。返回原文 Anchor 能把你带回最初触发问题的位置。
+提问会连同来源、必要附近上下文、追问和返回原文 Anchor 自动保存在本地。你不需要整理：最近问题自然出现，只有真正值得以后再看的回答才需要点一下收藏。
 
 SideAsk 可以帮你：
 
 - 在原文旁提问，保持阅读与思考上下文。
 - 安全显示 Markdown、代码、列表、表格、引用与链接。
-- 在本地管理支线、知识条目和薄弱点。
+- 简洁的“最近、收藏、设置”三个页面。
 - 使用 MiniMax CN、MiniMax Global 或自定义 OpenAI-compatible Provider。
 - 使用自己的 API Key，不需要 SideAsk 账户。
 - 在中文与英文界面、回答语言之间切换。
@@ -69,4 +69,4 @@ SideAsk 需要免费的本地 Gateway，以及一个受支持 Provider 的 API K
 
 ### 搜索词
 
-AI 阅读助手，划词解释，学习，知识库，BYOK，本地优先，MiniMax，OpenAI compatible
+AI 阅读助手，划词解释，阅读，效率，收藏，BYOK，本地优先，MiniMax，OpenAI compatible

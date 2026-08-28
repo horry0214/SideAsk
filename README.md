@@ -4,7 +4,7 @@
 
 <p align="center">
   <strong>Ask aside. Stay on track.</strong><br>
-  A local-first AI side-question layer for reading, learning, and thinking without losing your place.
+  A simple, local-first AI side-question layer for the web.
 </p>
 
 <p align="center">
@@ -19,179 +19,112 @@
 </p>
 
 <p align="center">
-  <img src="assets/readme/sideask-demo.gif" alt="23-second SideAsk walkthrough: ask beside a page, preserve learning branches, build knowledge, configure a provider, and switch between English and Chinese" width="100%">
-  <br><sub>A 23-second walkthrough captured from the real MVP interface.</sub>
+  <img src="assets/readme/simple-core-en.png" alt="SideAsk Simple Core with Recent, Favorites, and Settings" width="100%">
+  <br><sub>SideAsk v0.4 Simple Core · real interactive preview data</sub>
 </p>
 
-## A side question, not a context switch
+## One small question should stay small
 
-You are reading documentation, a paper, GitHub, or a long ChatGPT answer. One term blocks you. Opening another tab or chat breaks the flow—and by the time the detour ends, the original thread is gone.
+You are reading documentation, a paper, GitHub, or a long AI answer. One phrase is unclear. Opening another tab or chat turns a tiny detour into a context switch.
 
-SideAsk keeps the detour beside the page:
+SideAsk keeps the question beside the source:
 
-```text
-Read → Select what is unclear → Ask in SideAsk → Understand → Return → Remember
-```
+~~~text
+Read → Select → Ask → Follow up → Return
+                         └─ Favorite only if useful later
+~~~
 
-Select 2–500 characters, click **✦ Explain**, and get a context-aware answer in a quiet floating panel. Follow up without leaving the page, mark the concept as understood or fuzzy, then jump back to the source.
+Select 2–500 characters and choose **✦ Explain**. SideAsk sends only the minimum nearby context needed, streams a safe Markdown answer in a floating panel, and lets you continue without leaving the page.
 
-## See where SideAsk fits
+## Simple Core
 
-<p align="center">
-  <img src="assets/readme/sideask-use-cases.png" alt="Six SideAsk use cases: technical documentation, long AI answers, papers and formulas, code and GitHub, learning branches, and knowledge review" width="100%">
-</p>
+- **Ask beside the page** — explain, request an example, ask why it matters, or go deeper.
+- **Continue naturally** — follow up in the same small panel and return to the original passage.
+- **Recent is automatic** — questions are stored locally with their source and return anchor; no organizing required.
+- **Favorites are intentional** — keep only answers worth revisiting.
+- **Settings stay out of the way** — Provider, Gateway, language, privacy, and setup live in one place.
 
-Use it when a small question should stay small: decode an unfamiliar API while reading docs, unpack a formula in a paper, inspect a symbol on GitHub, clarify one paragraph in a long AI answer, or preserve a learning detour for later review.
-
-## The MVP, from question to memory
-
-<table>
-  <tr>
-    <td width="50%"><strong>1 · Ask beside the source</strong><br><sub>Select a phrase, get a safe Markdown answer, and follow up without leaving the page.</sub></td>
-    <td width="50%"><strong>2 · Keep the learning trail</strong><br><sub>Every side question retains its source, branch, state, and return anchor.</sub></td>
-  </tr>
-  <tr>
-    <td><img src="assets/readme/sideask-in-action-en.png" alt="SideAsk floating panel rendering a Markdown explanation in English"></td>
-    <td><img src="assets/readme/dashboard-en.png" alt="SideAsk English learning dashboard"></td>
-  </tr>
-  <tr>
-    <td width="50%"><strong>3 · Turn branches into knowledge</strong><br><sub>Browse concepts that are understood and the connections preserved around them.</sub></td>
-    <td width="50%"><strong>4 · Bring your own model</strong><br><sub>Configure MiniMax or an OpenAI-compatible endpoint; keys stay in extension-private storage.</sub></td>
-  </tr>
-  <tr>
-    <td><img src="assets/readme/knowledge-base-en.png" alt="SideAsk English knowledge base"></td>
-    <td><img src="assets/readme/provider-dialog-en.png" alt="SideAsk English provider configuration dialog"></td>
-  </tr>
-</table>
-
-<p align="center">
-  <strong>Still fuzzy becomes a review signal, not a forgotten chat.</strong><br>
-  <img src="assets/readme/weakness-book-en.png" alt="SideAsk English weakness book and review queue" width="100%">
-</p>
-
-<p><sub>Captured from the current MVP interface. Example answers and learning records use isolated demo data.</sub></p>
-
-## Why SideAsk is different
-
-| Ordinary selection tools | SideAsk |
-| --- | --- |
-| Explain isolated text | Uses the selected text, nearby readable context, source, and branch history |
-| Save flat chat logs | Stores a structured **Learning Branch** with its source anchor |
-| Forget the detour | Turns “Got it” and “Still fuzzy” into local knowledge signals |
-| Lock you to one vendor | Supports MiniMax and custom OpenAI-compatible providers with BYOK |
-| Pull you into another app | Keeps the question beside the content and restores your reading position |
-
-## MVP highlights
-
-- **Context-aware side questions** — selection, nearby paragraphs, source metadata, and recent branch messages.
-- **Streaming Markdown answers** — safe headings, lists, tables, links, quotes, inline code, and fenced code blocks.
-- **English / 简体中文 UI** — one persistent switch keeps the dashboard and floating panel in sync; answer language follows the selected UI language.
-- **Guided first run** — checks the local Gateway and Provider, explains data flow, requests optional website access, and opens a real selection practice page.
-- **Multi-turn follow-ups** — continue the branch in the same lightweight panel.
-- **Return-to-source anchors** — live DOM range → selector + text → text lookup → scroll fallback.
-- **Learning Branches** — preserve where a question came from, not just what was asked.
-- **Knowledge and weakness signals** — “Got it” consolidates knowledge; “Still fuzzy” records a review candidate.
-- **Provider freedom** — MiniMax CN, MiniMax Global, and any compatible OpenAI-style endpoint.
-- **Local-first privacy** — history, provider settings, and learning state stay in extension-private IndexedDB.
-- **No build step** — vanilla JavaScript/CSS and a zero-dependency Node.js local gateway.
-
-<details>
-<summary><strong>Explore the complete product vision</strong></summary>
-<br>
-<img src="assets/sideask-product-board.png" alt="SideAsk product, brand, knowledge, provider, and roadmap board" width="100%">
-<p><em>The board includes current MVP surfaces and longer-term product direction.</em></p>
-</details>
+The main interface has only three destinations: **Recent**, **Favorites**, and **Settings**. There is no SideAsk account, cloud database, knowledge graph, review queue, or required sync.
 
 ## Quick start
 
-Requirements: **Node.js 20+** and Chrome or Edge. The project has no package dependencies, so there is no install step.
+Requirements: **Node.js 20+** and Chrome or Edge. The project has no package dependencies.
 
-```bash
+~~~bash
 git clone https://github.com/horry0214/sideask.git
 cd sideask
 npm start
-```
+~~~
 
-When the terminal prints `SideAsk Local Gateway running: http://127.0.0.1:8787`:
+When the terminal prints <code>SideAsk Local Gateway running: http://127.0.0.1:8787</code>:
 
-1. Open `chrome://extensions/` or `edge://extensions/`.
+1. Open <code>chrome://extensions/</code> or <code>edge://extensions/</code>.
 2. Enable **Developer mode**.
-3. Choose **Load unpacked** and select the repository's `extension/` folder.
-4. SideAsk opens its setup guide automatically. Review the data disclosure, confirm the Gateway, and add a default Provider.
-5. Choose **Enable on websites** when you are ready; broad HTTP/HTTPS access is optional and can be revoked from the same guide.
-6. Open the bundled practice page, select **phi node**, and click **✦ Explain** to complete the real first-use flow.
+3. Choose **Load unpacked** and select the repository's <code>extension/</code> folder.
+4. Follow the first-run guide to review the data disclosure, confirm the Gateway, and add a Provider.
+5. Enable optional website access when ready, open the practice page, select **phi node**, and choose **✦ Explain**.
 
-Store-ready Chrome, Edge, Gateway, images, listing copy, privacy declarations, and reviewer notes are documented in the [store submission kit](store/README.md). Until the public listings are approved, matching ZIP packages are published with each GitHub release.
+For a dashboard-only demo, run <code>npm run preview</code> and open <code>http://127.0.0.1:8788/preview/</code>. Preview data is isolated and never calls a real Provider.
 
-For a dashboard-only demo, run `npm run preview` and open `http://127.0.0.1:8788/preview/`. Preview data is isolated and does not call a real provider.
+Store-ready Chrome, Edge, Gateway, listing, privacy, and reviewer materials are documented in the [store submission kit](store/README.md).
 
 ## Bring your own model
 
 | Provider | Status | Default endpoint |
 | --- | --- | --- |
-| MiniMax CN | Supported, including Token Plan keys | `https://api.minimaxi.com/v1` |
-| MiniMax Global | Supported | `https://api.minimax.io/v1` |
+| MiniMax CN | Supported, including Token Plan keys | <code>https://api.minimaxi.com/v1</code> |
+| MiniMax Global | Supported | <code>https://api.minimax.io/v1</code> |
 | Custom OpenAI-compatible | Supported | You provide the Base URL |
 
-Provider keys are stored in extension-private IndexedDB and are attached by the service worker only when calling the loopback gateway. They are not exposed to the page content script, logs, or repository.
+Provider keys stay in extension-private IndexedDB and are attached by the service worker only when calling the loopback Gateway. They are not exposed to page scripts, logs, or the repository.
 
-See [Provider architecture](docs/PROVIDERS.md) for the registry, request normalization, streaming, and error model.
+See [Provider architecture](docs/PROVIDERS.md) for request normalization, streaming, and the error model.
+
+## Privacy by design
+
+SideAsk sends only:
+
+- text you deliberately select;
+- the current readable block and small neighboring snippets;
+- recent messages in the active side question;
+- a source URL stripped of username, password, query, and hash.
+
+Password fields, forms, editors, <code>contenteditable</code>, explicitly sensitive nodes, scripts, and styles are excluded. The Gateway binds to loopback only. Recent questions, favorites, source anchors, and Provider settings stay local.
+
+Read the full [Privacy Policy](PRIVACY.md) and [Security Policy](SECURITY.md).
 
 ## Architecture
 
-```text
+~~~text
 Web page / ChatGPT
   └─ Selection + minimal context + source anchor
        └─ SideAsk floating panel
             └─ Extension service worker
                  └─ Local Gateway · 127.0.0.1:8787
-                      └─ Provider registry + stream/error normalization
-                           └─ Your configured AI provider
+                      └─ Your configured AI Provider
 
 Extension-private IndexedDB
-  └─ providers · sessions · branches · knowledge · weaknesses · reviews
-```
+  └─ providers · recent side questions · favorites · source anchors
+~~~
 
-SideAsk intentionally stays small today. Working behavior has priority over framework purity; the codebase will only move toward a heavier TypeScript/React structure when scale justifies it.
-
-## Privacy by design
-
-SideAsk sends only the minimum useful context:
-
-- the text you deliberately selected;
-- the current readable block and small neighboring snippets;
-- recent messages in the active side branch;
-- a source URL stripped of username, password, query, and hash.
-
-Password fields, form controls, editors, `contenteditable`, explicitly private nodes, scripts, and styles are excluded. The gateway binds to loopback only and rejects ordinary web-page POST origins.
-
-Read the full [Privacy Policy](PRIVACY.md) and [Security Policy](SECURITY.md).
+SideAsk uses vanilla JavaScript and CSS with a zero-dependency Node.js Gateway. Existing v0.3 data is preserved when upgrading; the v0.4 interface simply stops asking users to maintain knowledge and weakness states.
 
 ## Project status
 
-Current release: **v0.3.0 MVP**.
+Current release candidate: **v0.4.0 Simple Core**.
 
-The working MVP covers the selection flow, streaming answers, Markdown rendering, provider management, local Learning Branch storage, basic knowledge consolidation, weakness tracking, history, and anchor restoration.
+The working release covers selection, streaming Markdown answers, multi-turn follow-ups, return-to-source anchors, automatic recent history, explicit favorites, bilingual UI, Provider management, optional website permission, and first-run setup.
 
-Next priorities:
-
-1. Harden ChatGPT and PDF/document adapters.
-2. Improve cross-page anchor recovery and keyboard shortcuts.
-3. Add a small, transparent review loop.
-4. Expand providers only when each integration can be tested well.
-
-See the [roadmap](docs/ROADMAP.md) and [architecture](docs/ARCHITECTURE.md).
+Small improvements can be added later when they reduce friction without adding a new workflow. See the [roadmap](docs/ROADMAP.md).
 
 ## Development
 
-```bash
+~~~bash
 npm test
 npm run check
-```
+~~~
 
-`npm run check` validates JavaScript syntax, manifest paths, documentation links, credential leaks, Markdown safety, provider behavior, migrations, and the learning model.
-
-Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report vulnerabilities through the process in [SECURITY.md](SECURITY.md).
+Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report vulnerabilities through the [Security Policy](SECURITY.md).
 
 ## License
 

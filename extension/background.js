@@ -192,6 +192,8 @@ async function handleExtensionMessage(message) {
       return { ok: true, data: await sideAskStorage.saveBranch(message.branch) };
     case "sideask-branch-status":
       return { ok: true, data: await sideAskStorage.updateBranchStatus(message.branchId, message.status) };
+    case "sideask-branch-favorite":
+      return { ok: true, data: await sideAskStorage.setBranchFavorite(message.branchId, message.favorite) };
     case "sideask-branches-list":
       return { ok: true, data: await sideAskStorage.listBranches(message.query || {}) };
     case "sideask-knowledge-list":

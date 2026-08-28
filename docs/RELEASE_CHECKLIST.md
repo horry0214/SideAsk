@@ -13,7 +13,7 @@
 - [ ] 加载 `extension/` 无错误
 - [ ] Generic Web 划词出现 `✦ 解释`
 - [ ] ChatGPT 划词与流式回答正常
-- [ ] 我懂了 / 还模糊写入管理页
+- [ ] 最近记录自动保存，收藏可添加与取消
 - [ ] Anchor 返回正常
 - [ ] Provider Add/Edit/Test/Default/Delete 正常
 

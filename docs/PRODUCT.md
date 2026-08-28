@@ -8,13 +8,14 @@
 
 > Ask aside. Stay on track.
 
-用户不必离开正在阅读的网页，就能围绕局部内容提问、追问、确认理解，再准确返回原文。长期产品不是聊天记录容器，而是能保留问题来源、理解状态与复习证据的个人知识系统。
+用户不必离开正在阅读的网页，就能围绕局部内容提问、追问，再准确返回原文。SideAsk 不替代网页、聊天工具或知识库；它只处理当前主线旁边的小问题。
 
 ## 核心循环
 
 ```text
 阅读主线 → 遇到卡点 → 打开支线 → context-aware 提问
-        → 理解 / 仍模糊 → 回到原文 → 沉淀与复习
+        → 继续追问 → 回到原文
+        └→ 值得以后再看时收藏
 ```
 
 ## 产品原则
@@ -22,9 +23,9 @@
 - **Quiet**：不与当前内容争夺注意力。
 - **Context-preserving**：保存问题来自哪里，并能返回原处。
 - **Minimum Sufficient Context**：只发送完成解释所需的最小上下文。
-- **Local-first**：历史、知识状态与 Provider 配置默认留在本地。
-- **Evidence before abstraction**：原问题、原回答和来源不可被生成摘要覆盖。
-- **Progressive complexity**：每个阶段都保持扩展可加载、查询可用、数据可读。
+- **Local-first**：最近记录、收藏与 Provider 配置默认留在本地。
+- **Zero maintenance**：用户不需要分类、打标签、复习或维护知识状态。
+- **Progressive enhancement**：新功能必须减少摩擦，且不能创造新的必经流程。
 
 ## 当前 MVP 范围
 
@@ -32,13 +33,15 @@
 - 轻量浮窗、快捷提问、多轮追问。
 - Generic DOM Context Extractor。
 - Anchor 恢复。
-- MiniMax 流式问答与本地历史。
+- MiniMax / OpenAI-compatible 流式问答。
+- 自动最近记录与主动收藏。
+- “最近、收藏、设置”三入口。
 
 ## 近期产品边界
 
-近期加入：Provider Registry、Custom OpenAI-compatible、Learning Branch、Knowledge Item、还模糊、知识库与最小复习循环。
+近期候选：快捷键、复制/导出、回答深度、来源 Anchor 强化与可选本地备份。
 
-近期不加入：用户登录、云同步、付费、Multi-agent、复杂 RAG、Graph DB、复杂 ontology、移动端或桌面端。
+近期不加入：用户登录、云同步、知识图谱、复习系统、完整对话导入、复杂 RAG、Graph DB 或 ontology。
 
 ## 隐私承诺
 
@@ -49,5 +52,5 @@
 - `Return to Anchor` 使用率。
 - 支线结束后继续阅读的比例。
 - 单次支线解决卡点所需时间与追问轮数。
-- 用户标记“已理解 / 还模糊”的覆盖率。
-- 同一概念重复出现时，回答能否利用已有知识状态而非从零开始。
+- 收藏使用率与取消收藏率。
+- 新用户从安装到第一次成功划词提问所需时间。

@@ -2,7 +2,7 @@
 
 [English](PRIVACY.md) · [简体中文](PRIVACY.zh-CN.md)
 
-SideAsk v0.3.1 is a local-first browser extension with no account system, telemetry, advertising SDK, or SideAsk-operated cloud database.
+SideAsk v0.4.0 is a local-first browser extension with no account system, telemetry, advertising SDK, or SideAsk-operated cloud database.
 
 ## Consent and website access
 
@@ -11,8 +11,8 @@ On first use, SideAsk displays an in-product disclosure before it reads page con
 ## Stored locally
 
 - Provider configuration and API keys.
-- Learning Sessions, Learning Branches, messages, and source anchors.
-- Knowledge Items, Weakness Items, and understanding status.
+- Recent side questions, messages, and source anchors.
+- Favorites explicitly chosen by the user.
 
 This data stays in extension-private IndexedDB. Legacy `sideaskHistory` is read only for a one-time, non-destructive migration.
 
@@ -42,4 +42,4 @@ Provider entries can be deleted individually in the dashboard. Website access ca
 
 ## Limited use
 
-SideAsk uses page content and other user data only to provide the user-facing side-question, source-return, and local learning-history features described in its listing. It does not sell data, use it for advertising, or allow the SideAsk maintainers to read it. SideAsk's use of information received through browser APIs complies with the Chrome Web Store User Data Policy, including the Limited Use requirements.
+SideAsk uses page content and other user data only to provide the user-facing side-question, source-return, recent-history, and favorites features described in its listing. It does not sell data, use it for advertising, or allow the SideAsk maintainers to read it. SideAsk's use of information received through browser APIs complies with the Chrome Web Store User Data Policy, including the Limited Use requirements.

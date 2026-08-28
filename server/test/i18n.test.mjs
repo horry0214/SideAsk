@@ -25,8 +25,9 @@ test("locale normalization supports Chinese and English variants", () => {
 });
 
 test("translations interpolate values and fall back safely", () => {
-  assert.equal(i18n.t("en", "knowledge.asks", { count: 3 }), "Asked 3 times");
-  assert.equal(i18n.t("zh-CN", "knowledge.asks", { count: 3 }), "提问 3 次");
+  assert.equal(i18n.t("en", "content.favorite"), "☆ Favorite");
+  assert.equal(i18n.t("zh-CN", "content.favorite"), "☆ 收藏");
+  assert.equal(i18n.t("en", "page.favorites.title"), "Favorites");
   assert.equal(i18n.t("en", "missing.key"), "missing.key");
 });
 

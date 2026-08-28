@@ -10,16 +10,13 @@
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
-        <img src="assets/icons/icon-128.png" alt="">
+        <img src="assets/icons/sideask-mark.svg" alt="">
         <div><strong>SideAsk</strong><span data-i18n="brand.tagline">问题走支线，思路留主线</span></div>
       </div>
       <div class="preview-badge" id="preview-badge" hidden data-i18n="preview.badge">交互预览 · 数据不会保存</div>
       <nav aria-label="主导航" data-i18n-aria="nav.aria">
-        <button class="nav-item active" data-section="overview"><span>⌂</span><b data-i18n="nav.overview">概览</b></button>
-        <button class="nav-item" data-section="branches"><span>⑂</span><b data-i18n="nav.branches">历史支线</b></button>
-        <button class="nav-item" data-section="knowledge"><span>▣</span><b data-i18n="nav.knowledge">知识库</b></button>
-        <button class="nav-item" data-section="weaknesses"><span>?</span><b data-i18n="nav.weaknesses">薄弱点</b></button>
-        <button class="nav-item" data-section="providers"><span>◇</span><b data-i18n="nav.providers">模型服务</b></button>
+        <button class="nav-item active" data-section="recent"><span>◷</span><b data-i18n="nav.recent">最近</b></button>
+        <button class="nav-item" data-section="favorites"><span>★</span><b data-i18n="nav.favorites">收藏</b></button>
         <button class="nav-item" data-section="settings"><span>⚙</span><b data-i18n="nav.settings">设置</b></button>
       </nav>
       <div class="language-switch" role="group" aria-label="界面语言" data-i18n-aria="language.aria">
@@ -31,58 +28,41 @@
 
     <main class="main">
       <header class="topbar">
-        <div><h1 id="page-title">概览</h1><p id="page-description">你的支线学习状态都保存在本地。</p></div>
+        <div><h1 id="page-title">最近</h1><p id="page-description">你问过的支线，自动留在本地。</p></div>
         <div class="gateway-pill" id="gateway-pill"><span></span><b data-i18n="gateway.checking">检查 Gateway…</b></div>
       </header>
 
-      <section class="page-section active" id="section-overview">
-        <div class="stat-grid" id="stat-grid"></div>
-        <div class="panel">
-          <div class="panel-head"><div><h2 data-i18n="overview.recent">最近支线</h2><p data-i18n="overview.recentDescription">从哪里遇到问题，以及现在理解到哪一步。</p></div><button class="text-btn" data-go="branches" data-i18n="overview.viewAll">查看全部</button></div>
-          <div class="record-list" id="overview-branches"></div>
+      <section class="page-section active" id="section-recent">
+        <div class="simple-intro">
+          <div class="simple-intro-mark">✦</div>
+          <div><strong data-i18n="recent.hintTitle">不用整理，问过就会在这里。</strong><p data-i18n="recent.hintBody">只在值得以后再看时点一下收藏。</p></div>
         </div>
-      </section>
-
-      <section class="page-section" id="section-branches">
         <div class="toolbar">
-          <label class="search"><span>⌕</span><input id="branch-search" type="search" placeholder="搜索概念、来源或上下文…" data-i18n-placeholder="filter.branchPlaceholder"></label>
-          <select id="branch-status" aria-label="筛选支线状态" data-i18n-aria="filter.branchAria">
-            <option value="" data-i18n="filter.allStatuses">全部状态</option><option value="active" data-i18n="filter.active">进行中</option><option value="understood" data-i18n="filter.understood">已理解</option><option value="unclear" data-i18n="filter.unclear">还模糊</option>
-          </select>
+          <label class="search"><span>⌕</span><input id="recent-search" type="search" placeholder="搜索问题、来源或回答…" data-i18n-placeholder="filter.recentPlaceholder"></label>
         </div>
-        <div class="panel record-list" id="branch-list"></div>
+        <div class="record-list" id="recent-list"></div>
       </section>
 
-      <section class="page-section" id="section-knowledge">
+      <section class="page-section" id="section-favorites">
         <div class="toolbar">
-          <label class="search"><span>⌕</span><input id="knowledge-search" type="search" placeholder="搜索知识…" data-i18n-placeholder="filter.knowledgePlaceholder"></label>
-          <select id="knowledge-status" aria-label="筛选理解状态" data-i18n-aria="filter.knowledgeAria">
-            <option value="" data-i18n="filter.allStatuses">全部状态</option><option value="understood" data-i18n="filter.understood">已理解</option><option value="weak" data-i18n="filter.weak">薄弱</option><option value="learning" data-i18n="filter.learning">学习中</option>
-          </select>
+          <label class="search"><span>⌕</span><input id="favorite-search" type="search" placeholder="搜索收藏…" data-i18n-placeholder="filter.favoritePlaceholder"></label>
         </div>
-        <div class="knowledge-grid" id="knowledge-list"></div>
-      </section>
-
-      <section class="page-section" id="section-weaknesses">
-        <div class="section-intro"><h2 data-i18n="weakness.title">需要再看一眼</h2><p data-i18n="weakness.description">来自“还模糊”和重复提问的本地证据，不是对你的评价。</p></div>
-        <div class="panel record-list" id="weakness-list"></div>
-      </section>
-
-      <section class="page-section" id="section-providers">
-        <div class="section-actions">
-          <div><h2 data-i18n="providers.heading">Model Providers</h2><p data-i18n="providers.description">Key 只保存在扩展私有 IndexedDB，并通过本机 Gateway 发起请求。</p></div>
-          <button class="primary-btn" id="add-provider" data-i18n="providers.add">＋ 添加 Provider</button>
-        </div>
-        <div class="provider-grid" id="provider-list"></div>
+        <div class="record-list" id="favorite-list"></div>
       </section>
 
       <section class="page-section" id="section-settings">
+        <div class="section-actions">
+          <div><h2 data-i18n="providers.heading">模型服务</h2><p data-i18n="providers.description">Key 只保存在扩展私有 IndexedDB，并通过本机 Gateway 发起请求。</p></div>
+          <button class="primary-btn" id="add-provider" data-i18n="providers.add">＋ 添加 Provider</button>
+        </div>
+        <div class="provider-grid" id="provider-list"></div>
+
         <div class="settings-grid">
           <div class="panel setting-card"><h2 data-i18n="settings.setup">首次使用引导</h2><p data-i18n="settings.setupBody">重新检查 Gateway、Provider、网页访问权限，并打开真实划词练习页。</p><button class="primary-btn" id="open-welcome" data-i18n="settings.openSetup">打开设置引导</button></div>
           <div class="panel setting-card"><h2 data-i18n="settings.gateway">SideAsk Local Gateway</h2><p id="gateway-detail" data-i18n="settings.gatewayChecking">正在检查 127.0.0.1:8787…</p><button class="secondary-btn" id="refresh-gateway" data-i18n="settings.refresh">重新检查</button></div>
           <div class="panel setting-card"><h2 data-i18n="settings.privacy">隐私边界</h2><p data-i18n="settings.privacyBody">默认只发送选中文字、必要附近上下文和当前支线消息。密码、表单、编辑器草稿以及 URL query/hash 会被排除。</p></div>
-          <div class="panel setting-card"><h2 data-i18n="settings.localData">本地数据</h2><p data-i18n="settings.localDataBody">Learning Branch、知识状态、薄弱点和 Provider 配置保存在扩展的 IndexedDB 中，不需要账户或云数据库。</p></div>
-          <div class="panel setting-card"><h2 data-i18n="settings.version">版本</h2><p id="version-detail">SideAsk v0.3.1 Store RC<br>Ask aside. Stay on track.</p></div>
+          <div class="panel setting-card"><h2 data-i18n="settings.localData">本地数据</h2><p data-i18n="settings.simpleLocalDataBody">最近提问、收藏、来源位置和 Provider 配置保存在扩展私有 IndexedDB 中，不需要账户。</p></div>
+          <div class="panel setting-card"><h2 data-i18n="settings.version">版本</h2><p id="version-detail">SideAsk v0.4.0 Simple Core<br>Ask aside. Stay on track.</p></div>
         </div>
       </section>
     </main>

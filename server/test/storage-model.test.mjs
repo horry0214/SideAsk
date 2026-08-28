@@ -29,6 +29,7 @@ test("legacy history becomes a LearningSession and LearningBranch without query 
   assert.equal(branch.status, "understood");
   assert.equal(branch.selectedText, "SSA");
   assert.equal(branch.messages.length, 1);
+  assert.equal(branch.favorite, false);
 });
 
 test("message normalization drops unknown roles and bounds history", () => {

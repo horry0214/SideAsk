@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.0 Simple Core — 2026-08-28
+
+### Changed
+
+- Reduced the dashboard to three destinations: Recent, Favorites, and Settings.
+- Replaced “Got it” / “Still fuzzy” knowledge-state controls with one optional Favorite action.
+- Moved Provider management into Settings and removed knowledge, weakness, review, and overview surfaces from the main interface.
+- Reframed local memory as automatic recent history plus intentional favorites.
+- Rewrote the bilingual README, onboarding copy, store listing, privacy copy, and store screenshots around the simpler workflow.
+
+### Compatibility
+
+- Existing v0.3 branch, knowledge, and weakness data is preserved. The old derived stores remain readable but are no longer exposed as user workflows.
+- Legacy dashboard URLs are redirected to the closest Simple Core destination.
+
 ## 0.3.1 Store RC — 2026-08-28
 
 ### Added

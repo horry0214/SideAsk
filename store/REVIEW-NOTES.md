@@ -12,7 +12,7 @@ SideAsk is an open-source, local-first BYOK extension. AI requests require the s
 6. Click **Add Provider**, choose MiniMax CN, MiniMax Global, or Custom OpenAI-compatible, enter a reviewer-owned API key and model, save it, and optionally run **Test connection**.
 7. Return to the setup tab, click **Enable on websites**, and approve the optional HTTP/HTTPS host permission.
 8. Click **Try your first selection**. On the bundled practice page, select the words `phi node`, release the mouse, and click **Explain**.
-9. The real SideAsk floating panel streams the Provider answer. Use **Got it** or **Still fuzzy**, then open the dashboard to inspect the locally saved Learning Branch.
+9. The real SideAsk floating panel streams the Provider answer. Use **Favorite** if the answer is worth revisiting, then open SideAsk to inspect Recent and Favorites.
 
 ## Security notes
 

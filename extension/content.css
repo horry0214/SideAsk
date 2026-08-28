@@ -200,8 +200,8 @@
 .sideask-link-btn { border:0; background:transparent; color:#676772; font-size:11px; cursor:pointer; padding:3px 5px; }
 .sideask-link-btn:hover { color:#312e81; }
 .sideask-link-btn:disabled { opacity:.45; cursor:not-allowed; }
-.sideask-understood { color:#15803d; font-weight:650; }
-.sideask-unclear { color:#b45309; font-weight:650; }
+.sideask-favorite { color:#4f46e5; font-weight:650; }
+.sideask-favorite[aria-pressed="true"] { color:#4338ca; }
 .sideask-status { font-size:10px; color:#999; }
 
 #sideask-bubble:focus-visible,

@@ -1,6 +1,6 @@
 {
   "name": "sideask",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "description": "SideAsk — AI side-question layer. Ask aside. Stay on track.",
@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/horry0214/sideask/issues"
   },
-  "keywords": ["browser-extension", "ai", "learning", "knowledge-base", "local-first", "byok", "manifest-v3"],
+  "keywords": ["browser-extension", "ai", "reading", "selection", "local-first", "byok", "manifest-v3"],
   "scripts": {
     "start": "node server/server.mjs",
     "preview": "node server/server.mjs --port 8788",

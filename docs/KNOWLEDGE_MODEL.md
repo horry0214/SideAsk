@@ -1,5 +1,7 @@
 # Knowledge Model
 
+> v0.4 compatibility note: this document describes the v0.2–v0.3 derived knowledge experiment. Simple Core no longer exposes knowledge, weakness, or review workflows. The stores and records remain in place only so upgrades are non-destructive.
+
 ## 原则
 
 聊天是原始证据，不等于知识。SideAsk 先保存问题来自哪里、用户如何追问、AI 如何回答，再从这些证据派生可重新生成的 KnowledgeItem。

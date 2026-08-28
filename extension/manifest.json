@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
-  "version": "0.3.1",
-  "version_name": "0.3.1 Store RC",
+  "version": "0.4.0",
+  "version_name": "0.4.0 Simple Core",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
   "permissions": ["storage", "scripting", "activeTab"],

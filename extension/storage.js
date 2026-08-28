@@ -87,6 +87,7 @@ export function legacySessionToRecords(legacy, now = Date.now()) {
       anchor: legacy?.anchor || null,
       messages: normalizeMessages(legacy?.messages),
       status: legacy?.understood ? "understood" : "active",
+      favorite: false,
       createdAt,
       updatedAt: Number(legacy?.updatedAt || createdAt),
     },
@@ -348,6 +349,7 @@ export class SideAskStorage {
       anchor: input?.anchor || existing?.anchor || null,
       messages: normalizeMessages(input?.messages || existing?.messages),
       status,
+      favorite: Boolean(input?.favorite ?? existing?.favorite ?? false),
       createdAt: Number(existing?.createdAt || input?.createdAt || now),
       updatedAt: now,
     };
@@ -374,7 +376,7 @@ export class SideAskStorage {
     });
   }
 
-  async listBranches({ limit = 100, search = "", status = "" } = {}) {
+  async listBranches({ limit = 100, search = "", status = "", favorite } = {}) {
     const query = normalizeConcept(search);
     return this.#transaction([STORE.BRANCHES], "readonly", async tx => {
       const index = tx.objectStore(STORE.BRANCHES).index("updatedAt");
@@ -389,7 +391,8 @@ export class SideAskStorage {
           const matchesSearch = !query || value.conceptKey.includes(query)
             || normalizeConcept(value.sourceTitle).includes(query)
             || normalizeConcept(value.sourceContext).includes(query);
-          if (matchesSearch && (!status || value.status === status)) results.push(value);
+          const matchesFavorite = typeof favorite !== "boolean" || Boolean(value.favorite) === favorite;
+          if (matchesSearch && matchesFavorite && (!status || value.status === status)) results.push(value);
           cursor.continue();
         };
       });
@@ -402,6 +405,12 @@ export class SideAskStorage {
     const branch = await this.getBranch(id);
     if (!branch) throw new Error("Branch 不存在。");
     return this.saveBranch({ ...branch, status });
+  }
+
+  async setBranchFavorite(id, favorite) {
+    const branch = await this.getBranch(id);
+    if (!branch) throw new Error("Branch 不存在。");
+    return this.saveBranch({ ...branch, favorite: Boolean(favorite) });
   }
 
   async #consolidateKnowledge(branch) {
@@ -480,6 +489,7 @@ export class SideAskStorage {
       branches: branches.length,
       understood: branches.filter(item => item.status === "understood").length,
       unclear: branches.filter(item => item.status === "unclear").length,
+      favorites: branches.filter(item => item.favorite).length,
       knowledge: knowledge.length,
       weaknesses: weaknesses.length,
       providers: providers.length,

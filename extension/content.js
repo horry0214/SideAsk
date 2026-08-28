@@ -15,6 +15,7 @@
     messages: [],
     streaming: false,
     status: "active",
+    favorite: false,
     branchId: null,
     sessionId: `session-${crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`}`,
     historyMode: false,
@@ -93,8 +94,7 @@
       </div>
       <div class="sideask-bottom-actions">
         <div>
-          <button class="sideask-link-btn sideask-understood" id="sideask-understood">✓ 我懂了</button>
-          <button class="sideask-link-btn sideask-unclear" id="sideask-unclear">? 还模糊</button>
+          <button class="sideask-link-btn sideask-favorite" id="sideask-favorite" data-i18n="content.favorite">☆ 收藏</button>
           <button class="sideask-link-btn" id="sideask-return" data-i18n="content.return">↩ 回到原文</button>
         </div>
         <span class="sideask-status" id="sideask-status">本地保存</span>
@@ -290,6 +290,7 @@
       state.liveRange = range;
       state.messages = [];
       state.status = "active";
+      state.favorite = false;
       state.branchId = crypto.randomUUID?.() || `branch-${Date.now()}-${Math.random().toString(16).slice(2)}`;
       updateStatusControls();
       positionBubble(rect);
@@ -391,14 +392,8 @@
     sendEl.disabled = on;
     inputEl.disabled = on;
     panel.querySelectorAll(".sideask-chip").forEach(btn => btn.disabled = on);
-    $("#sideask-understood").disabled = on;
-    $("#sideask-unclear").disabled = on;
-    statusEl.textContent = on ? t("content.answering") : ({
-      understood: t("content.savedKnowledge"),
-      unclear: t("content.savedWeakness"),
-      review: t("content.waitingReview"),
-      active: t("content.localSaved"),
-    })[state.status];
+    $("#sideask-favorite").disabled = on;
+    statusEl.textContent = on ? t("content.answering") : (state.favorite ? t("content.favoritedStatus") : t("content.localSaved"));
   }
 
   const ACTIONS = ["simple", "example", "why", "deep"];
@@ -535,6 +530,7 @@
       anchor: state.anchor,
       messages: state.messages.map(({ role, content, modelContent }) => ({ role, content, modelContent })),
       status: state.status,
+      favorite: state.favorite,
       createdAt: state.anchor?.createdAt || Date.now(),
       updatedAt: Date.now(),
     };
@@ -544,28 +540,30 @@
   }
 
   function updateStatusControls() {
-    const understood = state.status === "understood";
-    const unclear = state.status === "unclear";
-    $("#sideask-understood").textContent = understood ? t("content.understood") : t("content.gotIt");
-    $("#sideask-understood").setAttribute("aria-pressed", String(understood));
-    $("#sideask-unclear").textContent = unclear ? t("content.stillFuzzy") : t("content.fuzzy");
-    $("#sideask-unclear").setAttribute("aria-pressed", String(unclear));
-    statusEl.textContent = understood ? t("content.savedKnowledge") : (unclear ? t("content.savedWeakness") : t("content.localSaved"));
+    const favorite = Boolean(state.favorite);
+    const favoriteButton = $("#sideask-favorite");
+    favoriteButton.textContent = favorite ? t("content.favorited") : t("content.favorite");
+    favoriteButton.setAttribute("aria-pressed", String(favorite));
+    favoriteButton.disabled = state.streaming || state.messages.length < 2;
+    statusEl.textContent = state.messages.length < 2
+      ? t("content.autoSaveHint")
+      : (favorite ? t("content.favoritedStatus") : t("content.localSaved"));
   }
 
-  async function setBranchStatus(status) {
+  async function toggleFavorite() {
     if (!state.messages.length) return;
-    state.status = status;
+    state.favorite = !state.favorite;
     updateStatusControls();
     try {
       await saveSession();
     } catch (error) {
+      state.favorite = !state.favorite;
+      updateStatusControls();
       statusEl.textContent = error instanceof Error ? error.message : t("content.genericSaveFailed");
     }
   }
 
-  $("#sideask-understood").addEventListener("click", () => setBranchStatus("understood"));
-  $("#sideask-unclear").addEventListener("click", () => setBranchStatus("unclear"));
+  $("#sideask-favorite").addEventListener("click", toggleFavorite);
 
   function flashElement(el) {
     if (!el) return;
@@ -635,7 +633,7 @@
       item.setAttribute("role", "button");
       item.tabIndex = 0;
       item.innerHTML = `
-        <div class="sideask-history-term">${escapeHtml(branch.status === "understood" ? "✓ " : branch.status === "unclear" ? "? " : "")}${escapeHtml(branch.selectedText)}</div>
+        <div class="sideask-history-term">${escapeHtml(branch.favorite ? "★ " : "")}${escapeHtml(branch.selectedText)}</div>
         <div class="sideask-history-meta">${escapeHtml(branch.sourceTitle || branch.sourceUrl || "")}</div>`;
       const openHistoryItem = () => {
         state.branchId = branch.id;
@@ -647,6 +645,7 @@
         state.liveRange = null;
         state.messages = branch.messages || [];
         state.status = branch.status || "active";
+        state.favorite = Boolean(branch.favorite);
         $("#sideask-source").textContent = state.sourceTitle;
         $("#sideask-selection").textContent = state.selectedText;
         updateStatusControls();

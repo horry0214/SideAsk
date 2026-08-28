@@ -8,6 +8,7 @@ const branches = [
     sourceUrl: "https://example.com/llvm-ssa",
     sourceContext: "phi 指令会根据控制流实际经过的前驱基本块选择对应值。",
     status: "understood",
+    favorite: true,
     updatedAt: now - 12 * 60_000,
     messages: [
       { role: "user", content: "phi 指令在这里是什么意思？" },
@@ -21,6 +22,7 @@ const branches = [
     sourceUrl: "https://example.com/live-range",
     sourceContext: "变量在某点之后仍可能被读取，则在该点是活跃的。",
     status: "unclear",
+    favorite: false,
     updatedAt: now - 25 * 60 * 60_000,
     messages: [
       { role: "user", content: "live range 和 lifetime 有什么区别？" },
@@ -34,6 +36,7 @@ const branches = [
     sourceUrl: "https://example.com/vector-chaining",
     sourceContext: "前一条向量指令的结果可以直接转发给后一条向量指令。",
     status: "active",
+    favorite: true,
     updatedAt: now - 3 * 24 * 60 * 60_000,
     messages: [
       { role: "user", content: "向量链为什么能减少等待？" },
@@ -99,6 +102,7 @@ function filterBranches(query = {}) {
   const search = String(query.search || "").trim().toLocaleLowerCase();
   return branches
     .filter(item => !query.status || item.status === query.status)
+    .filter(item => typeof query.favorite !== "boolean" || Boolean(item.favorite) === query.favorite)
     .filter(item => !search || [item.selectedText, item.sourceTitle, item.sourceContext].some(value => includes(value, search)))
     .slice(0, Number(query.limit) || 500);
 }
@@ -143,9 +147,17 @@ export function createPreviewBridge() {
             understood: branches.filter(item => item.status === "understood").length,
             knowledge: knowledge.length,
             weaknesses: weaknesses.length,
+            favorites: branches.filter(item => item.favorite).length,
           };
         case "sideask-branches-list":
           return filterBranches(payload.query);
+        case "sideask-branch-favorite": {
+          const branch = branches.find(item => item.id === payload.branchId);
+          if (!branch) throw new Error("Branch 不存在。");
+          branch.favorite = Boolean(payload.favorite);
+          branch.updatedAt = Date.now();
+          return structuredClone(branch);
+        }
         case "sideask-knowledge-list":
           return filterKnowledge(payload.query);
         case "sideask-weaknesses-list":

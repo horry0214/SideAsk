@@ -4,7 +4,7 @@ SideAsk for Microsoft Edge is a local-first browser extension with no SideAsk ac
 
 Before SideAsk reads page content in Microsoft Edge, its first-run guide explains what it can access and where that content goes. The user must affirm the disclosure and separately grant optional HTTP/HTTPS website access. That permission can be revoked from the same guide.
 
-SideAsk stores Provider settings and API keys, Learning Branches, messages, source anchors, knowledge items, weak spots, and understanding states in extension-private local storage. It does not send this local database to the SideAsk maintainers.
+SideAsk stores Provider settings and API keys, recent side questions, messages, source anchors, and user-selected favorites in extension-private local storage. It does not send this local database to the SideAsk maintainers.
 
 After the user deliberately selects text and requests an explanation or sends a follow-up, SideAsk sends the selected text, a small amount of nearby readable context, recent messages in that branch, and a source URL stripped of credentials, query, and hash to the loopback-only SideAsk Gateway on the same computer. The Gateway forwards the request over HTTPS to the AI Provider selected by the user. That Provider processes the request under its own terms and privacy policy.
 

@@ -1,11 +1,11 @@
 # SideAsk Store Submission Kit
 
-This directory contains the text and policy material for submitting SideAsk 0.3.1 to Chrome Web Store and Microsoft Edge Add-ons.
+This directory contains the text and policy material for submitting SideAsk 0.4.0 to Chrome Web Store and Microsoft Edge Add-ons.
 
 ## Upload files
 
-- Chrome package: `sideask-chrome-web-store-v0.3.1.zip`
-- Edge package: `sideask-edge-addons-v0.3.1.zip`
+- Chrome package: `sideask-chrome-web-store-v0.4.0.zip`
+- Edge package: `sideask-edge-addons-v0.4.0.zip`
 - Gateway companion: `sideask-gateway.zip`
 - Shared images: `store-assets/shared/`
 - English screenshots: `store-assets/en/screenshots/`

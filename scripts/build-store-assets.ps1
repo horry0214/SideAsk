@@ -125,16 +125,16 @@ $english = @(
   @((Join-Path $sourceRoot 'onboarding-en.png'), '01-first-run.png', 'Set up in three guided steps', 'Gateway · Provider · first selection'),
   @((Join-Path $readmeRoot 'sideask-in-action-en.png'), '02-side-question.png', 'Ask beside any page', 'Stay in context while the answer streams next to the source'),
   @((Join-Path $readmeRoot 'provider-dialog-en.png'), '03-provider.png', 'Bring your own model', 'MiniMax or any OpenAI-compatible endpoint'),
-  @((Join-Path $readmeRoot 'knowledge-base-en.png'), '04-knowledge.png', 'Turn answers into knowledge', 'Consolidate what you understand and revisit what is still fuzzy'),
-  @((Join-Path $readmeRoot 'dashboard-en.png'), '05-dashboard.png', 'Every question keeps its source', 'Learning Branches, return anchors, and local history')
+  @((Join-Path $readmeRoot 'simple-core-en.png'), '04-favorites.png', 'Favorite only what matters', 'Keep useful answers without maintaining a knowledge system'),
+  @((Join-Path $readmeRoot 'simple-core-en.png'), '05-recent.png', 'No organizing required', 'Recent questions appear automatically with their source')
 )
 
 $chinese = @(
   @((Join-Path $sourceRoot 'onboarding-zh.png'), '01-first-run.png', '三步完成首次设置', 'Gateway · Provider · 第一次划词'),
   @((Join-Path $readmeRoot 'sideask-in-action.png'), '02-side-question.png', '在原文旁提问', '答案在来源旁流式展开，不打断阅读主线'),
   @((Join-Path $readmeRoot 'provider-dialog.png'), '03-provider.png', '使用你自己的模型', '支持 MiniMax 与 OpenAI-compatible Endpoint'),
-  @((Join-Path $readmeRoot 'knowledge-base.png'), '04-knowledge.png', '把回答沉淀成知识', '已理解进入知识库，还模糊则保留复习线索'),
-  @((Join-Path $readmeRoot 'dashboard.png'), '05-dashboard.png', '每个问题都保留来源', 'Learning Branch、返回原文 Anchor 与本地历史')
+  @((Join-Path $readmeRoot 'simple-core.png'), '04-favorites.png', '只收藏真正有用的回答', '不需要维护另一套知识系统'),
+  @((Join-Path $readmeRoot 'simple-core.png'), '05-recent.png', '不用整理', '最近提问自动出现并保留来源')
 )
 
 foreach ($item in $english) { New-StoreScreenshot $item[0] (Join-Path $enRoot $item[1]) $item[2] $item[3] }

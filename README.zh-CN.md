@@ -4,7 +4,7 @@
 
 <p align="center">
   <strong>问题走支线，思路留主线。</strong><br>
-  一个用于阅读、学习和思考的 local-first AI 支线提问层。
+  一个简单、local-first 的网页 AI 支线提问层。
 </p>
 
 <p align="center">
@@ -18,148 +18,110 @@
 </p>
 
 <p align="center">
-  <img src="assets/readme/sideask-demo.gif" alt="SideAsk 23 秒演示：在原文旁提问、保存学习支线、沉淀知识、配置 Provider，并切换中英文" width="100%">
-  <br><sub>来自真实 MVP 界面的 23 秒产品演示。</sub>
+  <img src="assets/readme/simple-core.png" alt="SideAsk Simple Core：最近、收藏和设置" width="100%">
+  <br><sub>SideAsk v0.4 Simple Core · 来自真实交互预览的数据</sub>
 </p>
 
-## 支线提问，而不是切走上下文
+## 一个小问题，就让它保持小
 
-你正在阅读技术文档、论文、GitHub 或 ChatGPT 的长回答，一个术语突然卡住你。传统做法会让你离开页面、打开新对话、重新描述上下文，最后忘记原本读到了哪里。
+你正在阅读技术文档、论文、GitHub 或 AI 的长回答，一个短语突然卡住你。打开新标签页或新对话，会把一条很小的支线变成上下文切换。
 
-SideAsk 把这条支线留在原文旁边：
+SideAsk 把问题留在原文旁边：
 
-```text
-继续阅读 → 选中疑问 → SideAsk 支线 → 理解 → 回到原文 → 本地沉淀
-```
+~~~text
+继续阅读 → 选中文字 → 提问 → 追问 → 回到原文
+                              └─ 值得以后再看时才收藏
+~~~
 
-选中 2–500 字后点击 **✦ 解释**，SideAsk 会带上附近必要上下文，在安静的悬浮窗里回答。你可以连续追问、标记“我懂了”或“还模糊”，再一键回到原来的阅读位置。
+选中 2–500 字并点击 **✦ 解释**。SideAsk 只携带必要的附近上下文，在悬浮窗中流式显示安全 Markdown 回答，让你不离开当前页面也能继续追问。
 
-## SideAsk 适合用在哪里
+## Simple Core
 
-<p align="center">
-  <img src="assets/readme/sideask-use-cases.png" alt="SideAsk 的六类使用场景：技术文档、AI 长回答、论文公式、代码与 GitHub、学习支线、知识复习" width="100%">
-</p>
+- **在原文旁提问**：简单解释、举个例子、为什么重要或深入理解。
+- **自然继续追问**：问题始终留在小浮窗里，结束后回到原来的段落。
+- **最近记录自动保存**：来源和返回 Anchor 一起留在本地，不要求整理。
+- **收藏由用户决定**：只有真正值得以后再看的回答才进入收藏。
+- **设置不打扰主流程**：Provider、Gateway、语言、隐私和首次引导集中在一起。
 
-当一个小问题不值得打断整条思路时，就交给 SideAsk：读文档时理解陌生 API、看论文时拆解公式、逛 GitHub 时追问符号、在 AI 长回答中澄清一段话，或把一次临时的学习支线保存下来以后复习。
-
-## 从提问到沉淀，真实 MVP 界面
-
-<table>
-  <tr>
-    <td width="50%"><strong>1 · 在原文旁提问</strong><br><sub>划词后直接获得安全渲染的 Markdown 回答，并在原页面连续追问。</sub></td>
-    <td width="50%"><strong>2 · 留住学习轨迹</strong><br><sub>每条支线保存来源、对话、理解状态和回到原文的 Anchor。</sub></td>
-  </tr>
-  <tr>
-    <td><img src="assets/readme/sideask-in-action.png" alt="SideAsk 悬浮窗展示 Markdown 解释"></td>
-    <td><img src="assets/readme/dashboard.png" alt="SideAsk 学习仪表盘"></td>
-  </tr>
-  <tr>
-    <td width="50%"><strong>3 · 把支线变成知识</strong><br><sub>整理已经掌握的概念，并保留它们之间的上下文联系。</sub></td>
-    <td width="50%"><strong>4 · 使用自己的模型</strong><br><sub>配置 MiniMax 或 OpenAI-compatible 服务，Key 留在扩展私有存储中。</sub></td>
-  </tr>
-  <tr>
-    <td><img src="assets/readme/knowledge-base.png" alt="SideAsk 知识库"></td>
-    <td><img src="assets/readme/provider-dialog.png" alt="SideAsk Provider 配置窗口"></td>
-  </tr>
-</table>
-
-<p align="center">
-  <strong>“还模糊”不会变成被遗忘的聊天，而会进入复习线索。</strong><br>
-  <img src="assets/readme/weakness-book.png" alt="SideAsk 错题本与复习候选" width="100%">
-</p>
-
-<p><sub>截图来自当前 MVP 界面；其中的回答和学习记录使用隔离的演示数据。</sub></p>
-
-## MVP 能做什么
-
-- **上下文感知解释**：选中文字、当前可读块、前后少量内容、来源和支线消息。
-- **流式 Markdown**：安全显示标题、列表、表格、链接、引用和代码块。
-- **English / 简体中文**：语言偏好会持久保存，并同步到管理页、网页悬浮窗和 AI 默认回答语言。
-- **多轮追问**：不离开当前页面，继续同一条支线。
-- **Anchor 恢复**：Live Range → selector + text → text lookup → scroll fallback。
-- **Learning Branch**：保存问题来源、上下文、消息、Anchor 与理解状态。
-- **知识与薄弱点**：“我懂了”沉淀知识，“还模糊”生成复习候选。
-- **开放 Provider**：MiniMax CN、MiniMax Global、Custom OpenAI-compatible。
-- **Local-first**：历史、Provider 和学习状态默认保存在扩展私有 IndexedDB。
-- **首次使用引导**：自动检查 Gateway 与 Provider，说明数据流，按需申请网页权限，并打开真实划词练习页。
-- **零构建依赖**：原生 JavaScript/CSS 和零依赖 Node.js 本地网关。
-
-<details>
-<summary><strong>查看完整产品全景图</strong></summary>
-<br>
-<img src="assets/sideask-product-board.png" alt="SideAsk 品牌、产品、知识管理、Provider 和路线图" width="100%">
-</details>
+主界面只有三个入口：**最近、收藏、设置**。SideAsk 不要求账户，不依赖云数据库，也不会让用户维护知识图谱、薄弱点或复习队列。
 
 ## 快速开始
 
-要求 Node.js 20+，项目零依赖，不需要 `npm install`。
+要求 **Node.js 20+** 与 Chrome 或 Edge。项目零依赖，不需要 <code>npm install</code>。
 
-```bash
+~~~bash
 git clone https://github.com/horry0214/sideask.git
 cd sideask
 npm start
-```
+~~~
 
-看到 `SideAsk Local Gateway running: http://127.0.0.1:8787` 后：
+看到 <code>SideAsk Local Gateway running: http://127.0.0.1:8787</code> 后：
 
-1. 打开 `chrome://extensions/` 或 `edge://extensions/`。
+1. 打开 <code>chrome://extensions/</code> 或 <code>edge://extensions/</code>。
 2. 开启“开发者模式”。
-3. 点击“加载已解压的扩展程序”，选择仓库的 `extension/` 文件夹。
-4. SideAsk 会自动打开设置引导；阅读数据说明、确认 Gateway，并添加默认 Provider。
-5. 准备好后点击“在网页中启用”。普通 HTTP/HTTPS 网页访问是可选权限，可以从同一引导页撤销。
-6. 打开内置练习页，选中 **phi node** 并点击 **✦ 解释**，完成真实首次体验。
+3. 点击“加载已解压的扩展程序”，选择仓库的 <code>extension/</code> 文件夹。
+4. 按首次引导阅读数据说明、确认 Gateway，并添加 Provider。
+5. 准备好后开启可选网页访问权，进入练习页，选中 **phi node** 并点击 **✦ 解释**。
 
-Chrome、Edge、Gateway、商店图片、双语上架文案、隐私声明与审核说明都已整理在[商店提交包](store/README.md)中。在公开商店审核通过前，每个 GitHub Release 会提供对应 ZIP。
+只预览管理页时可运行 <code>npm run preview</code>，再打开 <code>http://127.0.0.1:8788/preview/</code>。预览数据完全隔离，不会调用真实 Provider。
 
-只预览管理页时可运行 `npm run preview`，再打开 `http://127.0.0.1:8788/preview/`。预览数据完全隔离，不会调用真实 Provider。
+Chrome、Edge、Gateway、商店文案、隐私声明与审核说明都整理在[商店提交包](store/README.md)中。
 
-## Provider
+## 使用自己的模型
 
-| Provider | MVP 状态 | 默认地址 |
+| Provider | 状态 | 默认地址 |
 | --- | --- | --- |
-| MiniMax CN | 支持，兼容 Token Plan Key | `https://api.minimaxi.com/v1` |
-| MiniMax Global | 支持 | `https://api.minimax.io/v1` |
+| MiniMax CN | 支持，兼容 Token Plan Key | <code>https://api.minimaxi.com/v1</code> |
+| MiniMax Global | 支持 | <code>https://api.minimax.io/v1</code> |
 | Custom OpenAI-compatible | 支持 | 用户填写 Base URL |
 
-Key 保存在扩展私有 IndexedDB，只由 service worker 附加到 loopback Gateway 请求，不会进入网页 Content Script、日志或仓库。
+Key 保存在扩展私有 IndexedDB，只由 Service Worker 在调用 loopback Gateway 时附加，不会进入网页脚本、日志或仓库。
+
+## 隐私边界
+
+SideAsk 只发送：
+
+- 用户主动选择的文字；
+- 当前可读块和少量附近内容；
+- 当前支线最近消息；
+- 已移除 username、password、query 和 hash 的来源 URL。
+
+密码、表单、编辑器、<code>contenteditable</code>、显式敏感节点、脚本和样式都会被排除。Gateway 只监听 loopback；最近提问、收藏、来源 Anchor 和 Provider 配置保存在本地。
+
+详见[隐私说明](PRIVACY.zh-CN.md)与[安全策略](SECURITY.zh-CN.md)。
 
 ## 架构
 
-```text
+~~~text
 网页 / ChatGPT
   └─ 划词 + 最小上下文 + 来源 Anchor
        └─ SideAsk 悬浮窗
             └─ Extension Service Worker
                  └─ Local Gateway · 127.0.0.1:8787
-                      └─ Provider Registry + 流与错误归一化
-                           └─ 用户配置的 AI Provider
+                      └─ 用户配置的 AI Provider
 
 扩展私有 IndexedDB
-  └─ providers · sessions · branches · knowledge · weaknesses · reviews
-```
+  └─ providers · 最近支线 · 收藏 · 来源 Anchor
+~~~
 
-## 隐私边界
-
-SideAsk 默认只发送用户主动选择的文本、当前可读块和少量附近内容、当前支线最近消息，以及已移除 username/password/query/hash 的来源 URL。
-
-密码、表单控件、编辑器、`contenteditable`、显式 private 节点、脚本和样式会被排除。Gateway 只监听 loopback，并拒绝普通网页 Origin 的 POST。
-
-详见 [PRIVACY.md](PRIVACY.md) 和 [SECURITY.md](SECURITY.md)。
+SideAsk 使用原生 JavaScript/CSS 与零依赖 Node.js Gateway。升级时不会删除 v0.3 的已有数据；v0.4 只是让用户不再维护知识与薄弱状态。
 
 ## 当前状态
 
-当前版本：**v0.3.0 MVP**。
+当前候选版本：**v0.4.0 Simple Core**。
 
-下一阶段将重点增强 ChatGPT/PDF Adapter、跨页面 Anchor、快捷键和最小复习闭环。完整规划见 [路线图](docs/ROADMAP.md)。
+已覆盖划词、流式 Markdown、多轮追问、回到原文、自动最近记录、主动收藏、中英文切换、Provider 管理、可选网页权限和首次引导。
+
+后续只加入能够降低摩擦、且不会创造新工作流的小功能。完整规划见[路线图](docs/ROADMAP.md)。
 
 ## 开发与贡献
 
-```bash
+~~~bash
 npm test
 npm run check
-```
+~~~
 
-欢迎通过 [贡献指南](CONTRIBUTING.md) 参与。提交问题时请遵守 [行为准则](CODE_OF_CONDUCT.md)，安全问题请按 [安全策略](SECURITY.md) 私下报告。
+欢迎通过[贡献指南](CONTRIBUTING.zh-CN.md)参与。提交问题时请遵守[行为准则](CODE_OF_CONDUCT.zh-CN.md)，安全问题请按[安全策略](SECURITY.zh-CN.md)私下报告。
 
 ## License
 
