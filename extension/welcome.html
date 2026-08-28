@@ -48,7 +48,7 @@
       <div class="disclosure-icon">◎</div>
       <div class="disclosure-copy">
         <h2 data-copy="disclosureTitle">Before SideAsk reads a selection</h2>
-        <p data-copy="disclosureBody">Only text you deliberately select, a small amount of nearby readable context, the source URL without query or hash, and messages in this side question are sent through your local Gateway to the AI Provider you choose. Passwords, form fields and editor drafts are excluded. Provider keys, recent questions, and favorites stay in extension-private storage. SideAsk has no telemetry, ads or cloud database.</p>
+        <p data-copy="disclosureBody">Only text you deliberately select, a small amount of nearby readable context, the source URL without query or hash, and messages in this side question are sent through your local Gateway to the AI Provider you choose. Passwords, form fields and editor drafts are excluded. Provider keys stay encrypted in the Gateway's on-device Vault; recent questions and favorites stay in the browser. SideAsk has no telemetry, ads or cloud database.</p>
         <a href="https://github.com/horry0214/sideask/blob/main/PRIVACY.md" target="_blank" rel="noreferrer" data-copy="privacyLink">Read the full privacy policy ↗</a>
       </div>
       <button class="primary-button" id="accept-disclosure" type="button" data-copy="acceptDisclosure">I understand — continue</button>
@@ -73,7 +73,7 @@
       <article class="step-card" id="provider-step">
         <div class="step-number">2</div>
         <div class="step-main">
-          <div class="step-heading"><div><h3 data-copy="providerTitle">Connect your AI Provider</h3><p data-copy="providerBody">Choose MiniMax CN, MiniMax Global, or any OpenAI-compatible endpoint. Your API key stays local.</p></div><span class="status-badge checking" id="provider-status" data-copy="checking">Checking…</span></div>
+          <div class="step-heading"><div><h3 data-copy="providerTitle">Connect your AI Provider</h3><p data-copy="providerBody">Configure once in the browser or VS Code. The encrypted local Vault is shared on this computer.</p></div><span class="status-badge checking" id="provider-status" data-copy="checking">Checking…</span></div>
           <p class="provider-summary" id="provider-detail" data-copy="providerMissing">No browser Provider is configured yet.</p>
           <div class="step-actions"><button type="button" class="secondary-button" id="add-provider" data-copy="addProvider">Add Provider</button><button type="button" class="text-button" id="check-provider" data-copy="refresh">Refresh</button></div>
         </div>

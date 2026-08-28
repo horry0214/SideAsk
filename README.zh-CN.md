@@ -3,8 +3,8 @@
 </p>
 
 <p align="center">
-  <strong>划一下，不跳页。答案就在原文旁。</strong><br>
-  AI 结合附近上下文解释、举例和回答追问，然后继续阅读。
+  <strong>随处划词，原地提问，主线不断。</strong><br>
+  在浏览器和 VS Code 中发起上下文支线，不打断正在进行的主任务。
 </p>
 
 <p align="center">
@@ -15,6 +15,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-625BF6.svg" alt="MIT License"></a>
   <a href="https://github.com/horry0214/sideask/releases/latest"><img src="https://img.shields.io/github/v/release/horry0214/sideask?color=625BF6" alt="最新版本"></a>
   <img src="https://img.shields.io/badge/Chrome%20%2F%20Edge-Manifest%20V3-7C6CFF.svg" alt="Chrome and Edge Manifest V3">
+  <img src="https://img.shields.io/badge/VS%20Code-Companion-625BF6.svg" alt="VS Code Companion">
   <img src="https://img.shields.io/badge/local--first-BYOK-22C55E.svg" alt="Local-first and BYOK">
 </p>
 
@@ -47,6 +48,14 @@ SideAsk 把问题留在原文旁边：
 
 你可以选择**简单解释、举个例子、为什么重要、深入理解**，随后继续追问；真正有用时收藏，弄懂后回到原文。
 
+## Codex 继续工作，SideAsk 回答支线
+
+v0.6 VS Code Companion 把相同的轻量工作流带进编辑器。选中陌生代码并按 `Alt+Shift+A`，SideAsk 会在文件旁打开独立的 Markdown 对话；它只解决眼前卡点，不改变文件，也不会污染 Codex 或其他编程 Agent 正在进行的主对话。
+
+对于 Codex Chat、终端和其他隔离的扩展界面，先复制目标文字，再运行 **SideAsk: 询问剪贴板内容**。SideAsk 不会尝试检查另一个扩展的界面。
+
+Companion 与浏览器插件共用本机 Gateway、完整的 25 个 Provider Catalog 和加密 Provider Vault。在任一入口配置一次，另一端立即使用同一个默认 Provider；不需要账户或云同步。详见 [VS Code 中文指南](docs/VSCODE.zh-CN.md)。
+
 ## Simple Core
 
 - **在原文旁提问**：简单解释、举个例子、为什么重要或深入理解。
@@ -62,7 +71,7 @@ SideAsk 把问题留在原文旁边：
   <br><sub>管理界面退居次要位置：最近、收藏和设置。</sub>
 </p>
 
-## 快速开始
+## 快速开始 — 浏览器
 
 要求 **Node.js 20+** 与 Chrome 或 Edge。项目零依赖，不需要 <code>npm install</code>。
 
@@ -84,6 +93,17 @@ npm start
 
 Chrome、Edge、Gateway、商店文案、隐私声明与审核说明都整理在[商店提交包](store/README.md)中。
 
+## 快速开始 — VS Code
+
+~~~bash
+cd vscode-extension
+npm install
+npm test
+npm run package
+~~~
+
+在 **扩展 → … → 从 VSIX 安装…** 中选择 `dist/sideask-vscode-0.6.0.vsix`。运行 `npm start` 启动同一个 Local Gateway，选中代码后按 `Alt+Shift+A`；从 Codex Chat 或终端复制的文字可通过 **SideAsk: 询问剪贴板内容** 带入。
+
 ## 更新
 
 商店安装会在新版审核发布后自动更新；Git Clone 与“加载已解压扩展”的用户需要拉取或覆盖文件、重启 Gateway，并在浏览器扩展管理页点击“重新加载”。应尽量保持开发版扩展的原路径，以便继续使用同一个扩展 ID 对应的本地数据。
@@ -92,7 +112,7 @@ Chrome、Edge、Gateway、商店文案、隐私声明与审核说明都整理在
 
 ## 使用自己的模型
 
-SideAsk v0.5 按照 Hermes 的思路加入声明式 Provider Catalog，共 25 个预设：
+SideAsk 按照 Hermes 的思路加入声明式 Provider Catalog，共 25 个预设：
 
 - 官方服务：OpenAI、Anthropic、Google Gemini、xAI、MiniMax、DeepSeek、阿里 Qwen、Z.AI / 智谱和 SiliconFlow。
 - 路由与推理：OpenRouter、Vercel AI Gateway、Perplexity、Hugging Face、Fireworks AI、Groq、Mistral、Together AI、Cerebras 和 NVIDIA NIM。
@@ -100,7 +120,7 @@ SideAsk v0.5 按照 Hermes 的思路加入声明式 Provider Catalog，共 25 �
 
 Anthropic 使用原生 Messages 流协议；其他预设在供应商官方支持时共用经过测试的 OpenAI-compatible 传输。“检测连接并获取模型”不会发起付费对话，并可从 Provider 的实时模型目录补充建议。
 
-Key 保存在扩展私有 IndexedDB，只由 Service Worker 在调用 loopback Gateway 时附加，不会进入网页脚本、日志或仓库。
+Key 只在 Gateway 的本机 Vault 加密保存一次。浏览器与 VS Code 只能取得脱敏元数据，并通过 ID 使用共享默认 Provider；已保存 Key 不会返回网页脚本、Webview、日志或仓库。
 
 ## 隐私边界
 
@@ -118,24 +138,24 @@ SideAsk 只发送：
 ## 架构
 
 ~~~text
-网页 / ChatGPT
-  └─ 划词 + 最小上下文 + 来源 Anchor
-       └─ SideAsk 悬浮窗
-            └─ Extension Service Worker
-                 └─ Local Gateway · 127.0.0.1:8787
-                      └─ 用户配置的 AI Provider
+浏览器划词 ─ 浏览器悬浮窗 ─┐
+                            ├─ Local Gateway · 127.0.0.1:8787
+VS Code 划词 ─ 独立支线面板 ┘             └─ 用户的 AI Provider
 
-扩展私有 IndexedDB
-  └─ providers · 最近支线 · 收藏 · 来源 Anchor
+Gateway 本机 Provider Vault
+  └─ 浏览器与 VS Code 共用的加密 Provider 凭据
+
+浏览器私有 IndexedDB
+  └─ 最近支线 · 收藏 · 来源 Anchor
 ~~~
 
 SideAsk 使用原生 JavaScript/CSS 与零依赖 Node.js Gateway。升级时不会删除 v0.3 的已有数据；v0.4 只是让用户不再维护知识与薄弱状态。
 
 ## 当前状态
 
-当前候选版本：**v0.5.0 Provider Catalog**。
+当前稳定版：**v0.6.0 SideAsk Anywhere**。
 
-已覆盖划词、流式 Markdown、多轮追问、回到原文、自动最近记录、主动收藏、中英文切换、25 个 Provider 预设、实时模型发现、可选网页权限和首次引导。
+v0.6 加入编辑器划词、Codex Chat/终端显式剪贴板入口、独立 VS Code 对话面板、回到选区、中英文界面，以及两个客户端共用的本机加密 Provider Vault。
 
 后续只加入能够降低摩擦、且不会创造新工作流的小功能。完整规划见[路线图](docs/ROADMAP.md)。
 

@@ -41,7 +41,7 @@ function profileDefinition(profile) {
   };
 
   if (profile.id === "gemini") {
-    definition.requestHeaders = { "x-goog-api-client": "sideask-oai/0.5.0" };
+    definition.requestHeaders = { "x-goog-api-client": "sideask-oai/0.6.0" };
   }
   if (profile.id === "openrouter") {
     definition.requestHeaders = {

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">SideAsk icon</title>
+  <desc id="desc">A rounded purple S with two dot-like endpoints.</desc>
+  <defs>
+    <linearGradient id="upper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#B69BFF"/>
+      <stop offset="1" stop-color="#625BF6"/>
+    </linearGradient>
+    <linearGradient id="lower" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#625BF6"/>
+      <stop offset="1" stop-color="#4338FF"/>
+    </linearGradient>
+  </defs>
+  <path d="M404 68H220C124 68 70 138 70 232c0 87 58 145 151 145h46" fill="none" stroke="url(#upper)" stroke-width="76" stroke-linecap="round"/>
+  <path d="M108 444h181c96 0 153-70 153-164 0-87-59-145-152-145h-41" fill="none" stroke="url(#lower)" stroke-width="76" stroke-linecap="round"/>
+</svg>

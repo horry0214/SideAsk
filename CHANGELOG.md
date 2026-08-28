@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.6.0 SideAsk Anywhere — 2026-08-28
+
+### Added
+
+- Added a focused VS Code side-question panel for editor selections without modifying files or interrupting the active coding-agent conversation.
+- Added `Ask about Clipboard` for copied Codex Chat, terminal, and other isolated extension-view content.
+- Added streaming safe Markdown, follow-ups, four quick prompts, source reveal, and an optional nearby-lines context toggle.
+- Added bilingual commands and interface copy, Gateway health state, and the full 25-profile Provider catalog.
+- Added a standalone VSIX build, tests, and bilingual installation guides.
+- Added an encrypted Local Provider Vault in the Gateway so the browser extension and VS Code Companion share saved Providers and the default model without an account or cloud sync.
+- Added one-time, non-destructive migration from legacy browser IndexedDB and VS Code Secret Storage Provider records.
+
+### Changed
+
+- Provider setup, testing, switching, editing, and deletion now operate on the same on-device Vault from either client.
+- Browser chat and VS Code chat resolve the shared default inside the Gateway; saved API keys are never returned to either client.
+
+### Privacy
+
+- Editor input is bounded to the deliberate selection and a configurable number of nearby lines.
+- Another extension's Webview is never inspected; clipboard input requires an explicit copy and command.
+
 ## 0.5.0 Provider Catalog — 2026-08-28
 
 ### Added

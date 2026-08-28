@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
-  "version": "0.5.0",
-  "version_name": "0.5.0 Provider Catalog",
+  "version": "0.6.0",
+  "version_name": "0.6.0 SideAsk Anywhere",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
   "permissions": ["storage", "scripting", "activeTab"],

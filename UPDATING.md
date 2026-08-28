@@ -2,7 +2,13 @@
 
 [简体中文](UPDATING.zh-CN.md) · [English](UPDATING.md)
 
-SideAsk has two parts that should be kept on the same release: the browser extension and the local Gateway. Provider keys, recent questions, favorites, and source anchors live in extension-private storage; Gateway environment settings may live in `server/.env`.
+SideAsk v0.6 has three coordinated parts: the browser extension, the optional VS Code Companion, and the local Gateway. Provider profiles and encrypted API keys live in the Gateway's on-device Vault; browser recent questions, favorites, and source anchors remain in extension-private storage. Gateway environment fallbacks may live in `server/.env`.
+
+## v0.6 migration
+
+Start the v0.6 Gateway before opening Provider settings. The browser extension and VS Code Companion then import legacy Provider records into the shared Vault once, without deleting the old records. If the same Provider already exists, SideAsk reuses it instead of creating a duplicate. Configure or switch the default in either client and the other client sees the change immediately.
+
+The shared Vault is normally stored under `%APPDATA%\SideAsk` on Windows, `~/Library/Application Support/SideAsk` on macOS, and `$XDG_CONFIG_HOME/sideask` or `~/.config/sideask` on Linux. It survives extension reloads and VSIX upgrades. Do not copy or sync this directory as a substitute for account sync.
 
 ## Know when a release is available
 
@@ -33,6 +39,10 @@ npm start
 5. Open SideAsk Settings and confirm that the displayed extension version is the expected release.
 6. Open `http://127.0.0.1:8787/health` and confirm that the Gateway responds with `"ok": true`.
 
+## VS Code Companion
+
+Download `sideask-vscode-0.6.0.vsix` from the matching GitHub Release, then in VS Code open **Extensions → … → Install from VSIX…**. Installing the new VSIX upgrades the existing SideAsk Companion in place. Restart the same v0.6 Gateway, then run **SideAsk: Open Side Panel** and confirm the shared Provider is shown.
+
 ## Downloaded ZIP / Load unpacked installation
 
 1. Download the matching extension and Gateway archives from the [latest release](https://github.com/horry0214/sideask/releases/latest).
@@ -43,13 +53,13 @@ npm start
 6. Open the browser extensions page and choose **Reload** on SideAsk.
 7. Verify the extension version and Gateway health as described above.
 
-Do not paste API keys into repository files, issue reports, or release comments. Browser Provider keys should remain in SideAsk Settings; Gateway-only secrets should stay in the ignored `server/.env` file.
+Do not paste API keys into repository files, issue reports, or release comments. Saved Provider keys belong in the Gateway Vault; environment-only secrets should stay in the ignored `server/.env` file.
 
 ## Troubleshooting
 
 - **Old UI after updating:** reload SideAsk on the browser extensions page, then reload the web page where you use it.
 - **Gateway version still looks old:** stop every SideAsk Gateway process using ports `8787` and `8788`, then start it again from the updated folder.
-- **Provider settings appear missing:** confirm that the unpacked extension is loaded from the same folder as before. The old settings normally still belong to the previous extension ID.
+- **Provider settings appear missing:** start the v0.6 Gateway, then reopen Provider settings so migration can retry. For browser history, also confirm that the unpacked extension is loaded from the same folder as before; a different unpacked extension ID owns a separate history database.
 - **Pull refuses to continue:** preserve local changes first; do not use destructive Git reset commands just to update.
 
 See [CHANGELOG.md](CHANGELOG.md) for release-by-release changes.

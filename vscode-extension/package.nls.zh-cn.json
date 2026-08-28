@@ -1,0 +1,15 @@
+{
+  "extension.displayName": "SideAsk — 划词支线提问",
+  "extension.description": "围绕选中的代码发起支线提问，不打断正在进行的 AI 主任务。",
+  "command.askSelection": "询问选中内容",
+  "command.askClipboard": "询问剪贴板内容",
+  "command.openPanel": "打开 SideAsk",
+  "command.configureProvider": "配置 Provider",
+  "command.newConversation": "新建支线问题",
+  "configuration.gatewayUrl": "SideAsk Local Gateway 的本机回环地址。",
+  "configuration.language": "SideAsk 界面和回答使用的语言。",
+  "configuration.language.auto": "跟随 VS Code 显示语言。",
+  "configuration.language.zhCN": "使用简体中文。",
+  "configuration.language.en": "使用英文。",
+  "configuration.surroundingLines": "编辑器划词时，在选区上下各附带的附近代码行数。"
+}

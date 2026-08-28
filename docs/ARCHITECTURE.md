@@ -26,6 +26,23 @@ Configured Provider
 
 当前仍使用原生 JS/CSS 和 Node.js 内置模块，不需要构建或安装依赖。这个约束让 P0 回归成本保持最低。
 
+## VS Code Companion（v0.6）
+
+```text
+VS Code editor selection ─┐
+                          ├─ Context Adapter ─ SideAsk Webview Panel
+Explicit clipboard input ─┘                         │
+                                                   ▼
+                                      SideAsk Local Gateway :8787
+                                                   │
+                                                   ▼
+                                         Configured Provider
+```
+
+VS Code 端复用 Gateway 的 `/health`、`/api/chat` 和 `/api/providers/test` 协议。编辑器 Adapter 只提取用户主动选区、文件/语言标识与有限附近行；Codex Chat、终端及其他扩展 Webview 使用显式剪贴板入口，不尝试跨扩展读取界面内容。
+
+浏览器与 VS Code 通过配置接口管理共享 `providerId`，但聊天请求默认不携带 Provider 凭据；Gateway 在内部解析共享默认 Provider。Provider 元数据与 AES-256-GCM 密文由 Local Provider Vault 保存；没有共享 Provider 时才回退到 `server/.env`。旧浏览器 IndexedDB 与 VS Code Secret Storage Provider 会进行一次性、非破坏迁移。
+
 ## 运行边界
 
 ### Extension Content Script
@@ -34,11 +51,11 @@ Configured Provider
 
 ### Extension Service Worker
 
-负责把 Content Script 的长连接桥接到 loopback gateway，并作为扩展私有 IndexedDB 的唯一数据 API。它选择默认 Provider、把配置附加到 gateway request，但不向 Content Script 暴露 Key。
+负责把 Content Script 的长连接桥接到 loopback gateway，并作为扩展私有 IndexedDB 历史数据的唯一 API。Provider 管理请求直接代理到 Gateway Vault，聊天只引用共享默认 Provider，不向 Content Script 暴露 Key。
 
 ### Local Gateway
 
-负责接收扩展私有 BYOK 配置或回退到 `.env`，构造最小必要 prompt、选择 Provider、归一化 request/stream/error，并避免向 UI 暴露 Key 或原始上游错误。Gateway 只监听 loopback，POST 只接受 JSON，并拒绝普通网页 Origin。
+负责本机加密 Provider Vault、构造最小必要 prompt、选择 Provider、归一化 request/stream/error，并避免向 UI 暴露 Key 或原始上游错误。Vault 使用独立随机密钥与 AES-256-GCM 密文，文件位于用户应用数据目录；Gateway 只监听 loopback，配置接口只返回脱敏元数据，POST 只接受 JSON，并拒绝普通网页 Origin。
 
 ### Provider
 
@@ -85,11 +102,11 @@ Live DOM Range
 当前使用 extension-origin、带明确 version migration 的 IndexedDB：
 
 ```text
-settings, providers, sessions, branches,
+settings, legacy providers, sessions, branches,
 knowledge, weaknesses, reviews
 ```
 
-Service Worker 首次启动会读取旧 `chrome.storage.local.sideaskHistory`，转换为 LearningSession/LearningBranch，并写入 `legacyHistoryMigrated` 标记。旧数据不会在迁移过程中删除。
+Service Worker 首次启动会读取旧 `chrome.storage.local.sideaskHistory`，转换为 LearningSession/LearningBranch，并写入 `legacyHistoryMigrated` 标记。旧 Provider 会与共享 Vault 中的记录按类型、Base URL 和模型合并，并写入 `sharedProviderVaultMigratedV1`；旧数据不会在迁移过程中删除。
 
 ## 渐进模块边界
 

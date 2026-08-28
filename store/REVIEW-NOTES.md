@@ -1,6 +1,6 @@
 # Reviewer Instructions
 
-SideAsk is an open-source, local-first BYOK extension. AI requests require the separately packaged SideAsk Local Gateway and a reviewer-provided API key for a supported remote Provider, or a reviewer-run local Ollama/LM Studio server. No shared test credential is embedded in the extension or submission package.
+SideAsk is an open-source, local-first BYOK extension. AI requests require the separately packaged SideAsk Local Gateway and a reviewer-provided API key for a supported remote Provider, or a reviewer-run local Ollama/LM Studio server. Provider credentials are encrypted in the Gateway's on-device Vault and the extension receives only redacted metadata. No shared test credential is embedded in the extension or submission package.
 
 ## Test flow
 
@@ -18,6 +18,7 @@ SideAsk is an open-source, local-first BYOK extension. AI requests require the s
 
 - No remote executable code is used.
 - The page content script never receives a Provider API key.
+- Removing a Provider from the dashboard also removes it from the shared local Vault used by the optional VS Code Companion.
 - The Gateway rejects ordinary webpage POST origins and accepts extension-origin requests.
 - Passwords, forms, editable regions, explicitly sensitive nodes, and URL credentials/query/hash are excluded from context capture.
 - Website access is optional and revocable from the first-run guide.

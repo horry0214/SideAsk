@@ -9,6 +9,7 @@ import {
   resolveProviderRuntime,
 } from "./providers/index.mjs";
 import { systemPrompt } from "./prompt.mjs";
+import { ProviderVault } from "./provider-vault.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const extensionDir = path.resolve(__dirname, "../extension");
@@ -18,7 +19,8 @@ const portFlagIndex = process.argv.indexOf("--port");
 const commandLinePort = portFlagIndex >= 0 ? process.argv[portFlagIndex + 1] : "";
 const PORT = Number(commandLinePort || process.env.PORT || 8787);
 const defaultRuntime = resolveProviderRuntime(process.env);
-const { provider: defaultProvider, config: defaultProviderConfig, registry } = defaultRuntime;
+const { provider: defaultProvider, registry } = defaultRuntime;
+const providerVault = new ProviderVault({ registry });
 
 function loadDotEnv(file) {
   if (!fs.existsSync(file)) return;
@@ -112,6 +114,16 @@ function cleanMessages(messages) {
 }
 
 function runtimeFromPayload(payload) {
+  if (payload?.providerId) {
+    const runtime = providerVault.resolveRuntime(payload.providerId);
+    if (!runtime) {
+      throw new ProviderError(ProviderErrorCode.INVALID_PROVIDER_CONFIG, {
+        providerId: String(payload.providerId || "missing"),
+        message: "本机共享 Provider 不存在，请刷新配置后重试。",
+      });
+    }
+    return runtime;
+  }
   if (!payload?.provider) return defaultRuntime;
   const providerId = String(payload.provider.id || "").trim();
   const provider = registry.get(providerId);
@@ -120,6 +132,33 @@ function runtimeFromPayload(payload) {
     config: provider.resolveClientConfig(payload.provider),
     registry,
   };
+}
+
+function effectiveDefaultRuntime() {
+  return providerVault.resolveRuntime() || defaultRuntime;
+}
+
+function runtimeForRequest(payload) {
+  if (payload?.providerId || payload?.provider) return runtimeFromPayload(payload);
+  return effectiveDefaultRuntime();
+}
+
+function runtimeForProviderTest(payload) {
+  if (!payload?.providerId) return runtimeFromPayload(payload);
+  const stored = providerVault.getProvider(payload.providerId);
+  if (!stored) {
+    throw new ProviderError(ProviderErrorCode.INVALID_PROVIDER_CONFIG, {
+      providerId: String(payload.providerId || "missing"),
+      message: "本机共享 Provider 不存在。",
+    });
+  }
+  const draft = {
+    ...stored,
+    ...(payload.provider || {}),
+    id: stored.type,
+    apiKey: payload.provider?.apiKey || stored.apiKey,
+  };
+  return runtimeFromPayload({ provider: draft });
 }
 
 function isAllowedExtensionOrigin(req) {
@@ -139,7 +178,7 @@ function safeLogProviderError(publicError) {
 
 async function handleChat(req, res) {
   const payload = await readJson(req);
-  const requestRuntime = runtimeFromPayload(payload);
+  const requestRuntime = runtimeForRequest(payload);
   const { provider, config: providerConfig } = requestRuntime;
   const history = cleanMessages(payload.messages);
   if (!history.length || history[history.length - 1].role !== "user") {
@@ -195,7 +234,7 @@ async function handleChat(req, res) {
 
 async function handleProviderTest(req, res) {
   const payload = await readJson(req, 100_000);
-  const { provider, config } = runtimeFromPayload(payload);
+  const { provider, config } = runtimeForProviderTest(payload);
   try {
     const result = await provider.testConnection(config);
     return json(res, 200, result);
@@ -218,14 +257,19 @@ const server = http.createServer(async (req, res) => {
       if (servePreview(req, res)) return;
     }
     if (req.method === "GET" && req.url === "/health") {
+      const activeRuntime = effectiveDefaultRuntime();
+      const state = providerVault.listState();
       return json(res, 200, {
         ok: true,
         service: "sideask-local-gateway",
-        ...defaultProvider.safeConfigSummary(defaultProviderConfig),
+        ...activeRuntime.provider.safeConfigSummary(activeRuntime.config),
+        providerStorage: state.providers.length ? state.storage : "environment",
+        savedProviders: state.providers.length,
+        defaultProviderId: state.defaultProviderId,
         providers: registry.list().map(item => item.id),
       });
     }
-    if (req.method === "POST" && !isAllowedExtensionOrigin(req)) {
+    if (req.url.startsWith("/api/") && !isAllowedExtensionOrigin(req)) {
       return json(res, 403, { error: { code: "origin_not_allowed", message: "此请求来源不允许访问 SideAsk Local Gateway。", retryable: false } });
     }
     if (req.method === "POST" && !isJsonRequest(req)) {
@@ -233,6 +277,21 @@ const server = http.createServer(async (req, res) => {
     }
     if (req.method === "POST" && req.url === "/api/chat") {
       return await handleChat(req, res);
+    }
+    if (req.method === "GET" && req.url === "/api/providers") {
+      return json(res, 200, providerVault.listState());
+    }
+    if (req.method === "POST" && req.url === "/api/providers") {
+      const payload = await readJson(req, 100_000);
+      return json(res, 200, providerVault.saveProvider(payload.provider || {}));
+    }
+    if (req.method === "POST" && req.url === "/api/providers/default") {
+      const payload = await readJson(req, 20_000);
+      return json(res, 200, { providerId: providerVault.setDefaultProvider(payload.providerId) });
+    }
+    if (req.method === "POST" && req.url === "/api/providers/delete") {
+      const payload = await readJson(req, 20_000);
+      return json(res, 200, { deleted: providerVault.deleteProvider(payload.providerId) });
     }
     if (req.method === "POST" && req.url === "/api/providers/test") {
       return await handleProviderTest(req, res);
@@ -251,12 +310,15 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, "127.0.0.1", () => {
-  const summary = defaultProvider.safeConfigSummary(defaultProviderConfig);
+  const activeRuntime = effectiveDefaultRuntime();
+  const summary = activeRuntime.provider.safeConfigSummary(activeRuntime.config);
+  const providerState = providerVault.listState();
   console.log(`\nSideAsk Local Gateway running: http://127.0.0.1:${PORT}`);
   console.log(`Provider: ${summary.displayName}`);
   console.log(`Model: ${summary.model || "missing"}`);
   console.log(`Endpoint: ${summary.endpoint}`);
   console.log(`API key: ${summary.apiKeyConfigured ? `configured ✓${summary.keyType ? ` (${summary.keyType})` : ""}` : "missing ✗"}`);
+  console.log(`Provider storage: ${providerState.providers.length ? `local encrypted vault (${providerState.providers.length})` : "environment fallback"}`);
   console.log(`Health: http://127.0.0.1:${PORT}/health\n`);
   console.log(`Preview: http://127.0.0.1:${PORT}/preview/\n`);
 });

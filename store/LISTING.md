@@ -29,13 +29,13 @@ Why SideAsk:
 - Safe Markdown answers with code, lists, tables, quotes, and links.
 - Simple Recent, Favorites, and Settings views.
 - 25 Provider presets including OpenAI, Anthropic, Gemini, OpenRouter, Vercel AI Gateway, Perplexity, Fireworks AI, DeepSeek, Qwen, local Ollama, and custom OpenAI-compatible endpoints.
-- Bring your own API key; no SideAsk account is required.
+- Configure your Provider once and share it locally with the optional VS Code Companion; no SideAsk account is required.
 - English and Simplified Chinese interface and answer language.
 - Open source under the MIT License.
 
 SideAsk requires the free local Gateway and an API key for a supported Provider. The first-run guide checks the Gateway, opens Provider setup, explains data handling, requests optional website access, and includes a real selection practice page.
 
-Only text you deliberately select, a small amount of nearby readable context, a sanitized source URL, and the active side-question messages are sent through the Gateway to the Provider you choose. Passwords, form fields, editor drafts, unrelated history, telemetry, and advertising data are excluded. Provider keys, recent questions, and favorites remain in extension-private local storage.
+Only text you deliberately select, a small amount of nearby readable context, a sanitized source URL, and the active side-question messages are sent through the Gateway to the Provider you choose. Passwords, form fields, editor drafts, unrelated history, telemetry, and advertising data are excluded. Provider keys stay encrypted in the Gateway's on-device Vault; recent questions and favorites remain in extension-private local storage.
 
 ### Search terms
 
@@ -59,13 +59,13 @@ SideAsk 可以帮你：
 - 安全显示 Markdown、代码、列表、表格、引用与链接。
 - 简洁的“最近、收藏、设置”三个页面。
 - 25 个 Provider 预设，覆盖 OpenAI、Anthropic、Gemini、OpenRouter、Vercel AI Gateway、Perplexity、Fireworks AI、DeepSeek、Qwen、本机 Ollama 与自定义 OpenAI-compatible 地址。
-- 使用自己的 API Key，不需要 SideAsk 账户。
+- Provider 在本机配置一次，并可与可选的 VS Code Companion 共用；不需要 SideAsk 账户。
 - 在中文与英文界面、回答语言之间切换。
 - 以 MIT License 完全开源。
 
 SideAsk 需要免费的本地 Gateway，以及一个受支持 Provider 的 API Key。首次使用引导会检查 Gateway、打开 Provider 配置、说明数据处理方式、申请可选网页访问权，并提供真实划词练习页。
 
-只有你主动选中的文字、少量附近可读上下文、经过清理的来源 URL，以及当前支线消息会经由本地 Gateway 发送给你选择的 Provider。密码、表单字段、编辑器草稿、无关历史、遥测与广告数据都会被排除。Provider Key 与学习记录保存在扩展私有本地存储中。
+只有你主动选中的文字、少量附近可读上下文、经过清理的来源 URL，以及当前支线消息会经由本地 Gateway 发送给你选择的 Provider。密码、表单字段、编辑器草稿、无关历史、遥测与广告数据都会被排除。Provider Key 加密保存在 Gateway 本机 Vault；最近问题与收藏保存在扩展私有本地存储中。
 
 ### 搜索词
 

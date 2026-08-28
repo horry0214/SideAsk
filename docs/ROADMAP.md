@@ -4,7 +4,7 @@
 
 ## Phase 0 — Stabilize & Brand
 
-状态：**已完成并在 v0.5.0 扩展**
+状态：**已完成并持续维护**
 
 目标：为现有 MVP 建立可维护基线，不改变核心使用路径。
 
@@ -77,3 +77,17 @@
 验收：划词、解释、追问、回到原文、最近历史、收藏与设置均可独立完成；升级不会丢失旧记录。
 
 后续候选项只接受“小而直接”的能力：快捷键、复制/导出、回答深度、来源 Anchor 强化和可选备份。账户、云同步、知识图谱、复习系统与完整对话导入继续延后。
+
+## Phase 5 — SideAsk Anywhere
+
+状态：**已完成（v0.6.0）**
+
+目标：把“选中、提问、回到主线”的轻量体验扩展到 VS Code，同时避免第二套 Provider 配置。
+
+- 编辑器选区与显式剪贴板入口。
+- 独立流式 Markdown 支线面板、快捷问题、追问与回到选区。
+- 浏览器与 VS Code 共用 25 个 Provider Catalog 和同一个 Gateway。
+- Gateway 本机加密 Provider Vault；配置一次，两端共用。
+- 旧浏览器 IndexedDB 和 VS Code Secret Storage Provider 非破坏迁移。
+
+验收：浏览器与 VS Code 均可独立提问；任一端修改共享默认 Provider 后另一端立即可见；配置 API 不返回 Key；Vault 落盘无明文 Key；无需账户和云服务。

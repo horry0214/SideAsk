@@ -12,7 +12,7 @@ extension/provider-catalog.js
             └─ Anthropic Messages adapter
 ```
 
-The extension settings UI, IndexedDB validation, Gateway registry, environment-variable fallback, and store package all use the same catalog. Adding another compatible service normally requires one profile rather than UI, storage, and server branches.
+The browser settings UI, VS Code Companion, Gateway registry, Local Provider Vault, environment-variable fallback, and store package use the same catalog. Adding another compatible service normally requires one profile rather than UI, storage, and server branches.
 
 ## Included profiles
 
@@ -77,8 +77,16 @@ The OpenAI-compatible parser forwards answer content from `choices[0].delta.cont
 
 ## Configuration and compatibility
 
-Browser profiles are stored in extension-private IndexedDB. The Service Worker adds the selected profile only when calling the loopback Gateway; API keys never enter the page content script.
+Profiles are stored once in the Gateway's on-device Provider Vault. API keys are encrypted with AES-256-GCM using a separate random local key and are never returned by the configuration API. Browser and VS Code clients receive only redacted metadata; the Gateway resolves their shared default internally. API keys never enter page content scripts or VS Code Webviews. Existing browser IndexedDB and VS Code Secret Storage records are migrated non-destructively.
 
-When no browser profile is configured, the Gateway uses `.env`. Every catalog profile accepts the generic `SIDEASK_API_KEY`, `SIDEASK_MODEL`, and `SIDEASK_BASE_URL` variables, plus profile-specific names derived from its ID, such as `ANTHROPIC_API_KEY`. MiniMax and Custom OpenAI-compatible legacy variables remain supported.
+Default Vault locations:
+
+- Windows: `%APPDATA%\SideAsk`
+- macOS: `~/Library/Application Support/SideAsk`
+- Linux: `$XDG_CONFIG_HOME/sideask` or `~/.config/sideask`
+
+The directory contains `provider-vault.json` and a separate `.provider-vault-key`. `SIDEASK_DATA_DIR` overrides the location for portable or development setups. Encryption protects credentials from casual plaintext disclosure; software running as the same OS user remains inside the local trust boundary, so the directory should not be synced or shared casually. Stop the Gateway and remove that directory only when intentionally deleting all shared Provider configuration.
+
+When no shared profile is configured, the Gateway uses `.env`. Every catalog profile accepts the generic `SIDEASK_API_KEY`, `SIDEASK_MODEL`, and `SIDEASK_BASE_URL` variables, plus profile-specific names derived from its ID, such as `ANTHROPIC_API_KEY`. MiniMax and Custom OpenAI-compatible legacy variables remain supported.
 
 Local profiles do not require an API key. Remote profiles do. Provider errors are normalized and logs never contain credentials, Authorization headers, prompts, or raw upstream error bodies.

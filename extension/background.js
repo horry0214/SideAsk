@@ -4,6 +4,7 @@ const SERVER_URL = "http://127.0.0.1:8787";
 const PAGE_ORIGINS = ["http://*/*", "https://*/*"];
 const PAGE_SCRIPT_ID = "sideask-page";
 const CONSENT_KEY = "sideaskDataConsentV1";
+const PROVIDER_VAULT_MIGRATION_KEY = "sharedProviderVaultMigratedV1";
 
 async function readJsonResponse(response) {
   const text = await response.text();
@@ -30,10 +31,22 @@ async function requestGateway(path, options = {}) {
   }
 }
 
-function providerForGateway(provider) {
+function providerDraftForGateway(provider) {
   if (!provider) return null;
   return {
     id: provider.type,
+    displayName: provider.displayName,
+    baseUrl: provider.baseUrl,
+    apiKey: provider.apiKey,
+    model: provider.model,
+  };
+}
+
+function providerForVault(provider) {
+  if (!provider) return null;
+  return {
+    id: provider.id,
+    type: provider.type,
     displayName: provider.displayName,
     baseUrl: provider.baseUrl,
     apiKey: provider.apiKey,
@@ -49,6 +62,55 @@ async function initializeStorage() {
 const storageReady = initializeStorage().catch(error => {
   console.error(`[Storage] ${error instanceof Error ? error.message : "initialization failed"}`);
 });
+
+let providerVaultMigrationPromise = null;
+
+async function migrateProvidersToSharedVault() {
+  const sharedState = await requestGateway("/api/providers");
+  const migrated = await sideAskStorage.getSetting(PROVIDER_VAULT_MIGRATION_KEY);
+  if (migrated?.value) return sharedState;
+
+  const localState = await sideAskStorage.listProviderState();
+  const sharedProviders = [...(sharedState.providers || [])];
+  for (const provider of localState.providers || []) {
+    const alreadyShared = sharedProviders.find(item => item.id === provider.id
+      || (item.type === provider.type && item.baseUrl === provider.baseUrl && item.model === provider.model));
+    if (alreadyShared) continue;
+    const complete = await sideAskStorage.getProvider(provider.id);
+    if (!complete) continue;
+    const imported = await requestGateway("/api/providers", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ provider: providerForVault(complete) }),
+    });
+    sharedProviders.push(imported);
+  }
+  if (!sharedState.defaultProviderId && localState.defaultProviderId) {
+    const localDefault = (localState.providers || []).find(item => item.id === localState.defaultProviderId);
+    const sharedDefault = sharedProviders.find(item => item.id === localState.defaultProviderId
+      || (localDefault && item.type === localDefault.type && item.baseUrl === localDefault.baseUrl && item.model === localDefault.model));
+    if (sharedDefault) {
+      await requestGateway("/api/providers/default", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ providerId: sharedDefault.id }),
+      });
+    }
+  }
+  await sideAskStorage.setSetting(PROVIDER_VAULT_MIGRATION_KEY, true);
+  return requestGateway("/api/providers");
+}
+
+async function ensureSharedProviderVault() {
+  if (!providerVaultMigrationPromise) {
+    providerVaultMigrationPromise = migrateProvidersToSharedVault().catch(error => {
+      providerVaultMigrationPromise = null;
+      throw error;
+    });
+  }
+  await providerVaultMigrationPromise;
+  return requestGateway("/api/providers");
+}
 
 async function injectIntoTab(tabId) {
   if (!tabId) return;
@@ -171,34 +233,46 @@ async function handleExtensionMessage(message) {
     case "sideask-gateway-health":
       return { ok: true, data: await requestGateway("/health") };
     case "sideask-provider-state":
-      return { ok: true, data: await sideAskStorage.listProviderState() };
+      return { ok: true, data: await ensureSharedProviderVault() };
     case "sideask-provider-save":
-      return { ok: true, data: await sideAskStorage.saveProvider(message.provider) };
+      await ensureSharedProviderVault();
+      return { ok: true, data: await requestGateway("/api/providers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider: message.provider }),
+      }) };
     case "sideask-provider-delete":
-      return { ok: true, data: await sideAskStorage.deleteProvider(message.providerId) };
+      await ensureSharedProviderVault();
+      return { ok: true, data: await requestGateway("/api/providers/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ providerId: message.providerId }),
+      }) };
     case "sideask-provider-default":
-      return { ok: true, data: await sideAskStorage.setDefaultProvider(message.providerId) };
+      await ensureSharedProviderVault();
+      return { ok: true, data: await requestGateway("/api/providers/default", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ providerId: message.providerId }),
+      }) };
     case "sideask-provider-test": {
-      const provider = await sideAskStorage.getProvider(message.providerId);
-      if (!provider) throw new Error("Provider 不存在。请先保存配置。");
+      await ensureSharedProviderVault();
       const data = await requestGateway("/api/providers/test", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ provider: providerForGateway(provider) }),
+        body: JSON.stringify({ providerId: message.providerId }),
       });
       return { ok: true, data };
     }
     case "sideask-provider-test-draft": {
-      const existing = message.providerId ? await sideAskStorage.getProvider(message.providerId) : null;
-      const draft = {
-        ...(existing || {}),
-        ...(message.provider || {}),
-        apiKey: message.provider?.apiKey || existing?.apiKey || "",
-      };
+      await ensureSharedProviderVault();
       const data = await requestGateway("/api/providers/test", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ provider: providerForGateway(draft) }),
+        body: JSON.stringify({
+          ...(message.providerId ? { providerId: message.providerId } : {}),
+          provider: providerDraftForGateway(message.provider),
+        }),
       });
       return { ok: true, data };
     }
@@ -263,11 +337,8 @@ chrome.runtime.onConnect.addListener(port => {
     try {
       armTimeout();
       await storageReady;
-      const activeProvider = await sideAskStorage.getActiveProvider();
-      const payload = {
-        ...message.payload,
-        ...(activeProvider ? { provider: providerForGateway(activeProvider) } : {}),
-      };
+      await ensureSharedProviderVault();
+      const payload = { ...message.payload };
       const response = await fetch(`${SERVER_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

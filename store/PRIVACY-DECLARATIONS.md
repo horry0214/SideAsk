@@ -8,7 +8,7 @@ SideAsk lets a user ask context-aware AI questions about text they deliberately 
 
 ### `storage`
 
-Stores the interface locale, consent record, and migration metadata in extension-local storage. Learning records and Provider settings are stored in extension-private IndexedDB. Nothing is synced to a SideAsk cloud service.
+Stores the interface locale, consent record, migration metadata, recent side questions, favorites, and source anchors in extension-private local storage. Provider settings are stored separately in the loopback Gateway's encrypted on-device Vault so the browser and optional VS Code Companion can share them. Nothing is synced to a SideAsk cloud service.
 
 ### `scripting`
 
@@ -36,7 +36,7 @@ Declare conservatively:
 
 - Website content: selected text, minimal nearby readable context, sanitized source URL.
 - User-generated content: the user's question and follow-up messages.
-- Authentication information: Provider API keys are entered by the user and stored only in extension-private IndexedDB; they are sent only to the user's local Gateway for Provider authentication.
+- Authentication information: Provider API keys are entered by the user and stored only in the local Gateway's encrypted on-device Vault. Saved keys are never returned to the extension and are used only by the Gateway for authentication with the user's chosen Provider.
 
 SideAsk does not collect analytics, browsing history, location, financial data, health data, contacts, or advertising identifiers. It does not sell data or use it for advertising, credit, or unrelated profiling.
 

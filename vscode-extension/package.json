@@ -1,0 +1,141 @@
+{
+  "name": "sideask-vscode",
+  "displayName": "%extension.displayName%",
+  "description": "%extension.description%",
+  "publisher": "sideask",
+  "version": "0.6.0",
+  "license": "MIT",
+  "homepage": "https://github.com/horry0214/sideask",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/horry0214/sideask.git"
+  },
+  "bugs": {
+    "url": "https://github.com/horry0214/sideask/issues"
+  },
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "extensionKind": [
+    "ui"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": true
+  },
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "keywords": [
+    "ai",
+    "selection",
+    "explain code",
+    "side question",
+    "byok"
+  ],
+  "main": "./src/extension.js",
+  "activationEvents": [
+    "onCommand:sideask.askSelection",
+    "onCommand:sideask.askClipboard",
+    "onCommand:sideask.openPanel",
+    "onCommand:sideask.configureProvider",
+    "onCommand:sideask.newConversation"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "sideask.askSelection",
+        "title": "%command.askSelection%",
+        "category": "SideAsk",
+        "icon": "$(sparkle)"
+      },
+      {
+        "command": "sideask.askClipboard",
+        "title": "%command.askClipboard%",
+        "category": "SideAsk"
+      },
+      {
+        "command": "sideask.openPanel",
+        "title": "%command.openPanel%",
+        "category": "SideAsk"
+      },
+      {
+        "command": "sideask.configureProvider",
+        "title": "%command.configureProvider%",
+        "category": "SideAsk"
+      },
+      {
+        "command": "sideask.newConversation",
+        "title": "%command.newConversation%",
+        "category": "SideAsk"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "sideask.askSelection",
+          "when": "editorHasSelection",
+          "group": "navigation@8"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "sideask.askSelection",
+          "when": "editorHasSelection"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "sideask.askSelection",
+        "key": "alt+shift+a",
+        "mac": "cmd+alt+a",
+        "when": "editorTextFocus && editorHasSelection"
+      }
+    ],
+    "configuration": {
+      "title": "SideAsk",
+      "properties": {
+        "sideask.gatewayUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:8787",
+          "description": "%configuration.gatewayUrl%"
+        },
+        "sideask.language": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "zh-CN",
+            "en"
+          ],
+          "enumDescriptions": [
+            "%configuration.language.auto%",
+            "%configuration.language.zhCN%",
+            "%configuration.language.en%"
+          ],
+          "default": "auto",
+          "description": "%configuration.language%"
+        },
+        "sideask.surroundingLines": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 50,
+          "default": 18,
+          "description": "%configuration.surroundingLines%"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "check": "node --check src/extension.js && node --check src/context.js && node --check src/gateway.js && node --check src/provider-catalog.js && node --check media/main.js && node --check media/markdown.js && node --check scripts/prepare-package.mjs",
+    "test": "npm run check && node --test --test-isolation=none test/*.test.js",
+    "prepackage": "node scripts/prepare-package.mjs",
+    "package": "vsce package --no-dependencies --out ../dist/sideask-vscode-0.6.0.vsix"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.6.0"
+  }
+}

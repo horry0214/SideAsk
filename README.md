@@ -3,8 +3,8 @@
 </p>
 
 <p align="center">
-  <strong>Select it. Understand it. Keep reading.</strong><br>
-  Context-aware AI explanations beside the source—without a tab switch.
+  <strong>Select anywhere. Ask in place. Stay on track.</strong><br>
+  Context-aware side questions in the browser and VS Code—without interrupting the main task.
 </p>
 
 <p align="center">
@@ -15,6 +15,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-625BF6.svg" alt="MIT License"></a>
   <a href="https://github.com/horry0214/sideask/releases/latest"><img src="https://img.shields.io/github/v/release/horry0214/sideask?color=625BF6" alt="Latest release"></a>
   <img src="https://img.shields.io/badge/Chrome%20%2F%20Edge-Manifest%20V3-7C6CFF.svg" alt="Chrome and Edge Manifest V3">
+  <img src="https://img.shields.io/badge/VS%20Code-Companion-625BF6.svg" alt="VS Code Companion">
   <img src="https://img.shields.io/badge/local--first-BYOK-22C55E.svg" alt="Local-first and BYOK">
   <img src="https://img.shields.io/badge/dependencies-zero-111827.svg" alt="Zero runtime dependencies">
 </p>
@@ -48,6 +49,14 @@ Select 2–500 characters and choose **✦ Explain**. SideAsk sends only the min
 
 Choose **Simple**, **Example**, **Why it matters**, or **Go deeper**; then ask a follow-up, favorite the answer if it is useful, or return to the exact source.
 
+## Let Codex keep working while you ask aside
+
+The v0.6 VS Code Companion brings the same focused workflow into the editor. Select unfamiliar code and press `Alt+Shift+A` to open a separate Markdown conversation beside the file. SideAsk explains the local blocker; Codex or another coding agent keeps its main task and conversation untouched.
+
+For Codex Chat, terminals, and other isolated extension views, copy the intended text and run **SideAsk: Ask about Clipboard**. SideAsk never attempts to inspect another extension's UI.
+
+The Companion shares the loopback Gateway, complete 25-profile catalog, and encrypted on-device Provider Vault with the browser extension. Configure once in either surface and the other immediately uses the same default—without an account or cloud sync. See the [VS Code guide](docs/VSCODE.md).
+
 ## Simple Core
 
 - **Ask beside the page** — explain, request an example, ask why it matters, or go deeper.
@@ -63,7 +72,7 @@ The main interface has only three destinations: **Recent**, **Favorites**, and *
   <br><sub>The management interface stays secondary: Recent, Favorites, and Settings.</sub>
 </p>
 
-## Quick start
+## Quick start — browser
 
 Requirements: **Node.js 20+** and Chrome or Edge. The project has no package dependencies.
 
@@ -85,6 +94,17 @@ For a dashboard-only demo, run <code>npm run preview</code> and open <code>http:
 
 Store-ready Chrome, Edge, Gateway, listing, privacy, and reviewer materials are documented in the [store submission kit](store/README.md).
 
+## Quick start — VS Code
+
+~~~bash
+cd vscode-extension
+npm install
+npm test
+npm run package
+~~~
+
+Install `dist/sideask-vscode-0.6.0.vsix` through **Extensions → … → Install from VSIX…**. Start the same Local Gateway with `npm start`, select code, then press `Alt+Shift+A`. Use **SideAsk: Ask about Clipboard** for text copied from Codex Chat or a terminal.
+
 ## Updating
 
 Store installations update automatically after a reviewed release is published. Git clone and unpacked installations require a pull or file replacement, a Gateway restart, and **Reload** on the browser extensions page. Keep an unpacked extension at the same path whenever possible so its local storage remains attached to the same extension ID.
@@ -93,7 +113,7 @@ Follow the complete [English update guide](UPDATING.md), or open the [Chinese gu
 
 ## Bring your own model
 
-SideAsk v0.5 ships a Hermes-inspired declarative Provider Catalog with 25 presets:
+SideAsk includes a Hermes-inspired declarative Provider Catalog with 25 presets:
 
 - First-party: OpenAI, Anthropic, Google Gemini, xAI, MiniMax, DeepSeek, Alibaba Qwen, Z.AI / BigModel, and SiliconFlow.
 - Routers and inference: OpenRouter, Vercel AI Gateway, Perplexity, Hugging Face, Fireworks AI, Groq, Mistral, Together AI, Cerebras, and NVIDIA NIM.
@@ -101,7 +121,7 @@ SideAsk v0.5 ships a Hermes-inspired declarative Provider Catalog with 25 preset
 
 Anthropic uses its native Messages streaming protocol. The other presets share a tested OpenAI-compatible transport where the vendor officially supports it. **Test and fetch models** validates credentials without creating a paid chat completion and fills model suggestions from the Provider's live model catalog.
 
-Provider keys stay in extension-private IndexedDB and are attached by the service worker only when calling the loopback Gateway. They are not exposed to page scripts, logs, or the repository.
+Provider keys are encrypted once in the Gateway's on-device Vault. Browser and VS Code clients receive only redacted metadata and reference the shared default Provider by ID; saved keys are not returned to page scripts, Webviews, logs, or the repository.
 
 See [Provider architecture](docs/PROVIDERS.md) for request normalization, streaming, and the error model.
 
@@ -121,24 +141,24 @@ Read the full [Privacy Policy](PRIVACY.md) and [Security Policy](SECURITY.md).
 ## Architecture
 
 ~~~text
-Web page / ChatGPT
-  └─ Selection + minimal context + source anchor
-       └─ SideAsk floating panel
-            └─ Extension service worker
-                 └─ Local Gateway · 127.0.0.1:8787
-                      └─ Your configured AI Provider
+Browser selection ─ Browser floating panel ─┐
+                                            ├─ Local Gateway · 127.0.0.1:8787
+VS Code selection ─ VS Code side panel ─────┘             └─ Your AI Provider
 
-Extension-private IndexedDB
-  └─ providers · recent side questions · favorites · source anchors
+Gateway Local Provider Vault
+  └─ encrypted Provider credentials shared by browser + VS Code
+
+Browser-private IndexedDB
+  └─ recent side questions · favorites · source anchors
 ~~~
 
 SideAsk uses vanilla JavaScript and CSS with a zero-dependency Node.js Gateway. Existing v0.3 data is preserved when upgrading; the v0.4 interface simply stops asking users to maintain knowledge and weakness states.
 
 ## Project status
 
-Current release candidate: **v0.5.0 Provider Catalog**.
+Current stable release: **v0.6.0 SideAsk Anywhere**.
 
-The working release covers selection, streaming Markdown answers, multi-turn follow-ups, return-to-source anchors, automatic recent history, explicit favorites, bilingual UI, 25 Provider presets, live model discovery, optional website permission, and first-run setup.
+v0.6 adds editor selection, explicit clipboard input for Codex Chat and terminals, an independent VS Code conversation panel, source reveal, bilingual UI, and the encrypted Local Provider Vault shared by both clients.
 
 Small improvements can be added later when they reduce friction without adding a new workflow. See the [roadmap](docs/ROADMAP.md).
 
