@@ -15,7 +15,7 @@ npm start
 
 Keep the terminal open while using SideAsk. The extension's first-run guide will change the Gateway step to **Connected**.
 
-Provider configuration is entered from either the SideAsk browser dashboard or the VS Code Companion and stored once in the Gateway's encrypted on-device Vault. Both clients share the same saved Providers and default model; neither client can retrieve a saved API key. No SideAsk account or cloud sync is involved.
+Provider configuration is entered from either the SideAsk browser dashboard or desktop overlay and stored once in the Gateway's encrypted on-device Vault. Both clients share the same saved Providers and default model; neither client can retrieve a saved API key. No SideAsk account or cloud sync is involved.
 
 On Windows the Vault is normally stored under `%APPDATA%\SideAsk`; macOS and Linux use their standard per-user application-data directories. Keep this directory private. As an alternative or fallback for local development, copy `server/.env.example` to `server/.env` and fill the desired values. Never publish or share that file.
 

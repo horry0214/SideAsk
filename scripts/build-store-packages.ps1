@@ -33,10 +33,13 @@ try {
   $extensionStage = Join-Path $stageRoot 'extension'
   Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'extension') -Destination $extensionStage -Recurse
 
+  $browserZip = Join-Path $OutputRoot "sideask-browser-extension-v$version.zip"
   $chromeZip = Join-Path $OutputRoot "sideask-chrome-web-store-v$version.zip"
   $edgeZip = Join-Path $OutputRoot "sideask-edge-addons-v$version.zip"
-  Compress-DirectoryContents $extensionStage $chromeZip
-  Copy-Item -LiteralPath $chromeZip -Destination $edgeZip -Force
+  Compress-DirectoryContents $extensionStage $browserZip
+  Copy-Item -LiteralPath $browserZip -Destination $chromeZip -Force
+  Copy-Item -LiteralPath $browserZip -Destination $edgeZip -Force
+  Assert-ManifestAtRoot $browserZip
   Assert-ManifestAtRoot $chromeZip
   Assert-ManifestAtRoot $edgeZip
 
@@ -50,7 +53,7 @@ try {
   Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'package.json') -Destination (Join-Path $gatewayStage 'package.json')
   Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'LICENSE') -Destination (Join-Path $gatewayStage 'LICENSE')
   Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'store\GATEWAY-README.md') -Destination (Join-Path $gatewayStage 'README.md')
-  $gatewayZip = Join-Path $OutputRoot 'sideask-gateway.zip'
+  $gatewayZip = Join-Path $OutputRoot "sideask-local-gateway-v$version.zip"
   Compress-DirectoryContents $gatewayStage $gatewayZip
 
   $kitStage = Join-Path $stageRoot "sideask-store-submission-kit-v$version"
@@ -66,7 +69,7 @@ try {
   $kitZip = Join-Path $OutputRoot "sideask-store-submission-kit-v$version.zip"
   Compress-DirectoryContents $kitStage $kitZip
 
-  Get-Item -LiteralPath $chromeZip, $edgeZip, $gatewayZip, $kitZip | Select-Object Name, Length
+  Get-Item -LiteralPath $browserZip, $chromeZip, $edgeZip, $gatewayZip, $kitZip | Select-Object Name, Length
 } finally {
   if (Test-Path -LiteralPath $stageRoot) { Remove-Item -LiteralPath $stageRoot -Recurse -Force }
 }

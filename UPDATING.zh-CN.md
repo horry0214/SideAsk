@@ -2,13 +2,13 @@
 
 [简体中文](UPDATING.zh-CN.md) · [English](UPDATING.md)
 
-SideAsk v0.6 包含三个协同部分：浏览器扩展、可选的 VS Code Companion，以及本地 Gateway。Provider 配置与加密 API Key 保存在 Gateway 的本机 Vault；浏览器最近提问、收藏与来源 Anchor 仍在扩展私有存储中。Gateway 的环境变量回退配置可放在 `server/.env`。
+SideAsk v0.7 由浏览器扩展、独立 Windows 桌面悬浮窗和本地 Gateway 组成；v0.6 的 VS Code Companion 已移除。Provider 配置与加密 API Key 保存在 Gateway 的本机 Vault；浏览器最近提问、收藏与来源 Anchor 仍在扩展私有存储中。Gateway 的环境变量回退配置可放在 `server/.env`。
 
 ## v0.6 迁移说明
 
-先启动 v0.6 Gateway，再打开 Provider 设置。浏览器扩展和 VS Code Companion 会把旧 Provider 记录一次性导入共享 Vault，但不会删除旧记录；如果 Vault 中已经存在相同 Provider，会直接复用而不是重复创建。此后在任一客户端配置或切换默认 Provider，另一端都会立即看到变化。
+先启动 v0.6 或更新的 Gateway，再打开 Provider 设置。浏览器扩展会把旧浏览器 Provider 记录一次性导入共享 Vault，但不会删除旧记录；如果 Vault 中已经存在相同 Provider，会直接复用而不是重复创建。此后在浏览器或桌面端配置、切换默认 Provider，另一端都会立即看到变化。
 
-共享 Vault 默认位于：Windows 的 `%APPDATA%\SideAsk`、macOS 的 `~/Library/Application Support/SideAsk`、Linux 的 `$XDG_CONFIG_HOME/sideask` 或 `~/.config/sideask`。它不会因重新加载扩展或升级 VSIX 而消失。不要把同步这个目录当作账户同步方案。
+共享 Vault 默认位于：Windows 的 `%APPDATA%\SideAsk`、macOS 的 `~/Library/Application Support/SideAsk`、Linux 的 `$XDG_CONFIG_HOME/sideask` 或 `~/.config/sideask`。它不会因重新加载扩展或整体替换桌面应用文件夹而消失。不要把同步这个目录当作账户同步方案。
 
 ## 如何收到版本通知
 
@@ -39,9 +39,11 @@ npm start
 5. 打开 SideAsk 设置，确认显示的扩展版本符合预期。
 6. 打开 `http://127.0.0.1:8787/health`，确认 Gateway 返回 `"ok": true`。
 
-## VS Code Companion
+## Windows 桌面悬浮窗
 
-从同一个 GitHub Release 下载 `sideask-vscode-0.6.0.vsix`，然后在 VS Code 打开 **扩展 → … → 从 VSIX 安装…**。安装新版 VSIX 会原位升级已有 SideAsk Companion。重启同一个 v0.6 Gateway，再运行 **SideAsk: 打开支线面板**，确认界面显示共享 Provider。
+SideAsk Anywhere for Windows 目前使用便携文件夹，而不是原位更新的安装器。先从系统托盘彻底退出 SideAsk，下载新版 Windows x64 ZIP 并解压到临时目录，然后整体替换旧应用文件夹。不要只复制 `SideAsk.exe`；同版本的 DLL、UI、runtime 与许可证目录都属于应用的一部分。
+
+`%APPDATA%\SideAsk` 下的加密 Provider Vault 与桌面偏好位于应用目录之外，不会被替换。更新后运行 `SideAsk.exe`，在另一个应用选中文字并按 `Alt+Shift+A`，确认 Provider 标识和流式回答正常。如果开启了“划词后显示解释按钮”，再拖选一段文字、点击旁边的小 **✦ 解释**，确认悬浮窗正常打开。预览包尚未签名，运行前应核对 Release 校验值。
 
 ## 下载 ZIP / 加载已解压扩展
 

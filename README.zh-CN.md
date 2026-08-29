@@ -3,8 +3,14 @@
 </p>
 
 <p align="center">
-  <strong>随处划词，原地提问，主线不断。</strong><br>
-  在浏览器和 VS Code 中发起上下文支线，不打断正在进行的主任务。
+  <strong>网页划词，原地提问，主线不断。</strong><br>
+  一个以浏览器扩展为主的 AI 解释层，并可通过轻量 Windows Companion 把同样体验带到任何地方。
+</p>
+
+<p align="center">
+  <a href="https://github.com/horry0214/sideask/releases/download/v0.7.0/sideask-browser-extension-v0.7.0.zip"><strong>下载浏览器扩展</strong></a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/horry0214/sideask/releases/download/v0.7.0/sideask-desktop-v0.7.0-windows-x64.zip">下载 SideAsk Anywhere for Windows</a>
 </p>
 
 <p align="center">
@@ -15,7 +21,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-625BF6.svg" alt="MIT License"></a>
   <a href="https://github.com/horry0214/sideask/releases/latest"><img src="https://img.shields.io/github/v/release/horry0214/sideask?color=625BF6" alt="最新版本"></a>
   <img src="https://img.shields.io/badge/Chrome%20%2F%20Edge-Manifest%20V3-7C6CFF.svg" alt="Chrome and Edge Manifest V3">
-  <img src="https://img.shields.io/badge/VS%20Code-Companion-625BF6.svg" alt="VS Code Companion">
+  <img src="https://img.shields.io/badge/Windows-WebView2%20Overlay-625BF6.svg" alt="Windows WebView2 悬浮窗">
   <img src="https://img.shields.io/badge/local--first-BYOK-22C55E.svg" alt="Local-first and BYOK">
 </p>
 
@@ -48,13 +54,13 @@ SideAsk 把问题留在原文旁边：
 
 你可以选择**简单解释、举个例子、为什么重要、深入理解**，随后继续追问；真正有用时收藏，弄懂后回到原文。
 
-## Codex 继续工作，SideAsk 回答支线
+## 喜欢网页端？把 SideAsk 带到 Windows 的任何地方
 
-v0.6 VS Code Companion 把相同的轻量工作流带进编辑器。选中陌生代码并按 `Alt+Shift+A`，SideAsk 会在文件旁打开独立的 Markdown 对话；它只解决眼前卡点，不改变文件，也不会污染 Codex 或其他编程 Agent 正在进行的主对话。
+浏览器扩展始终是 SideAsk 的主体验。可选的 **SideAsk Anywhere for Windows** Companion 把同样的划词优先流程带到浏览器插件够不到的地方。选中陌生代码、PDF 句子、终端输出或任意 Windows 应用中的文字，按 `Alt+Shift+A`；也可以在设置中开启一次**划词后显示解释按钮**，之后鼠标拖选或双击选词，选区旁就会出现一个小小的 **✦ 解释**。只有点击按钮后才会发送。该选项默认关闭，也可以随时关闭。
 
-对于 Codex Chat、终端和其他隔离的扩展界面，先复制目标文字，再运行 **SideAsk: 询问剪贴板内容**。SideAsk 不会尝试检查另一个扩展的界面。
+桌面端复用系统 WebView2，与浏览器插件共用 loopback Gateway、25 个 Provider Catalog 和本机加密 Vault。在任一入口配置一次，另一端立即使用同一个默认 Provider；不需要账户或云同步。桌面端只携带主动选区，不会检查另一个原生应用的周围内容。
 
-Companion 与浏览器插件共用本机 Gateway、完整的 25 个 Provider Catalog 和加密 Provider Vault。在任一入口配置一次，另一端立即使用同一个默认 Provider；不需要账户或云同步。详见 [VS Code 中文指南](docs/VSCODE.zh-CN.md)。
+Codex 或其他编程 Agent 的任务与对话保持不变。详见[桌面悬浮窗指南](docs/DESKTOP.zh-CN.md)。
 
 ## Simple Core
 
@@ -93,16 +99,18 @@ npm start
 
 Chrome、Edge、Gateway、商店文案、隐私声明与审核说明都整理在[商店提交包](store/README.md)中。
 
-## 快速开始 — VS Code
+## 快速开始 — SideAsk Anywhere for Windows
 
-~~~bash
-cd vscode-extension
-npm install
-npm test
-npm run package
+下载 Windows x64 ZIP 并完整解压，运行 `SideAsk.exe`，在任意应用选中文字后按 `Alt+Shift+A`。如果希望复用网页端的交互，可在设置中开启**划词后显示解释按钮**，鼠标选词后会先出现一个小按钮。发布目录已经携带 Local Gateway 与 Node.js；当前 Windows 10/11 通常已自带所需的 WebView2 Runtime。
+
+在 Windows 从源码构建：
+
+~~~powershell
+npm run desktop:test
+npm run package:desktop
 ~~~
 
-在 **扩展 → … → 从 VSIX 安装…** 中选择 `dist/sideask-vscode-0.6.0.vsix`。运行 `npm start` 启动同一个 Local Gateway，选中代码后按 `Alt+Shift+A`；从 Codex Chat 或终端复制的文字可通过 **SideAsk: 询问剪贴板内容** 带入。
+安装、隐私边界与构建说明见[桌面悬浮窗中文指南](docs/DESKTOP.zh-CN.md)。Windows 包尚未做代码签名；若 SmartScreen 提示无法识别，应先核对 Release 校验值。
 
 ## 更新
 
@@ -120,7 +128,7 @@ SideAsk 按照 Hermes 的思路加入声明式 Provider Catalog，共 25 个预�
 
 Anthropic 使用原生 Messages 流协议；其他预设在供应商官方支持时共用经过测试的 OpenAI-compatible 传输。“检测连接并获取模型”不会发起付费对话，并可从 Provider 的实时模型目录补充建议。
 
-Key 只在 Gateway 的本机 Vault 加密保存一次。浏览器与 VS Code 只能取得脱敏元数据，并通过 ID 使用共享默认 Provider；已保存 Key 不会返回网页脚本、Webview、日志或仓库。
+Key 只在 Gateway 的本机 Vault 加密保存一次。浏览器与桌面端只能取得脱敏元数据，并通过 ID 使用共享默认 Provider；已保存 Key 不会返回网页脚本、WebView、日志或仓库。
 
 ## 隐私边界
 
@@ -133,6 +141,8 @@ SideAsk 只发送：
 
 密码、表单、编辑器、<code>contenteditable</code>、显式敏感节点、脚本和样式都会被排除。Gateway 只监听 loopback；最近提问、收藏、来源 Anchor 和 Provider 配置保存在本地。
 
+“附近可读块”和来源 URL 只适用于浏览器插件。桌面悬浮窗无法检查另一个原生应用，因此只发送主动选区和当前支线消息。
+
 详见[隐私说明](PRIVACY.zh-CN.md)与[安全策略](SECURITY.zh-CN.md)。
 
 ## 架构
@@ -140,10 +150,10 @@ SideAsk 只发送：
 ~~~text
 浏览器划词 ─ 浏览器悬浮窗 ─┐
                             ├─ Local Gateway · 127.0.0.1:8787
-VS Code 划词 ─ 独立支线面板 ┘             └─ 用户的 AI Provider
+桌面划词 ─ WebView2 悬浮窗 ┘             └─ 用户的 AI Provider
 
 Gateway 本机 Provider Vault
-  └─ 浏览器与 VS Code 共用的加密 Provider 凭据
+  └─ 浏览器与桌面端共用的加密 Provider 凭据
 
 浏览器私有 IndexedDB
   └─ 最近支线 · 收藏 · 来源 Anchor
@@ -153,9 +163,9 @@ SideAsk 使用原生 JavaScript/CSS 与零依赖 Node.js Gateway。升级时不�
 
 ## 当前状态
 
-当前稳定版：**v0.6.0 SideAsk Anywhere**。
+当前稳定版：**v0.7.0 Browser First + SideAsk Anywhere**。
 
-v0.6 加入编辑器划词、Codex Chat/终端显式剪贴板入口、独立 VS Code 对话面板、回到选区、中英文界面，以及两个客户端共用的本机加密 Provider Vault。
+浏览器扩展是主产品；SideAsk Anywhere for Windows 是面向 VS Code、PDF、终端和原生应用的可选 Companion，提供选区旁解释按钮、全局快捷键、指针附近悬浮窗、流式 Markdown、系统托盘，以及同一个本机加密 Provider Vault。v0.6 的 VS Code 面板会新开一栏、与编辑器自带对话重复，已经从项目中移除。
 
 后续只加入能够降低摩擦、且不会创造新工作流的小功能。完整规划见[路线图](docs/ROADMAP.md)。
 

@@ -1,6 +1,6 @@
 {
   "name": "sideask",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "description": "SideAsk — AI side-question layer. Ask aside. Stay on track.",
@@ -18,8 +18,11 @@
     "start": "node server/server.mjs",
     "preview": "node server/server.mjs --port 8788",
     "test": "node server/test/run.mjs",
-    "check": "node --check extension/background.js && node --check extension/content.js && node --check extension/i18n.js && node --check extension/markdown.js && node --check extension/options.js && node --check extension/practice.js && node --check extension/preview-data.js && node --check extension/provider-catalog.js && node --check extension/storage.js && node --check extension/welcome.js && node --check server/prompt.mjs && node --check server/provider-vault.mjs && node --check server/providers/anthropic.mjs && node --check server/providers/index.mjs && node --check server/server.mjs && node scripts/verify-mvp.mjs && node server/test/run.mjs && npm --prefix vscode-extension test",
-    "package:vscode": "npm --prefix vscode-extension run package"
+    "check": "node --check extension/background.js && node --check extension/content.js && node --check extension/i18n.js && node --check extension/markdown.js && node --check extension/options.js && node --check extension/practice.js && node --check extension/preview-data.js && node --check extension/provider-catalog.js && node --check extension/storage.js && node --check extension/welcome.js && node --check server/prompt.mjs && node --check server/provider-vault.mjs && node --check server/providers/anthropic.mjs && node --check server/providers/index.mjs && node --check server/server.mjs && node scripts/verify-mvp.mjs && node server/test/run.mjs && npm --prefix desktop-app test",
+    "desktop:start": "npm --prefix desktop-app start",
+    "desktop:test": "npm --prefix desktop-app test",
+    "package:desktop": "npm --prefix desktop-app run package:win",
+    "package:browser": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-store-packages.ps1"
   },
   "engines": {
     "node": ">=20"

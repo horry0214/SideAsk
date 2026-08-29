@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>SideAsk</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell" id="app-shell">
+    <header class="titlebar" data-window-drag>
+      <div class="drag-grip" aria-hidden="true"></div>
+      <div class="brand">
+        <img src="../assets/sideask-mark.svg" alt="" class="brand-mark">
+        <div class="brand-copy">
+          <strong>SideAsk</strong>
+          <span id="brand-tagline">问题走支线，思路留主线</span>
+        </div>
+      </div>
+      <div class="window-actions">
+        <button type="button" class="icon-button language-button" id="language-button" title="English">EN</button>
+        <button type="button" class="icon-button" id="settings-button" title="设置" aria-label="设置">
+          <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h10m4 0h2M4 17h2m4 0h10M14 4v6M6 14v6"/></svg>
+        </button>
+        <button type="button" class="icon-button" id="pin-button" title="固定窗口" aria-label="固定窗口" aria-pressed="false">
+          <svg class="button-icon pin-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4h10l-1 6 3 3v2H5v-2l3-3-1-6Zm5 11v5"/></svg>
+        </button>
+        <button type="button" class="icon-button" id="hide-button" title="隐藏" aria-label="隐藏">
+          <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 12h12"/></svg>
+        </button>
+        <button type="button" class="icon-button" id="close-button" title="关闭" aria-label="关闭">
+          <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m7 7 10 10M17 7 7 17"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="context-card" id="context-card">
+      <div class="context-meta">
+        <span id="selected-label">你选中了</span>
+        <span class="source-title" id="source-title">桌面选区</span>
+      </div>
+      <div class="selection-text empty" id="selection-text">在任意应用中选中文字，然后按全局快捷键</div>
+      <div class="quick-actions" id="quick-actions">
+        <button type="button" data-action="simple">简单解释</button>
+        <button type="button" data-action="example">举个例子</button>
+        <button type="button" data-action="why">为什么重要</button>
+        <button type="button" data-action="deep">深入理解</button>
+      </div>
+    </section>
+
+    <section class="conversation" id="conversation" aria-live="polite">
+      <div class="empty-state" id="empty-state">
+        <div class="spark">✦</div>
+        <h2 id="empty-title">随处选中，原地理解</h2>
+        <p id="empty-body">选中文字后使用全局快捷键；或开启划词解释按钮。</p>
+        <kbd id="shortcut-label">Alt + Shift + A</kbd>
+      </div>
+      <div class="messages" id="messages"></div>
+    </section>
+
+    <footer class="composer">
+      <div class="provider-strip">
+        <button type="button" id="provider-badge" class="provider-badge">正在连接 Gateway…</button>
+        <span id="stream-status">本机处理</span>
+      </div>
+      <div class="input-row">
+        <textarea id="question-input" rows="1" maxlength="4000" placeholder="继续追问…"></textarea>
+        <button type="button" class="send-button" id="send-button" aria-label="发送">
+          <svg class="send-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5m-5 6 5-6 5 6"/></svg>
+        </button>
+      </div>
+      <div class="footer-actions">
+        <button type="button" class="text-button" id="new-button">＋ 新问题</button>
+        <button type="button" class="text-button" id="return-button">↩ 回到原应用</button>
+      </div>
+    </footer>
+
+    <section class="settings-view" id="settings-view" hidden>
+      <div class="settings-head" data-window-drag>
+        <div class="drag-grip light" aria-hidden="true"></div>
+        <div>
+          <span class="eyebrow">LOCAL PROVIDER VAULT</span>
+          <h2 id="settings-title">本机模型设置</h2>
+          <p id="settings-subtitle">浏览器与桌面小窗共用；配置一次即可。</p>
+        </div>
+        <button type="button" class="icon-button dark" id="settings-close" aria-label="返回">
+          <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m7 7 10 10M17 7 7 17"/></svg>
+        </button>
+      </div>
+      <div class="gateway-card" id="gateway-card">
+        <span class="status-dot"></span>
+        <div><strong id="gateway-title">Local Gateway</strong><small id="gateway-detail">正在检查…</small></div>
+      </div>
+      <div class="preference-card">
+        <div class="preference-copy">
+          <strong id="auto-capture-title">划词后显示解释按钮</strong>
+          <small id="auto-capture-description">拖选或双击选词后显示“✦ 解释”，点击后才发送。</small>
+        </div>
+        <label class="switch" aria-label="划词后显示解释按钮">
+          <input type="checkbox" id="auto-capture-toggle">
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+      <div class="provider-list-head">
+        <strong id="provider-list-title">已保存 Provider</strong>
+        <button type="button" class="primary-small" id="add-provider">＋ 添加</button>
+      </div>
+      <div class="provider-list" id="provider-list"></div>
+      <form class="provider-form" id="provider-form" hidden>
+        <input type="hidden" id="provider-id">
+        <label><span id="provider-type-label">Provider</span><select id="provider-type"></select></label>
+        <label><span id="provider-name-label">显示名称</span><input id="provider-name" maxlength="120" required></label>
+        <label><span>Base URL</span><input id="provider-base-url" maxlength="2000" required></label>
+        <label><span>Model</span><input id="provider-model" maxlength="300" list="model-suggestions" required><datalist id="model-suggestions"></datalist></label>
+        <label><span>API Key</span><input id="provider-api-key" type="password" maxlength="10000" autocomplete="off"><small id="key-hint">Key 只在 Gateway 本机加密保存</small></label>
+        <p class="form-note" id="provider-note"></p>
+        <div class="form-actions">
+          <button type="button" class="secondary" id="cancel-provider">取消</button>
+          <button type="submit" class="primary" id="save-provider">保存并测试</button>
+        </div>
+      </form>
+      <div class="settings-foot"><span id="version-label">SideAsk Desktop</span><span id="privacy-label">无账号 · 无云同步</span></div>
+    </section>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+    <div class="resize-zone resize-top" data-window-resize="top" aria-hidden="true"></div>
+    <div class="resize-zone resize-right" data-window-resize="right" aria-hidden="true"></div>
+    <div class="resize-zone resize-bottom" data-window-resize="bottom" aria-hidden="true"></div>
+    <div class="resize-zone resize-left" data-window-resize="left" aria-hidden="true"></div>
+    <div class="resize-zone resize-top-left" data-window-resize="top-left" aria-hidden="true"></div>
+    <div class="resize-zone resize-top-right" data-window-resize="top-right" aria-hidden="true"></div>
+    <div class="resize-zone resize-bottom-right" data-window-resize="bottom-right" aria-hidden="true"></div>
+    <div class="resize-zone resize-bottom-left" data-window-resize="bottom-left" aria-hidden="true"></div>
+  </main>
+  <script src="native-bridge.js"></script>
+  <script src="../generated/markdown.js"></script>
+  <script type="module" src="renderer.js"></script>
+</body>
+</html>

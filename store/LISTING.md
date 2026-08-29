@@ -29,7 +29,7 @@ Why SideAsk:
 - Safe Markdown answers with code, lists, tables, quotes, and links.
 - Simple Recent, Favorites, and Settings views.
 - 25 Provider presets including OpenAI, Anthropic, Gemini, OpenRouter, Vercel AI Gateway, Perplexity, Fireworks AI, DeepSeek, Qwen, local Ollama, and custom OpenAI-compatible endpoints.
-- Configure your Provider once and share it locally with the optional VS Code Companion; no SideAsk account is required.
+- Configure your Provider once and share it locally with the SideAsk desktop overlay; no SideAsk account is required.
 - English and Simplified Chinese interface and answer language.
 - Open source under the MIT License.
 
@@ -59,7 +59,7 @@ SideAsk 可以帮你：
 - 安全显示 Markdown、代码、列表、表格、引用与链接。
 - 简洁的“最近、收藏、设置”三个页面。
 - 25 个 Provider 预设，覆盖 OpenAI、Anthropic、Gemini、OpenRouter、Vercel AI Gateway、Perplexity、Fireworks AI、DeepSeek、Qwen、本机 Ollama 与自定义 OpenAI-compatible 地址。
-- Provider 在本机配置一次，并可与可选的 VS Code Companion 共用；不需要 SideAsk 账户。
+- Provider 在本机配置一次，并可与 SideAsk 桌面悬浮窗共用；不需要 SideAsk 账户。
 - 在中文与英文界面、回答语言之间切换。
 - 以 MIT License 完全开源。
 

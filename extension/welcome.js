@@ -140,7 +140,10 @@ $("#copy-command").addEventListener("click", async () => {
   await navigator.clipboard.writeText("npm start");
   toast(t("copied"));
 });
-$("#download-gateway").addEventListener("click", () => window.open("https://github.com/horry0214/sideask/releases/latest/download/sideask-gateway.zip", "_blank", "noopener"));
+$("#download-gateway").addEventListener("click", () => {
+  const version = chrome.runtime.getManifest().version;
+  window.open(`https://github.com/horry0214/sideask/releases/download/v${version}/sideask-local-gateway-v${version}.zip`, "_blank", "noopener");
+});
 $("#check-gateway").addEventListener("click", refresh);
 $("#check-provider").addEventListener("click", refresh);
 $("#add-provider").addEventListener("click", () => openExtensionPage("options.html?section=providers&add=1&from=welcome"));

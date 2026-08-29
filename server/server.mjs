@@ -18,6 +18,8 @@ loadDotEnv(path.join(__dirname, ".env"));
 const portFlagIndex = process.argv.indexOf("--port");
 const commandLinePort = portFlagIndex >= 0 ? process.argv[portFlagIndex + 1] : "";
 const PORT = Number(commandLinePort || process.env.PORT || 8787);
+const GATEWAY_API_VERSION = 2;
+const GATEWAY_CAPABILITIES = Object.freeze(["chat-stream", "provider-vault", "provider-test", "model-discovery"]);
 const defaultRuntime = resolveProviderRuntime(process.env);
 const { provider: defaultProvider, registry } = defaultRuntime;
 const providerVault = new ProviderVault({ registry });
@@ -262,6 +264,8 @@ const server = http.createServer(async (req, res) => {
       return json(res, 200, {
         ok: true,
         service: "sideask-local-gateway",
+        gatewayApiVersion: GATEWAY_API_VERSION,
+        capabilities: GATEWAY_CAPABILITIES,
         ...activeRuntime.provider.safeConfigSummary(activeRuntime.config),
         providerStorage: state.providers.length ? state.storage : "environment",
         savedProviders: state.providers.length,

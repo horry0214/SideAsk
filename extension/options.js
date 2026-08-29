@@ -420,7 +420,7 @@ function applyLocale(nextLocale) {
   $("#page-description").textContent = t(TITLES[currentSection][1]);
   populateProviderTypes();
   $("#provider-type").value = getProviderProfile(selectedProviderType)?.id || "minimax-cn";
-  const version = extensionRuntime ? (chrome.runtime.getManifest().version_name || chrome.runtime.getManifest().version) : "0.6.0 SideAsk Anywhere";
+  const version = extensionRuntime ? (chrome.runtime.getManifest().version_name || chrome.runtime.getManifest().version) : "0.7.0 Browser-first + Anywhere";
   $("#version-detail").innerHTML = `SideAsk v${String(version).replace(/^v/, "")}<br>Ask aside. Stay on track.`;
 }
 

@@ -16,9 +16,7 @@ function exists(relativePath) {
 
 const packageJson = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
 const manifest = JSON.parse(fs.readFileSync(path.join(extensionRoot, "manifest.json"), "utf8"));
-const vscodePackage = JSON.parse(fs.readFileSync(path.join(root, "vscode-extension", "package.json"), "utf8"));
 if (manifest.version !== packageJson.version) fail(`Version mismatch: manifest=${manifest.version}, package=${packageJson.version}`);
-if (vscodePackage.version !== packageJson.version) fail(`Version mismatch: vscode=${vscodePackage.version}, package=${packageJson.version}`);
 if (packageJson.license !== "MIT") fail(`Unexpected package license: ${packageJson.license || "missing"}`);
 
 [
@@ -26,7 +24,7 @@ if (packageJson.license !== "MIT") fail(`Unexpected package license: ${packageJs
   "SECURITY.md", "SECURITY.zh-CN.md", "PRIVACY.md", "PRIVACY.zh-CN.md", "CODE_OF_CONDUCT.md", "CODE_OF_CONDUCT.zh-CN.md",
   ".github/ISSUE_TEMPLATE/bug_report.yml", ".github/ISSUE_TEMPLATE/feature_request.yml", ".github/PULL_REQUEST_TEMPLATE.md",
   "docs/PRODUCT.md", "docs/ARCHITECTURE.md", "docs/PROVIDERS.md", "docs/KNOWLEDGE_MODEL.md", "docs/ROADMAP.md",
-  "docs/VSCODE.md", "docs/VSCODE.zh-CN.md", "docs/V060_ACCEPTANCE.md",
+  "docs/DESKTOP.md", "docs/DESKTOP.zh-CN.md",
   "assets/readme/sideask-demo-en.gif", "assets/readme/sideask-demo-zh.gif",
   "assets/readme/sideask-hero-en.jpg", "assets/readme/sideask-hero.jpg", "assets/readme/source/sideask-hero.html",
   "extension/background.js", "extension/content.js", "extension/content.css", "extension/markdown.js", "extension/storage.js",
@@ -34,7 +32,7 @@ if (packageJson.license !== "MIT") fail(`Unexpected package license: ${packageJs
   "extension/options.html", "extension/options.js", "extension/options.css", "extension/preview-data.js",
   "extension/welcome.html", "extension/welcome.js", "extension/welcome.css", "extension/practice.html", "extension/practice.js", "extension/practice.css",
   "extension/_locales/en/messages.json", "extension/_locales/zh_CN/messages.json", "server/server.mjs", "server/provider-vault.mjs", "server/test/run.mjs",
-  "vscode-extension/package.json", "vscode-extension/package-lock.json", "vscode-extension/src/extension.js", "vscode-extension/src/gateway.js", "vscode-extension/test/run.cjs",
+  "desktop-app/package.json", "desktop-app/native/SideAsk.cs", "desktop-app/ui/index.html", "desktop-app/ui/renderer.js", "desktop-app/scripts/build-native.ps1",
   "store/README.md", "store/LISTING.md", "store/PRIVACY-DECLARATIONS.md", "store/REVIEW-NOTES.md", "store/SUBMISSION-CHECKLIST.md",
   "store/PRIVACY-CHROME.md", "store/PRIVACY-EDGE.md", "store/GATEWAY-README.md",
   "store-assets/shared/icon-128.png", "store-assets/shared/edge-logo-300.png", "store-assets/shared/promo-small-440x280.png", "store-assets/shared/promo-marquee-1400x560.png",

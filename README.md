@@ -3,8 +3,14 @@
 </p>
 
 <p align="center">
-  <strong>Select anywhere. Ask in place. Stay on track.</strong><br>
-  Context-aware side questions in the browser and VS Code—without interrupting the main task.
+  <strong>Select on the web. Ask in place. Stay on track.</strong><br>
+  A browser-first AI explanation layer, with an optional Windows companion that brings the same flow anywhere.
+</p>
+
+<p align="center">
+  <a href="https://github.com/horry0214/sideask/releases/download/v0.7.0/sideask-browser-extension-v0.7.0.zip"><strong>Download the browser extension</strong></a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/horry0214/sideask/releases/download/v0.7.0/sideask-desktop-v0.7.0-windows-x64.zip">Get SideAsk Anywhere for Windows</a>
 </p>
 
 <p align="center">
@@ -15,7 +21,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-625BF6.svg" alt="MIT License"></a>
   <a href="https://github.com/horry0214/sideask/releases/latest"><img src="https://img.shields.io/github/v/release/horry0214/sideask?color=625BF6" alt="Latest release"></a>
   <img src="https://img.shields.io/badge/Chrome%20%2F%20Edge-Manifest%20V3-7C6CFF.svg" alt="Chrome and Edge Manifest V3">
-  <img src="https://img.shields.io/badge/VS%20Code-Companion-625BF6.svg" alt="VS Code Companion">
+  <img src="https://img.shields.io/badge/Windows-WebView2%20Overlay-625BF6.svg" alt="Windows WebView2 Overlay">
   <img src="https://img.shields.io/badge/local--first-BYOK-22C55E.svg" alt="Local-first and BYOK">
   <img src="https://img.shields.io/badge/dependencies-zero-111827.svg" alt="Zero runtime dependencies">
 </p>
@@ -49,13 +55,13 @@ Select 2–500 characters and choose **✦ Explain**. SideAsk sends only the min
 
 Choose **Simple**, **Example**, **Why it matters**, or **Go deeper**; then ask a follow-up, favorite the answer if it is useful, or return to the exact source.
 
-## Let Codex keep working while you ask aside
+## Like it in the browser? Take SideAsk anywhere on Windows
 
-The v0.6 VS Code Companion brings the same focused workflow into the editor. Select unfamiliar code and press `Alt+Shift+A` to open a separate Markdown conversation beside the file. SideAsk explains the local blocker; Codex or another coding agent keeps its main task and conversation untouched.
+The browser extension remains the primary SideAsk experience. The optional **SideAsk Anywhere for Windows** companion brings the same selection-first flow to places a browser extension cannot reach. Select unfamiliar code, a PDF sentence, terminal output, or text in another Windows app and press `Alt+Shift+A`. Or enable **Show Explain after selecting text** once: mouse-drag or double-click a selection and a small **✦ Explain** button appears beside it. Nothing is sent until you click the button. The option is off by default and can be disabled at any time.
 
-For Codex Chat, terminals, and other isolated extension views, copy the intended text and run **SideAsk: Ask about Clipboard**. SideAsk never attempts to inspect another extension's UI.
+Desktop reuses the system WebView2 Runtime and shares the loopback Gateway, complete 25-profile catalog, and encrypted Provider Vault with the browser extension. Configure once in either surface and the other immediately uses the same default—without an account or cloud sync. Desktop sends the deliberate selection only; it does not inspect the surrounding contents of another native app.
 
-The Companion shares the loopback Gateway, complete 25-profile catalog, and encrypted on-device Provider Vault with the browser extension. Configure once in either surface and the other immediately uses the same default—without an account or cloud sync. See the [VS Code guide](docs/VSCODE.md).
+Codex or another coding agent keeps its task and conversation untouched. See the [Desktop guide](docs/DESKTOP.md).
 
 ## Simple Core
 
@@ -94,16 +100,18 @@ For a dashboard-only demo, run <code>npm run preview</code> and open <code>http:
 
 Store-ready Chrome, Edge, Gateway, listing, privacy, and reviewer materials are documented in the [store submission kit](store/README.md).
 
-## Quick start — VS Code
+## Quick start — SideAsk Anywhere for Windows
 
-~~~bash
-cd vscode-extension
-npm install
-npm test
-npm run package
+Download and extract the complete Windows x64 ZIP, run `SideAsk.exe`, select text in any app, and press `Alt+Shift+A`. To mirror the browser flow, open Settings and enable **Show Explain after selecting text**; a small button then appears after mouse selection. The release folder bundles the Local Gateway and Node.js; current Windows 10/11 installations normally already include the required WebView2 Runtime.
+
+To build it from source on Windows:
+
+~~~powershell
+npm run desktop:test
+npm run package:desktop
 ~~~
 
-Install `dist/sideask-vscode-0.6.0.vsix` through **Extensions → … → Install from VSIX…**. Start the same Local Gateway with `npm start`, select code, then press `Alt+Shift+A`. Use **SideAsk: Ask about Clipboard** for text copied from Codex Chat or a terminal.
+See the [Desktop installation, privacy, and build guide](docs/DESKTOP.md). The Windows package is not code-signed yet, so verify the release checksum if SmartScreen identifies it as an unrecognized app.
 
 ## Updating
 
@@ -121,7 +129,7 @@ SideAsk includes a Hermes-inspired declarative Provider Catalog with 25 presets:
 
 Anthropic uses its native Messages streaming protocol. The other presets share a tested OpenAI-compatible transport where the vendor officially supports it. **Test and fetch models** validates credentials without creating a paid chat completion and fills model suggestions from the Provider's live model catalog.
 
-Provider keys are encrypted once in the Gateway's on-device Vault. Browser and VS Code clients receive only redacted metadata and reference the shared default Provider by ID; saved keys are not returned to page scripts, Webviews, logs, or the repository.
+Provider keys are encrypted once in the Gateway's on-device Vault. Browser and desktop clients receive only redacted metadata and reference the shared default Provider by ID; saved keys are not returned to page scripts, WebViews, logs, or the repository.
 
 See [Provider architecture](docs/PROVIDERS.md) for request normalization, streaming, and the error model.
 
@@ -136,6 +144,8 @@ SideAsk sends only:
 
 Password fields, forms, editors, <code>contenteditable</code>, explicitly sensitive nodes, scripts, and styles are excluded. The Gateway binds to loopback only. Recent questions, favorites, source anchors, and Provider settings stay local.
 
+The nearby block and source URL apply only to the browser extension. The desktop overlay cannot inspect another native app, so it sends the deliberate selection and active side conversation only.
+
 Read the full [Privacy Policy](PRIVACY.md) and [Security Policy](SECURITY.md).
 
 ## Architecture
@@ -143,10 +153,10 @@ Read the full [Privacy Policy](PRIVACY.md) and [Security Policy](SECURITY.md).
 ~~~text
 Browser selection ─ Browser floating panel ─┐
                                             ├─ Local Gateway · 127.0.0.1:8787
-VS Code selection ─ VS Code side panel ─────┘             └─ Your AI Provider
+Desktop selection ─ WebView2 overlay ───────┘             └─ Your AI Provider
 
 Gateway Local Provider Vault
-  └─ encrypted Provider credentials shared by browser + VS Code
+  └─ encrypted Provider credentials shared by browser + desktop
 
 Browser-private IndexedDB
   └─ recent side questions · favorites · source anchors
@@ -156,9 +166,9 @@ SideAsk uses vanilla JavaScript and CSS with a zero-dependency Node.js Gateway. 
 
 ## Project status
 
-Current stable release: **v0.6.0 SideAsk Anywhere**.
+Current stable release: **v0.7.0 Browser First + SideAsk Anywhere**.
 
-v0.6 adds editor selection, explicit clipboard input for Codex Chat and terminals, an independent VS Code conversation panel, source reveal, bilingual UI, and the encrypted Local Provider Vault shared by both clients.
+The browser extension is the main product. SideAsk Anywhere for Windows is an optional companion for VS Code, PDFs, terminals, and native apps, with a selection-adjacent Explain button, global shortcut activation, a pointer-adjacent overlay, streaming Markdown, tray controls, and the same encrypted Local Provider Vault. The v0.6 VS Code panel was removed because it duplicated the editor UI instead of delivering the lightweight experience SideAsk is built around.
 
 Small improvements can be added later when they reduce friction without adding a new workflow. See the [roadmap](docs/ROADMAP.md).
 

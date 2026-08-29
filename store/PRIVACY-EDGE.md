@@ -10,7 +10,7 @@ After the user deliberately selects text and requests an explanation or sends a 
 
 Password fields, form controls, editable regions, editor drafts, explicitly private or sensitive nodes, scripts, styles, full-page browsing history, unrelated conversation history, analytics, and advertising identifiers are excluded.
 
-Users can delete shared Provider entries from the dashboard, revoke website access from the setup guide, and remove SideAsk from Microsoft Edge to clear its browser-local storage. Removing the extension does not delete the separate Gateway Vault because it may also be used by the VS Code Companion. Data already sent to a chosen AI Provider is governed by that Provider's retention and deletion controls.
+Users can delete shared Provider entries from the dashboard, revoke website access from the setup guide, and remove SideAsk from Microsoft Edge to clear its browser-local storage. Removing the extension does not delete the separate Gateway Vault because it may also be used by the desktop overlay. Data already sent to a chosen AI Provider is governed by that Provider's retention and deletion controls.
 
 SideAsk uses information received through Microsoft Edge extension APIs only to provide or improve its disclosed user-facing side-question, return-to-source, and local learning-history features. It does not sell user data, use it for personalized advertising, or allow SideAsk maintainers to read it.
 

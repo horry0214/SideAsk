@@ -8,7 +8,7 @@ SideAsk lets a user ask context-aware AI questions about text they deliberately 
 
 ### `storage`
 
-Stores the interface locale, consent record, migration metadata, recent side questions, favorites, and source anchors in extension-private local storage. Provider settings are stored separately in the loopback Gateway's encrypted on-device Vault so the browser and optional VS Code Companion can share them. Nothing is synced to a SideAsk cloud service.
+Stores the interface locale, consent record, migration metadata, recent side questions, favorites, and source anchors in extension-private local storage. Provider settings are stored separately in the loopback Gateway's encrypted on-device Vault so the browser and desktop overlay can share them. Nothing is synced to a SideAsk cloud service.
 
 ### `scripting`
 

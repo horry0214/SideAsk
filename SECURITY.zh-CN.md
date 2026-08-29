@@ -15,7 +15,7 @@
 - Gateway 仅绑定 `127.0.0.1`。
 - POST 只接受 JSON，并拒绝普通 `http(s)` 网页 Origin。
 - Provider Key 使用独立随机本机密钥加密保存在 Gateway 本机 Vault，或留在用户自己的 `.env` 回退配置中。
-- 浏览器与 VS Code 配置客户端只能取得脱敏 Provider 元数据。
+- 浏览器与桌面端配置客户端只能取得脱敏 Provider 元数据。
 - Content Script 不接收 Provider Key。
 - 日志只包含 provider id、normalized error code 和 HTTP status。
 - 上游错误正文不会原样返回 UI。

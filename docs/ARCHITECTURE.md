@@ -26,22 +26,27 @@ Configured Provider
 
 当前仍使用原生 JS/CSS 和 Node.js 内置模块，不需要构建或安装依赖。这个约束让 P0 回归成本保持最低。
 
-## VS Code Companion（v0.6）
+## Windows Desktop Overlay（v0.7）
 
 ```text
-VS Code editor selection ─┐
-                          ├─ Context Adapter ─ SideAsk Webview Panel
-Explicit clipboard input ─┘                         │
-                                                   ▼
-                                      SideAsk Local Gateway :8787
-                                                   │
-                                                   ▼
-                                         Configured Provider
+Global shortcut ──────────────┐
+Mouse drag / double-click ────┴─ local selection copy
+                                      │
+                         optional ✦ Explain cue
+                                      │ user clicks
+                                      ▼
+                          WebView2 floating overlay
+                                      │
+                                      ▼
+                         SideAsk Local Gateway :8787
+                                      │
+                                      ▼
+                            Configured Provider
 ```
 
-VS Code 端复用 Gateway 的 `/health`、`/api/chat` 和 `/api/providers/test` 协议。编辑器 Adapter 只提取用户主动选区、文件/语言标识与有限附近行；Codex Chat、终端及其他扩展 Webview 使用显式剪贴板入口，不尝试跨扩展读取界面内容。
+桌面端使用 WPF 管理全局快捷键、可选鼠标选区监听、托盘和窗口行为，界面由系统 WebView2 Runtime 渲染。快捷键会直接读取主动选区并打开悬浮窗；可选模式只在鼠标拖选或双击后显示 **✦ 解释**，用户点击后才向 Gateway 发送选区。桌面端不读取另一个应用的附近内容、不截屏，也不保存全局剪贴板历史。
 
-浏览器与 VS Code 通过配置接口管理共享 `providerId`，但聊天请求默认不携带 Provider 凭据；Gateway 在内部解析共享默认 Provider。Provider 元数据与 AES-256-GCM 密文由 Local Provider Vault 保存；没有共享 Provider 时才回退到 `server/.env`。旧浏览器 IndexedDB 与 VS Code Secret Storage Provider 会进行一次性、非破坏迁移。
+浏览器与桌面端通过配置接口管理共享 `providerId`，但聊天请求默认不携带 Provider 凭据；Gateway 在内部解析共享默认 Provider。Provider 元数据与 AES-256-GCM 密文由 Local Provider Vault 保存；没有共享 Provider 时才回退到 `server/.env`。旧浏览器 IndexedDB Provider 会进行一次性、非破坏迁移。
 
 ## 运行边界
 

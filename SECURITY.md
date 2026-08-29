@@ -17,7 +17,7 @@ Include the affected version, a minimal reproduction, impact, and a suggested mi
 - The gateway binds only to `127.0.0.1`.
 - POST endpoints accept JSON and reject ordinary `http(s)` page origins.
 - Provider keys are encrypted in the Gateway's on-device Vault with a separate random local key, or remain in the user's local `.env` fallback.
-- Browser and VS Code configuration clients receive only redacted Provider metadata.
+- Browser and desktop configuration clients receive only redacted Provider metadata.
 - The content script never receives a provider key.
 - Logs contain only provider id, normalized error code, and HTTP status.
 - Raw upstream error bodies are not returned to the UI.

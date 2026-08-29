@@ -2,7 +2,7 @@
 
 [English](PRIVACY.md) · [简体中文](PRIVACY.zh-CN.md)
 
-SideAsk v0.6.0 is a local-first browser extension and VS Code Companion with no account system, telemetry, advertising SDK, or SideAsk-operated cloud database.
+SideAsk v0.7 is a local-first browser extension and Windows desktop overlay with no account system, telemetry, advertising SDK, or SideAsk-operated cloud database.
 
 ## Consent and website access
 
@@ -14,22 +14,20 @@ On first use, SideAsk displays an in-product disclosure before it reads page con
 - Recent side questions, messages, and source anchors.
 - Favorites explicitly chosen by the user.
 
-Recent browser data stays in extension-private IndexedDB. Provider configuration is stored once in the Gateway's on-device Vault; API keys are encrypted with AES-256-GCM and a separate random local key. Browser and VS Code clients receive only redacted metadata. Legacy browser and VS Code Provider records are imported through a one-time, non-destructive migration.
+Recent browser data stays in extension-private IndexedDB. Provider configuration is stored once in the Gateway's on-device Vault; API keys are encrypted with AES-256-GCM and a separate random local key. Browser and desktop clients receive only redacted metadata. Legacy browser Provider records are imported through a one-time, non-destructive migration.
 
 ## Sent to your provider
 
 - Text you deliberately select.
 - The current readable block and small neighboring snippets.
-- In VS Code, a bounded number of nearby editor lines when the per-request context option is enabled.
-- Text explicitly copied before invoking **Ask about Clipboard**.
 - Recent messages from the active side branch.
 - A source URL stripped of username, password, query, and hash.
 
-These items are sent only after a user deliberately selects text and asks SideAsk to explain it or sends a follow-up. They travel from the extension to the loopback-only SideAsk Gateway on the same computer, and from there to the AI Provider configured by the user. Provider requests use the Provider's HTTPS endpoint. The Provider processes this content under its own terms and privacy policy.
+These items are sent only after a user deliberately asks SideAsk to explain a selection or sends a follow-up. With the desktop option **Show Explain after selecting text**, SideAsk uses Windows UI Automation to confirm and read a non-empty text selection; ordinary drags do not receive an automatic `Ctrl+C`. Nothing is sent to the Gateway or Provider until the user clicks **✦ Explain**. Requests travel to the loopback-only SideAsk Gateway on the same computer, and from there to the AI Provider configured by the user. Provider requests use the Provider's HTTPS endpoint. The Provider processes this content under its own terms and privacy policy.
 
 ## Excluded by default
 
-Password fields, inputs, textareas, selects, editable regions, textbox roles, explicitly private or sensitive nodes, scripts, styles, full-page browsing history, unrelated conversation history, entire VS Code workspaces, and another extension's Webview content. SideAsk does not inspect Codex Chat; clipboard input requires an explicit user copy and command.
+Password fields, inputs, textareas, selects, editable regions, textbox roles, explicitly private or sensitive nodes, scripts, styles, full-page browsing history, unrelated conversation history, native-app surrounding content, screen images, and global clipboard history. The desktop overlay cannot inspect another app's full document or conversation; it receives only a text selection confirmed by Windows UI Automation, or a selection copied after the user explicitly invokes the global shortcut.
 
 ## Permissions
 
@@ -38,11 +36,11 @@ Password fields, inputs, textareas, selects, editable regions, textbox roles, ex
 - Access to `http://127.0.0.1:8787/*` and `http://localhost:8787/*` is required to reach the local Gateway.
 - Access to ordinary HTTP and HTTPS websites is optional and is requested only from the first-run guide after the data disclosure.
 
-The VS Code Companion contributes commands, an editor context-menu entry, a keybinding, local settings, and a Webview panel. It reads an editor selection only when the user invokes the selection command, and reads the clipboard only when the user invokes the clipboard command.
+The Windows desktop overlay registers a global shortcut. Its optional **Show Explain after selecting text** setting installs a local mouse-selection listener while SideAsk is running. After a drag or double-click, it displays the button only when Windows UI Automation confirms a text selection; it does not automatically copy when accessibility support is unavailable. The listener ignores SideAsk's own window, is disabled by default, and does not record keystrokes, screenshots, cursor history, or clipboard history.
 
 ## Control and deletion
 
-Shared Provider entries can be deleted from either the browser dashboard or VS Code; the change applies to both surfaces. Website access can be revoked from the first-run guide. Removing a client clears its client-local state, while the shared Vault remains in the user's application-data directory until the user deletes it. Data already sent to a chosen AI Provider is governed by that Provider's retention and deletion controls.
+Shared Provider entries can be deleted from the browser dashboard or desktop settings; the change applies to both surfaces. Website access can be revoked from the first-run guide, and the desktop selection button can be disabled in Settings or from the tray menu. Removing a client clears its client-local state, while the shared Vault remains in the user's application-data directory until the user deletes it. Data already sent to a chosen AI Provider is governed by that Provider's retention and deletion controls.
 
 ## Limited use
 

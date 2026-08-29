@@ -80,7 +80,7 @@
 
 ## Phase 5 — SideAsk Anywhere
 
-状态：**已完成（v0.6.0）**
+状态：**历史版本（v0.6.0，已由桌面悬浮窗取代）**
 
 目标：把“选中、提问、回到主线”的轻量体验扩展到 VS Code，同时避免第二套 Provider 配置。
 
@@ -90,4 +90,19 @@
 - Gateway 本机加密 Provider Vault；配置一次，两端共用。
 - 旧浏览器 IndexedDB 和 VS Code Secret Storage Provider 非破坏迁移。
 
-验收：浏览器与 VS Code 均可独立提问；任一端修改共享默认 Provider 后另一端立即可见；配置 API 不返回 Key；Vault 落盘无明文 Key；无需账户和云服务。
+结论：共享 Provider Vault 被保留并沿用；VS Code 面板因重复编辑器侧栏、操作不够轻量，已在 v0.7 移除。
+
+## Phase 6 — Desktop Overlay
+
+状态：**v0.7 预览版开发中**
+
+目标：用独立轻量悬浮窗覆盖 VS Code、PDF、桌面软件与终端，不再要求用户接受编辑器侧栏。
+
+- Windows WebView2 原生悬浮窗；系统 WebView2 负责界面，WPF 负责快捷键、选区、托盘与窗口行为。
+- `Alt+Shift+A` 跨应用取词；可选“划词后显示解释按钮”，鼠标拖选或双击后先显示 **✦ 解释**，点击才发送。
+- 流式安全 Markdown、快捷问题与追问。
+- 浏览器与桌面端共用 Gateway、25 个 Provider 和本机加密 Vault。
+- 桌面端只携带主动选区，不读取另一个应用的周围内容、不截屏、不保存全局剪贴板历史。
+- 移除冗余的 VS Code Companion，仓库不再构建或发布 VSIX。
+
+验收：在真实桌面源窗口选中文字后可通过全局快捷键唤起；开启选区按钮后，拖选/双击会显示按钮且点击前不请求 Provider；流式 Markdown 与追问可用；配置一次后浏览器与桌面端立即共用；点击窗外或“回到原应用”可隐藏；Windows x64 解压包不要求用户另装 Node.js。

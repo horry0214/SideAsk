@@ -12,7 +12,7 @@ extension/provider-catalog.js
             └─ Anthropic Messages adapter
 ```
 
-The browser settings UI, VS Code Companion, Gateway registry, Local Provider Vault, environment-variable fallback, and store package use the same catalog. Adding another compatible service normally requires one profile rather than UI, storage, and server branches.
+The browser settings UI, desktop overlay, Gateway registry, Local Provider Vault, environment-variable fallback, and store package use the same catalog. Adding another compatible service normally requires one profile rather than UI, storage, and server branches.
 
 ## Included profiles
 
@@ -77,7 +77,7 @@ The OpenAI-compatible parser forwards answer content from `choices[0].delta.cont
 
 ## Configuration and compatibility
 
-Profiles are stored once in the Gateway's on-device Provider Vault. API keys are encrypted with AES-256-GCM using a separate random local key and are never returned by the configuration API. Browser and VS Code clients receive only redacted metadata; the Gateway resolves their shared default internally. API keys never enter page content scripts or VS Code Webviews. Existing browser IndexedDB and VS Code Secret Storage records are migrated non-destructively.
+Profiles are stored once in the Gateway's on-device Provider Vault. API keys are encrypted with AES-256-GCM using a separate random local key and are never returned by the configuration API. Browser and desktop clients receive only redacted metadata; the Gateway resolves their shared default internally. API keys never enter page content scripts or desktop WebViews. Existing browser IndexedDB records are migrated non-destructively.
 
 Default Vault locations:
 

@@ -1,0 +1,17 @@
+{
+  "name": "sideask-desktop",
+  "version": "0.7.0",
+  "private": true,
+  "type": "module",
+  "description": "SideAsk desktop overlay — select anywhere, ask in place, stay on track.",
+  "productName": "SideAsk",
+  "license": "MIT",
+  "scripts": {
+    "prepare:runtime": "node scripts/prepare-runtime.mjs",
+    "check": "node --check ui/native-bridge.js && node --check ui/renderer.js && node --check scripts/prepare-runtime.mjs",
+    "test": "npm run check && npm run prepare:runtime",
+    "build:win": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-native.ps1",
+    "start": "npm run build:win && ..\\dist-desktop-native\\SideAsk\\SideAsk.exe",
+    "package:win": "npm run build:win"
+  }
+}

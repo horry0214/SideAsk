@@ -2,13 +2,13 @@
 
 [简体中文](UPDATING.zh-CN.md) · [English](UPDATING.md)
 
-SideAsk v0.6 has three coordinated parts: the browser extension, the optional VS Code Companion, and the local Gateway. Provider profiles and encrypted API keys live in the Gateway's on-device Vault; browser recent questions, favorites, and source anchors remain in extension-private storage. Gateway environment fallbacks may live in `server/.env`.
+SideAsk v0.7 combines the browser extension, a standalone Windows desktop overlay, and the local Gateway. The v0.6 VS Code Companion has been removed. Provider profiles and encrypted API keys live in the Gateway's on-device Vault; browser recent questions, favorites, and source anchors remain in extension-private storage. Gateway environment fallbacks may live in `server/.env`.
 
 ## v0.6 migration
 
-Start the v0.6 Gateway before opening Provider settings. The browser extension and VS Code Companion then import legacy Provider records into the shared Vault once, without deleting the old records. If the same Provider already exists, SideAsk reuses it instead of creating a duplicate. Configure or switch the default in either client and the other client sees the change immediately.
+Start the v0.6 or newer Gateway before opening Provider settings. The browser extension imports legacy browser Provider records into the shared Vault once, without deleting the old records. If the same Provider already exists, SideAsk reuses it instead of creating a duplicate. Configure or switch the default in the browser or desktop app and the other surface sees the change immediately.
 
-The shared Vault is normally stored under `%APPDATA%\SideAsk` on Windows, `~/Library/Application Support/SideAsk` on macOS, and `$XDG_CONFIG_HOME/sideask` or `~/.config/sideask` on Linux. It survives extension reloads and VSIX upgrades. Do not copy or sync this directory as a substitute for account sync.
+The shared Vault is normally stored under `%APPDATA%\SideAsk` on Windows, `~/Library/Application Support/SideAsk` on macOS, and `$XDG_CONFIG_HOME/sideask` or `~/.config/sideask` on Linux. It survives extension reloads and desktop folder replacement. Do not copy or sync this directory as a substitute for account sync.
 
 ## Know when a release is available
 
@@ -39,9 +39,11 @@ npm start
 5. Open SideAsk Settings and confirm that the displayed extension version is the expected release.
 6. Open `http://127.0.0.1:8787/health` and confirm that the Gateway responds with `"ok": true`.
 
-## VS Code Companion
+## Windows desktop overlay
 
-Download `sideask-vscode-0.6.0.vsix` from the matching GitHub Release, then in VS Code open **Extensions → … → Install from VSIX…**. Installing the new VSIX upgrades the existing SideAsk Companion in place. Restart the same v0.6 Gateway, then run **SideAsk: Open Side Panel** and confirm the shared Provider is shown.
+SideAsk Anywhere for Windows is currently distributed as a portable folder rather than an in-place installer. Quit SideAsk from its tray menu, download the new Windows x64 ZIP, extract it to a temporary directory, and replace the entire old application folder. Do not copy only `SideAsk.exe`; the matching DLL, UI, runtime, and license folders are part of the version.
+
+The encrypted Provider Vault and desktop preference under `%APPDATA%\SideAsk` are outside the application folder and remain in place. After the update, run `SideAsk.exe`, select text in another app, press `Alt+Shift+A`, and confirm the provider badge and streamed answer. If **Show Explain after selecting text** is enabled, also drag-select a phrase, click the small **✦ Explain** button, and confirm that the overlay opens. Verify the checksum before running an unsigned preview build.
 
 ## Downloaded ZIP / Load unpacked installation
 

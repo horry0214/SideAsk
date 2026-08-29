@@ -20,21 +20,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-          cache-dependency-path: vscode-extension/package-lock.json
 
-      - name: Install VS Code packaging tools
-        run: npm ci --prefix vscode-extension --ignore-scripts
-
-      - name: Verify browser, Gateway, and VS Code Companion
+      - name: Verify browser, Gateway, and desktop sources
         run: npm run check
-
-      - name: Build VSIX
-        run: npm run package:vscode
-
-      - name: Upload VSIX artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: sideask-vscode-0.6.0
-          path: dist/sideask-vscode-0.6.0.vsix
-          if-no-files-found: error

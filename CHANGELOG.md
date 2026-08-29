@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.7.0 Browser First + SideAsk Anywhere — 2026-08-29
+
+### Added
+
+- Added a standalone Windows WebView2 overlay for selections in VS Code, PDFs, native apps, terminals, and other desktop surfaces.
+- Added the `Alt+Shift+A` global shortcut, cross-application selection capture, pointer-adjacent positioning, tray controls, pinning, click-away hiding, and return-to-app behavior.
+- Added an opt-in browser-style selection cue: mouse-drag or double-click text to show **✦ Explain**, then click to open SideAsk. The selection is not sent before that click.
+- Refined the selection cue into an animated brand pill, refreshed the overlay surfaces and spacing, and replaced fragile WebView-delayed `DragMove()` calls with native Windows title-bar dragging.
+- Rebuilt the selection cue as one unclipped gradient capsule and added compact/expanded window modes so the idle overlay stays light and grows smoothly only when a conversation or settings needs room.
+- Aligned the desktop overlay with the browser extension's proven visual language: one-piece dark Explain cue, clean white shell, quieter context and composer divisions, a roomier desktop conversation, and state-aware motion that does not flicker during streaming.
+- Removed the visible Windows accent frame while preserving native edge resizing, resize cursors, snap behavior, and the app's own rounded visual border.
+- Added WebView-aware invisible resize zones on all four edges and corners, and changed the default desktop proportions from a squat near-square to a narrower, taller companion window.
+- Replaced automatic clipboard probing after arbitrary mouse drags with bounded Windows UI Automation selection checks; unsupported or empty selections now do nothing and explicit shortcuts retain the clipboard fallback.
+- Made native drag/resize startup asynchronous and temporarily disables costly WebView shadows, filters, and motion while the operating-system resize loop is active.
+- Replaced platform-dependent header and send glyphs with a consistent custom SVG icon set, with refined language, pin, minimize, close, hover, pressed, and active states.
+- Added an explicit Gateway API version and capability manifest, and made Desktop verify the shared Provider endpoint before reusing an existing loopback Gateway. Incompatible legacy instances now produce an actionable upgrade message instead of `Not found`.
+- The desktop selection Explain cue now dismisses when the user clicks elsewhere, switches foreground apps, presses Escape, or closes the popup without asking.
+- Kept explicit launches visible long enough to receive focus, restored a taskbar entry while the window is open, and made tray/second-instance activation reliably reveal an already running SideAsk.
+- Added streaming safe Markdown, bilingual quick prompts and follow-ups, and the full 25-profile Provider settings inside the overlay.
+- Added one local encrypted Provider Vault shared by browser and desktop.
+- Added a native WPF build that reuses the system WebView2 Runtime and bundles a silent Node.js Gateway; the unpacked preview is about 90 MiB instead of the 366 MiB Electron prototype.
+
+### Privacy
+
+- Desktop sends only deliberate selected text and the active side conversation. The optional selection cue reads a confirmed Windows UI Automation text selection locally and sends nothing until **✦ Explain** is clicked. Ordinary drags are never probed with automatic `Ctrl+C`; unsupported apps fall back only when the user invokes the shortcut. SideAsk does not inspect nearby content in another native app, capture the screen, or keep a global clipboard history.
+
+### Direction
+
+- The desktop overlay becomes the non-browser SideAsk experience. The redundant v0.6 VS Code Companion source, build, tests, VSIX artifact, and installation guides were removed.
+
 ## 0.6.0 SideAsk Anywhere — 2026-08-28
 
 ### Added

@@ -2,3 +2,4 @@
 *.sh text eol=lf
 *.bat text eol=crlf
 *.png binary
+desktop-app/licenses/Node.js-LICENSE.txt -whitespace
