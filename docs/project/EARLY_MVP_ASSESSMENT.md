@@ -1,6 +1,8 @@
-# Current Repository Assessment
+# Early MVP Repository Assessment
 
-评估基线：SideAsk MVP v0.1.2，2026-08-27。
+> Historical record: this assessment describes SideAsk MVP v0.1.2 on 2026-08-27. It is retained for project context and is not the current feature list. For the current product, start with the repository [README](../../README.md).
+
+评估基线：SideAsk MVP v0.1.2，2026-08-27。本文是历史记录，不代表当前功能状态；当前产品说明以仓库 [README](../../README.zh-CN.md) 为准。
 
 ## 当前目录与架构
 

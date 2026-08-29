@@ -59,9 +59,11 @@ Choose **Simple**, **Example**, **Why it matters**, or **Go deeper**; then ask a
 
 The browser extension remains the primary SideAsk experience. The optional **SideAsk Anywhere for Windows** companion brings the same selection-first flow to places a browser extension cannot reach. Select unfamiliar code, a PDF sentence, terminal output, or text in another Windows app and press `Alt+Shift+A`. Or enable **Show Explain after selecting text** once: mouse-drag or double-click a selection and a small **✦ Explain** button appears beside it. Nothing is sent until you click the button. The option is off by default and can be disabled at any time.
 
+With both clients installed, Desktop enables **Prefer the browser extension on webpages** by default: webpages show the extension button, other Windows apps use Desktop, and duplicate cues are avoided. `Alt+Shift+A` can still force Desktop anywhere.
+
 Desktop reuses the system WebView2 Runtime and shares the loopback Gateway, complete 25-profile catalog, and encrypted Provider Vault with the browser extension. Configure once in either surface and the other immediately uses the same default—without an account or cloud sync. Desktop sends the deliberate selection only; it does not inspect the surrounding contents of another native app.
 
-Codex or another coding agent keeps its task and conversation untouched. See the [Desktop guide](docs/DESKTOP.md).
+Codex or another coding agent keeps its task and conversation untouched. See the [Desktop guide](docs/getting-started/DESKTOP.md).
 
 ## Simple Core
 
@@ -111,13 +113,13 @@ npm run desktop:test
 npm run package:desktop
 ~~~
 
-See the [Desktop installation, privacy, and build guide](docs/DESKTOP.md). The Windows package is not code-signed yet, so verify the release checksum if SmartScreen identifies it as an unrecognized app.
+See the [Desktop installation, privacy, and build guide](docs/getting-started/DESKTOP.md). The Windows package is not code-signed yet, so verify the release checksum if SmartScreen identifies it as an unrecognized app.
 
 ## Updating
 
 Store installations update automatically after a reviewed release is published. Git clone and unpacked installations require a pull or file replacement, a Gateway restart, and **Reload** on the browser extensions page. Keep an unpacked extension at the same path whenever possible so its local storage remains attached to the same extension ID.
 
-Follow the complete [English update guide](UPDATING.md), or open the [Chinese guide](UPDATING.zh-CN.md). To hear only about published versions, choose **Watch → Custom → Releases** on GitHub.
+Follow the complete [English update guide](docs/getting-started/UPDATING.md), or open the [Chinese guide](docs/getting-started/UPDATING.zh-CN.md). To hear only about published versions, choose **Watch → Custom → Releases** on GitHub.
 
 ## Bring your own model
 
@@ -131,7 +133,7 @@ Anthropic uses its native Messages streaming protocol. The other presets share a
 
 Provider keys are encrypted once in the Gateway's on-device Vault. Browser and desktop clients receive only redacted metadata and reference the shared default Provider by ID; saved keys are not returned to page scripts, WebViews, logs, or the repository.
 
-See [Provider architecture](docs/PROVIDERS.md) for request normalization, streaming, and the error model.
+See [Provider architecture](docs/reference/PROVIDERS.md) for request normalization, streaming, and the error model.
 
 ## Privacy by design
 
@@ -146,7 +148,7 @@ Password fields, forms, editors, <code>contenteditable</code>, explicitly sensit
 
 The nearby block and source URL apply only to the browser extension. The desktop overlay cannot inspect another native app, so it sends the deliberate selection and active side conversation only.
 
-Read the full [Privacy Policy](PRIVACY.md) and [Security Policy](SECURITY.md).
+Read the full [Privacy Policy](docs/policies/PRIVACY.md) and [Security Policy](.github/SECURITY.md).
 
 ## Architecture
 
@@ -170,7 +172,7 @@ Current stable release: **v0.7.0 Browser First + SideAsk Anywhere**.
 
 The browser extension is the main product. SideAsk Anywhere for Windows is an optional companion for VS Code, PDFs, terminals, and native apps, with a selection-adjacent Explain button, global shortcut activation, a pointer-adjacent overlay, streaming Markdown, tray controls, and the same encrypted Local Provider Vault. The v0.6 VS Code panel was removed because it duplicated the editor UI instead of delivering the lightweight experience SideAsk is built around.
 
-Small improvements can be added later when they reduce friction without adding a new workflow. See the [roadmap](docs/ROADMAP.md).
+Small improvements can be added later when they reduce friction without adding a new workflow. See the [roadmap](docs/project/ROADMAP.md).
 
 ## Development
 
@@ -179,7 +181,7 @@ npm test
 npm run check
 ~~~
 
-Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report vulnerabilities through the [Security Policy](SECURITY.md).
+Contributions are welcome. Start with the [documentation index](docs/README.md) or [contribution guide](.github/CONTRIBUTING.md), follow the [Code of Conduct](.github/CODE_OF_CONDUCT.md), and report vulnerabilities through the [Security Policy](.github/SECURITY.md).
 
 ## License
 

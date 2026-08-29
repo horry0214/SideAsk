@@ -64,4 +64,4 @@ Do not paste API keys into repository files, issue reports, or release comments.
 - **Provider settings appear missing:** start the v0.6 Gateway, then reopen Provider settings so migration can retry. For browser history, also confirm that the unpacked extension is loaded from the same folder as before; a different unpacked extension ID owns a separate history database.
 - **Pull refuses to continue:** preserve local changes first; do not use destructive Git reset commands just to update.
 
-See [CHANGELOG.md](CHANGELOG.md) for release-by-release changes.
+See [CHANGELOG.md](../../CHANGELOG.md) for release-by-release changes.

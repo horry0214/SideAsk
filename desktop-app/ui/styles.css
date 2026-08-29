@@ -111,6 +111,7 @@ html.window-resizing *,html.window-resizing *::before,html.window-resizing *::af
 .gateway-card div { display:flex; flex-direction:column; }
 .gateway-card small { margin-top:2px; color:#c8cada; font-size:9px; }
 .preference-card { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-top:18px; padding:13px; border:1px solid #e0e0ea; border-radius:16px; background:#fff; box-shadow:0 10px 28px rgba(39,38,64,.07); }
+.preference-card + .preference-card { margin-top:8px; }
 .preference-copy { display:flex; flex-direction:column; min-width:0; }
 .preference-copy strong { font-size:12px; }
 .preference-copy small { margin-top:4px; color:#858895; font-size:9px; line-height:1.45; }

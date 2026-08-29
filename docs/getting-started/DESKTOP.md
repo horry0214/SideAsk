@@ -14,6 +14,8 @@ SideAsk Desktop is the lightweight Windows companion for places where a browser 
 
 For the browser-style flow, open Settings and enable **Show Explain after selecting text**. After a mouse drag or double-click, SideAsk first asks Windows UI Automation to confirm that the foreground app has a non-empty text selection. Only then does it show **✦ Explain**. Ordinary drags do not trigger it or receive an automatic `Ctrl+C`; apps without accessible text-selection support can still use the global shortcut. The Provider request begins only after you click the button.
 
+When both clients are installed, **Prefer the browser extension on webpages** is enabled by default. Chrome, Edge, Firefox, Brave, and other browsers show only the extension's selection button, while Desktop handles VS Code, PDF readers, terminals, and other native apps, avoiding duplicate Explain buttons. `Alt+Shift+A` always forces Desktop; turn the setting off if you also want its automatic button inside browsers.
+
 The Windows package is not code-signed yet, so Windows SmartScreen may identify it as an unrecognized app. Verify the download against the release checksum before running it. Windows 10/11 x64 and the Microsoft Edge WebView2 Runtime are required; current Windows installations normally already include WebView2.
 
 ## One Provider configuration on this computer
@@ -26,7 +28,7 @@ Desktop verifies both Gateway health and the shared Provider API before reusing 
 
 ## Privacy boundary
 
-Desktop sends the text deliberately selected by the user and messages in the active small conversation. The optional selection button is off by default; when enabled, it asks Windows UI Automation for a confirmed text selection after a mouse drag or double-click and does not probe ordinary drags with `Ctrl+C`. It does not contact the Gateway or Provider until **✦ Explain** is clicked. Desktop cannot inspect surrounding content in another native app. The browser extension can still add a bounded nearby paragraph because it runs inside the page.
+Desktop sends the text deliberately selected by the user and messages in the active small conversation. The optional selection button is off by default; when enabled, it asks Windows UI Automation for a confirmed text selection after a mouse drag or double-click and does not probe ordinary drags with `Ctrl+C`. It does not contact the Gateway or Provider until **✦ Explain** is clicked. Default browser-first routing reads only the foreground window's process name, not webpage content. Desktop cannot inspect surrounding content in another native app. The browser extension can still add a bounded nearby paragraph because it runs inside the page.
 
 There is no SideAsk account, cloud sync, global clipboard history, screen capture, or background document indexing.
 

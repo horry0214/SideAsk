@@ -49,10 +49,10 @@ Copy-Item -LiteralPath (Join-Path $desktopRoot "licenses\Node.js-LICENSE.txt") -
 Copy-Item -LiteralPath (Join-Path $packageRoot "LICENSE.txt") -Destination (Join-Path $outputRoot "licenses\WebView2-LICENSE.txt")
 Copy-Item -LiteralPath (Join-Path $packageRoot "NOTICE.txt") -Destination (Join-Path $outputRoot "licenses\WebView2-NOTICE.txt")
 Copy-Item -LiteralPath (Join-Path $repositoryRoot "LICENSE") -Destination (Join-Path $outputRoot "LICENSE")
-Copy-Item -LiteralPath (Join-Path $repositoryRoot "docs\DESKTOP.md") -Destination (Join-Path $outputRoot "README.md")
-Copy-Item -LiteralPath (Join-Path $repositoryRoot "docs\DESKTOP.zh-CN.md") -Destination (Join-Path $outputRoot "README.zh-CN.md")
-Copy-Item -LiteralPath (Join-Path $repositoryRoot "docs\DESKTOP.md") -Destination (Join-Path $outputRoot "DESKTOP.md")
-Copy-Item -LiteralPath (Join-Path $repositoryRoot "docs\DESKTOP.zh-CN.md") -Destination (Join-Path $outputRoot "DESKTOP.zh-CN.md")
+Copy-Item -LiteralPath (Join-Path $repositoryRoot "docs\getting-started\DESKTOP.md") -Destination (Join-Path $outputRoot "README.md")
+Copy-Item -LiteralPath (Join-Path $repositoryRoot "docs\getting-started\DESKTOP.zh-CN.md") -Destination (Join-Path $outputRoot "README.zh-CN.md")
+Copy-Item -LiteralPath (Join-Path $repositoryRoot "docs\getting-started\DESKTOP.md") -Destination (Join-Path $outputRoot "DESKTOP.md")
+Copy-Item -LiteralPath (Join-Path $repositoryRoot "docs\getting-started\DESKTOP.zh-CN.md") -Destination (Join-Path $outputRoot "DESKTOP.zh-CN.md")
 
 $nodePath = (Get-Command node -ErrorAction Stop).Source
 New-Item -ItemType Directory -Force -Path (Join-Path $outputRoot "runtime\node") | Out-Null

@@ -53,6 +53,7 @@
     hide: () => invoke("desktop:hide"),
     togglePin: () => invoke("desktop:toggle-pin"),
     setAutoCapture: value => invoke("desktop:set-auto-capture", value),
+    setBrowserPriority: value => invoke("desktop:set-browser-priority", value),
     setWindowMode: mode => invoke("desktop:set-window-mode", mode),
     setBusy: value => invoke("desktop:set-busy", value),
     startDrag: () => send("desktop:start-drag"),

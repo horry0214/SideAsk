@@ -20,11 +20,13 @@ if (manifest.version !== packageJson.version) fail(`Version mismatch: manifest=$
 if (packageJson.license !== "MIT") fail(`Unexpected package license: ${packageJson.license || "missing"}`);
 
 [
-  "README.md", "README.zh-CN.md", "LICENSE", "CHANGELOG.md", "CONTRIBUTING.md", "CONTRIBUTING.zh-CN.md",
-  "SECURITY.md", "SECURITY.zh-CN.md", "PRIVACY.md", "PRIVACY.zh-CN.md", "CODE_OF_CONDUCT.md", "CODE_OF_CONDUCT.zh-CN.md",
+  "README.md", "README.zh-CN.md", "LICENSE", "CHANGELOG.md", "docs/README.md",
+  ".github/CONTRIBUTING.md", ".github/CONTRIBUTING.zh-CN.md", ".github/SECURITY.md", ".github/SECURITY.zh-CN.md",
+  ".github/CODE_OF_CONDUCT.md", ".github/CODE_OF_CONDUCT.zh-CN.md", "docs/policies/PRIVACY.md", "docs/policies/PRIVACY.zh-CN.md",
   ".github/ISSUE_TEMPLATE/bug_report.yml", ".github/ISSUE_TEMPLATE/feature_request.yml", ".github/PULL_REQUEST_TEMPLATE.md",
-  "docs/PRODUCT.md", "docs/ARCHITECTURE.md", "docs/PROVIDERS.md", "docs/KNOWLEDGE_MODEL.md", "docs/ROADMAP.md",
-  "docs/DESKTOP.md", "docs/DESKTOP.zh-CN.md",
+  "docs/project/PRODUCT.md", "docs/reference/ARCHITECTURE.md", "docs/reference/PROVIDERS.md", "docs/reference/KNOWLEDGE_MODEL.md", "docs/project/ROADMAP.md",
+  "docs/getting-started/DESKTOP.md", "docs/getting-started/DESKTOP.zh-CN.md", "docs/getting-started/UPDATING.md", "docs/getting-started/UPDATING.zh-CN.md",
+  "docs/project/MVP_ACCEPTANCE.md", "docs/project/EARLY_MVP_ASSESSMENT.md", "docs/project/LICENSE_DECISION.md", "docs/project/RELEASE_CHECKLIST.md",
   "assets/readme/sideask-demo-en.gif", "assets/readme/sideask-demo-zh.gif",
   "assets/readme/sideask-hero-en.jpg", "assets/readme/sideask-hero.jpg", "assets/readme/source/sideask-hero.html",
   "extension/background.js", "extension/content.js", "extension/content.css", "extension/markdown.js", "extension/storage.js",
@@ -104,11 +106,28 @@ for (const relativePath of ["assets/readme/sideask-hero-en.jpg", "assets/readme/
   if (data[0] !== 0xff || data[1] !== 0xd8) fail(`Not a JPEG: ${relativePath}`);
 }
 
-const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
-for (const match of readme.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)) {
-  const target = match[1];
-  if (/^(https?:\/\/|#)/i.test(target)) continue;
-  if (!fs.existsSync(path.resolve(root, target))) fail(`Broken README link: ${target}`);
+function markdownFiles(directory) {
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
+    const absolute = path.join(directory, entry.name);
+    if (entry.isDirectory()) return markdownFiles(absolute);
+    return path.extname(entry.name).toLowerCase() === ".md" ? [absolute] : [];
+  });
+}
+
+const markdownRoots = ["docs", ".github", "store", "assets/brand"].map(relativePath => path.join(root, relativePath));
+const markdownDocuments = [path.join(root, "README.md"), path.join(root, "README.zh-CN.md"), path.join(root, "CHANGELOG.md")]
+  .concat(markdownRoots.flatMap(markdownFiles));
+for (const absolute of markdownDocuments) {
+  const value = fs.readFileSync(absolute, "utf8");
+  for (const match of value.matchAll(/!?\[[^\]]*\]\(([^)]+)\)/g)) {
+    const rawTarget = match[1].trim();
+    if (/^(https?:\/\/|mailto:|#)/i.test(rawTarget)) continue;
+    const target = decodeURIComponent(rawTarget.split(/[?#]/, 1)[0]);
+    if (!target) continue;
+    if (!fs.existsSync(path.resolve(path.dirname(absolute), target))) {
+      fail(`Broken Markdown link in ${path.relative(root, absolute)}: ${rawTarget}`);
+    }
+  }
 }
 
 if (fs.existsSync(path.join(root, "server", ".env"))) fail("server/.env must not be included in a deliverable");
@@ -129,4 +148,4 @@ function scan(directory) {
 scan(root);
 
 console.log(`SideAsk ${manifest.version} MVP verification passed.`);
-console.log(`Manifest paths: OK · Options DOM refs: ${referencedIds.size} · Welcome DOM refs: ${welcomeReferences.size} · README links: OK · Credential scan: OK`);
+console.log(`Manifest paths: OK · Options DOM refs: ${referencedIds.size} · Welcome DOM refs: ${welcomeReferences.size} · Markdown links: ${markdownDocuments.length} docs OK · Credential scan: OK`);

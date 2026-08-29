@@ -64,4 +64,4 @@ SideAsk Anywhere for Windows 目前使用便携文件夹，而不是原位更新
 - **Provider 设置不见了：**先启动 v0.6 Gateway，再重新打开 Provider 设置让迁移重试。浏览器历史仍与扩展 ID 绑定，因此也要检查扩展是否从原文件夹加载。
 - **Git 拒绝拉取：**先保存自己的本地修改，不要为了更新而执行破坏性的 Git reset。
 
-每个版本的具体变化见 [CHANGELOG.md](CHANGELOG.md)。
+每个版本的具体变化见 [CHANGELOG.md](../../CHANGELOG.md)。

@@ -69,7 +69,7 @@ namespace SideAskDesktop
 
     internal sealed class SideAskWindow : Window
     {
-        private const string VersionLabel = "0.7.0";
+        private const string VersionLabel = "0.7.1-preview.1";
         private const double CompactWindowWidth = 414;
         private const double CompactWindowHeight = 590;
         private const double ExpandedWindowWidth = 454;
@@ -118,8 +118,10 @@ namespace SideAskDesktop
         private IntPtr windowHandle;
         private IntPtr previousForeground;
         private bool rendererReady;
+        private bool webViewInitializationStarted;
         private bool pinned;
         private bool autoCapture;
+        private bool preferBrowserExtension;
         private bool busy;
         private bool quitting;
         private string registeredShortcut;
@@ -147,8 +149,13 @@ namespace SideAskDesktop
             settingsPath = String.IsNullOrWhiteSpace(settingsOverride)
                 ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SideAsk", "desktop-settings.json")
                 : Path.GetFullPath(settingsOverride);
-            autoCapture = LoadAutoCapture();
-            DebugLog("automatic selection preference=" + (autoCapture ? "on" : "off") + " settings=" + settingsPath);
+            autoCapture = LoadBooleanSetting("autoCapture", false);
+            preferBrowserExtension = LoadBooleanSetting("preferBrowserExtension", true);
+            DebugLog(
+                "automatic selection preference=" + (autoCapture ? "on" : "off")
+                + " browser priority=" + (preferBrowserExtension ? "on" : "off")
+                + " settings=" + settingsPath
+            );
             http = new HttpClient();
             http.Timeout = Timeout.InfiniteTimeSpan;
             gatewayLock = new SemaphoreSlim(1, 1);
@@ -187,7 +194,7 @@ namespace SideAskDesktop
             LoadInitialCapture();
 
             SourceInitialized += OnSourceInitialized;
-            Loaded += OnLoaded;
+            ContentRendered += OnContentRendered;
             Deactivated += OnDeactivated;
             Closing += OnClosing;
             Closed += OnClosed;
@@ -232,26 +239,36 @@ namespace SideAskDesktop
             DwmSetWindowAttribute(windowHandle, DwmWindowAttributeBorderColor, ref borderColor, sizeof(int));
         }
 
-        private async void OnLoaded(object sender, RoutedEventArgs eventArgs)
+        private async void OnContentRendered(object sender, EventArgs eventArgs)
         {
+            if (webViewInitializationStarted) return;
+            webViewInitializationStarted = true;
             CreateTray();
             RevealWindow(5000);
             RunSelectionCueSelfTestIfRequested();
             try
             {
-                var dataDirectory = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    "SideAsk",
-                    "WebView2"
-                );
+                DebugLog("webview initialization started");
+                var dataDirectoryOverride = Environment.GetEnvironmentVariable("SIDEASK_WEBVIEW2_DATA_PATH");
+                var dataDirectory = String.IsNullOrWhiteSpace(dataDirectoryOverride)
+                    ? Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        "SideAsk",
+                        "DesktopWebView2"
+                    )
+                    : Path.GetFullPath(dataDirectoryOverride);
                 var environment = await CoreWebView2Environment.CreateAsync(null, dataDirectory);
+                DebugLog("webview environment ready");
                 await webView.EnsureCoreWebView2Async(environment);
+                DebugLog("webview core ready");
                 ConfigureWebView();
                 webView.Source = new Uri("https://sideask.local/ui/index.html?host=native");
+                DebugLog("webview navigation started");
                 BeginCapturePreviewIfRequested();
             }
             catch (Exception error)
             {
+                DebugLog("webview initialization failed: " + FriendlyMessage(error));
                 MessageBox.Show("SideAsk WebView2 failed to start:\n" + error.Message, "SideAsk", MessageBoxButton.OK, MessageBoxImage.Error);
                 QuitApplication();
             }
@@ -341,6 +358,11 @@ namespace SideAskDesktop
                 SetAutoCapture(BooleanArg(args, 0));
                 return Map("autoCapture", autoCapture);
             }
+            if (method == "desktop:set-browser-priority")
+            {
+                SetBrowserPriority(BooleanArg(args, 0));
+                return Map("preferBrowserExtension", preferBrowserExtension);
+            }
             if (method == "desktop:set-window-mode")
             {
                 SetWindowMode(StringArg(args, 0));
@@ -402,6 +424,7 @@ namespace SideAskDesktop
                 "shortcut", registeredShortcut,
                 "pinned", pinned,
                 "autoCapture", autoCapture,
+                "preferBrowserExtension", preferBrowserExtension,
                 "health", health,
                 "gatewayError", gatewayError,
                 "providers", providers,
@@ -895,16 +918,18 @@ namespace SideAskDesktop
             else initialCapture = capture;
         }
 
-        private bool LoadAutoCapture()
+        private bool LoadBooleanSetting(string key, bool fallback)
         {
             try
             {
-                if (!File.Exists(settingsPath)) return false;
+                if (!File.Exists(settingsPath)) return fallback;
                 var settings = json.DeserializeObject(File.ReadAllText(settingsPath, Encoding.UTF8)) as Dictionary<string, object>;
                 object value;
-                return settings != null && settings.TryGetValue("autoCapture", out value) && Convert.ToBoolean(value, CultureInfo.InvariantCulture);
+                return settings != null && settings.TryGetValue(key, out value)
+                    ? Convert.ToBoolean(value, CultureInfo.InvariantCulture)
+                    : fallback;
             }
-            catch { return false; }
+            catch { return fallback; }
         }
 
         private void SaveSettings()
@@ -913,7 +938,14 @@ namespace SideAskDesktop
             {
                 var directory = Path.GetDirectoryName(settingsPath);
                 if (!String.IsNullOrWhiteSpace(directory)) Directory.CreateDirectory(directory);
-                File.WriteAllText(settingsPath, json.Serialize(Map("autoCapture", autoCapture)), new UTF8Encoding(false));
+                File.WriteAllText(
+                    settingsPath,
+                    json.Serialize(Map(
+                        "autoCapture", autoCapture,
+                        "preferBrowserExtension", preferBrowserExtension
+                    )),
+                    new UTF8Encoding(false)
+                );
             }
             catch (Exception error) { DebugLog("settings save failed: " + FriendlyMessage(error)); }
         }
@@ -930,8 +962,27 @@ namespace SideAskDesktop
             autoCapture = enabled;
             SaveSettings();
             RebuildTrayMenu();
-            PostEvent("desktop:state", Map("pinned", pinned, "autoCapture", autoCapture));
+            PostEvent("desktop:state", Map(
+                "pinned", pinned,
+                "autoCapture", autoCapture,
+                "preferBrowserExtension", preferBrowserExtension
+            ));
             DebugLog("automatic selection=" + (autoCapture ? "on" : "off"));
+        }
+
+        private void SetBrowserPriority(bool enabled)
+        {
+            if (enabled == preferBrowserExtension) return;
+            preferBrowserExtension = enabled;
+            if (enabled && ShouldDeferAutomaticCaptureToBrowser(GetForegroundWindow()))
+                DismissExplainCue("browser extension priority enabled");
+            SaveSettings();
+            PostEvent("desktop:state", Map(
+                "pinned", pinned,
+                "autoCapture", autoCapture,
+                "preferBrowserExtension", preferBrowserExtension
+            ));
+            DebugLog("browser extension priority=" + (preferBrowserExtension ? "on" : "off"));
         }
 
         private bool InstallAutoCaptureHook()
@@ -1008,6 +1059,13 @@ namespace SideAskDesktop
         private void ScheduleAutomaticCapture()
         {
             if (!autoCapture || IsSideAskForeground() || Interlocked.Exchange(ref autoCaptureScheduled, 1) != 0) return;
+            var foreground = GetForegroundWindow();
+            if (ShouldDeferAutomaticCaptureToBrowser(foreground))
+            {
+                Interlocked.Exchange(ref autoCaptureScheduled, 0);
+                DebugLog("automatic selection deferred to browser extension");
+                return;
+            }
             DebugLog("automatic selection scheduled");
             AutomaticCaptureAsync();
         }
@@ -1017,7 +1075,9 @@ namespace SideAskDesktop
             try
             {
                 await Task.Delay(140);
-                if (autoCapture && !IsSideAskForeground()) await CaptureAccessibleSelectionAsync();
+                var foreground = GetForegroundWindow();
+                if (autoCapture && !IsSideAskForeground() && !ShouldDeferAutomaticCaptureToBrowser(foreground))
+                    await CaptureAccessibleSelectionAsync();
             }
             finally { Interlocked.Exchange(ref autoCaptureScheduled, 0); }
         }
@@ -1029,6 +1089,11 @@ namespace SideAskDesktop
             {
                 var foreground = GetForegroundWindow();
                 if (foreground == IntPtr.Zero || IsSideAskForeground()) return;
+                if (ShouldDeferAutomaticCaptureToBrowser(foreground))
+                {
+                    DebugLog("accessibility selection deferred to browser extension");
+                    return;
+                }
                 var sourceTitle = ForegroundTitle(foreground);
                 DebugLog("accessibility selection check started");
                 var selectionTask = Task.Run(delegate { return ReadAccessibleSelection(foreground); });
@@ -1124,6 +1189,49 @@ namespace SideAskDesktop
             return foreground != IntPtr.Zero && windowHandle != IntPtr.Zero && GetAncestor(foreground, GaRoot) == GetAncestor(windowHandle, GaRoot);
         }
 
+        private bool ShouldDeferAutomaticCaptureToBrowser(IntPtr handle)
+        {
+            if (!preferBrowserExtension || handle == IntPtr.Zero) return false;
+            var root = GetAncestor(handle, GaRoot);
+            uint processId;
+            GetWindowThreadProcessId(root == IntPtr.Zero ? handle : root, out processId);
+            if (processId == 0) return false;
+            try
+            {
+                using (var process = Process.GetProcessById(unchecked((int)processId)))
+                {
+                    return IsBrowserProcessName(process.ProcessName);
+                }
+            }
+            catch (ArgumentException) { }
+            catch (InvalidOperationException) { }
+            catch (System.ComponentModel.Win32Exception) { }
+            return false;
+        }
+
+        private static bool IsBrowserProcessName(string processName)
+        {
+            switch ((processName ?? "").Trim().ToLowerInvariant())
+            {
+                case "chrome":
+                case "msedge":
+                case "firefox":
+                case "brave":
+                case "opera":
+                case "opera_gx":
+                case "vivaldi":
+                case "arc":
+                case "thorium":
+                case "waterfox":
+                case "librewolf":
+                case "floorp":
+                case "iexplore":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         private static long DistanceSquared(NativePoint first, NativePoint second)
         {
             var x = (long)first.X - second.X;
@@ -1175,7 +1283,7 @@ namespace SideAskDesktop
 
         private void OnDeactivated(object sender, EventArgs eventArgs)
         {
-            if (pinned || busy || DateTime.UtcNow < autoHideAllowedAfter) return;
+            if (!rendererReady || pinned || busy || DateTime.UtcNow < autoHideAllowedAfter) return;
             var timer = new System.Windows.Threading.DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(180);
             timer.Tick += delegate
@@ -1399,6 +1507,7 @@ namespace SideAskDesktop
         [DllImport("user32.dll", SetLastError = true)] private static extern bool RegisterHotKey(IntPtr window, int id, uint modifiers, uint key);
         [DllImport("user32.dll", SetLastError = true)] private static extern bool UnregisterHotKey(IntPtr window, int id);
         [DllImport("user32.dll")] private static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll")] private static extern uint GetWindowThreadProcessId(IntPtr window, out uint processId);
         [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern int GetWindowText(IntPtr window, StringBuilder text, int count);
         [DllImport("user32.dll")] private static extern int GetWindowTextLength(IntPtr window);
         [DllImport("user32.dll")] private static extern bool SetForegroundWindow(IntPtr window);

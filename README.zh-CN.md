@@ -58,9 +58,11 @@ SideAsk 把问题留在原文旁边：
 
 浏览器扩展始终是 SideAsk 的主体验。可选的 **SideAsk Anywhere for Windows** Companion 把同样的划词优先流程带到浏览器插件够不到的地方。选中陌生代码、PDF 句子、终端输出或任意 Windows 应用中的文字，按 `Alt+Shift+A`；也可以在设置中开启一次**划词后显示解释按钮**，之后鼠标拖选或双击选词，选区旁就会出现一个小小的 **✦ 解释**。只有点击按钮后才会发送。该选项默认关闭，也可以随时关闭。
 
+两者同时安装时，桌面端默认启用**网页中优先使用浏览器扩展**：网页只出现扩展按钮，其他 Windows 应用由桌面端接管，避免重复弹出；`Alt+Shift+A` 仍可在任何地方强制打开桌面端。
+
 桌面端复用系统 WebView2，与浏览器插件共用 loopback Gateway、25 个 Provider Catalog 和本机加密 Vault。在任一入口配置一次，另一端立即使用同一个默认 Provider；不需要账户或云同步。桌面端只携带主动选区，不会检查另一个原生应用的周围内容。
 
-Codex 或其他编程 Agent 的任务与对话保持不变。详见[桌面悬浮窗指南](docs/DESKTOP.zh-CN.md)。
+Codex 或其他编程 Agent 的任务与对话保持不变。详见[桌面悬浮窗指南](docs/getting-started/DESKTOP.zh-CN.md)。
 
 ## Simple Core
 
@@ -110,13 +112,13 @@ npm run desktop:test
 npm run package:desktop
 ~~~
 
-安装、隐私边界与构建说明见[桌面悬浮窗中文指南](docs/DESKTOP.zh-CN.md)。Windows 包尚未做代码签名；若 SmartScreen 提示无法识别，应先核对 Release 校验值。
+安装、隐私边界与构建说明见[桌面悬浮窗中文指南](docs/getting-started/DESKTOP.zh-CN.md)。Windows 包尚未做代码签名；若 SmartScreen 提示无法识别，应先核对 Release 校验值。
 
 ## 更新
 
 商店安装会在新版审核发布后自动更新；Git Clone 与“加载已解压扩展”的用户需要拉取或覆盖文件、重启 Gateway，并在浏览器扩展管理页点击“重新加载”。应尽量保持开发版扩展的原路径，以便继续使用同一个扩展 ID 对应的本地数据。
 
-请阅读完整的[中文更新指南](UPDATING.zh-CN.md)，也可以切换到[英文版](UPDATING.md)。只想接收正式版本通知时，可在 GitHub 选择 **Watch → Custom → Releases**。
+请阅读完整的[中文更新指南](docs/getting-started/UPDATING.zh-CN.md)，也可以切换到[英文版](docs/getting-started/UPDATING.md)。只想接收正式版本通知时，可在 GitHub 选择 **Watch → Custom → Releases**。
 
 ## 使用自己的模型
 
@@ -143,7 +145,7 @@ SideAsk 只发送：
 
 “附近可读块”和来源 URL 只适用于浏览器插件。桌面悬浮窗无法检查另一个原生应用，因此只发送主动选区和当前支线消息。
 
-详见[隐私说明](PRIVACY.zh-CN.md)与[安全策略](SECURITY.zh-CN.md)。
+详见[隐私说明](docs/policies/PRIVACY.zh-CN.md)与[安全策略](.github/SECURITY.zh-CN.md)。
 
 ## 架构
 
@@ -167,7 +169,7 @@ SideAsk 使用原生 JavaScript/CSS 与零依赖 Node.js Gateway。升级时不�
 
 浏览器扩展是主产品；SideAsk Anywhere for Windows 是面向 VS Code、PDF、终端和原生应用的可选 Companion，提供选区旁解释按钮、全局快捷键、指针附近悬浮窗、流式 Markdown、系统托盘，以及同一个本机加密 Provider Vault。v0.6 的 VS Code 面板会新开一栏、与编辑器自带对话重复，已经从项目中移除。
 
-后续只加入能够降低摩擦、且不会创造新工作流的小功能。完整规划见[路线图](docs/ROADMAP.md)。
+后续只加入能够降低摩擦、且不会创造新工作流的小功能。完整规划见[路线图](docs/project/ROADMAP.md)。
 
 ## 开发与贡献
 
@@ -176,7 +178,7 @@ npm test
 npm run check
 ~~~
 
-欢迎通过[贡献指南](CONTRIBUTING.zh-CN.md)参与。提交问题时请遵守[行为准则](CODE_OF_CONDUCT.zh-CN.md)，安全问题请按[安全策略](SECURITY.zh-CN.md)私下报告。
+欢迎先查看[文档索引](docs/README.md)，并通过[贡献指南](.github/CONTRIBUTING.zh-CN.md)参与。提交问题时请遵守[行为准则](.github/CODE_OF_CONDUCT.zh-CN.md)，安全问题请按[安全策略](.github/SECURITY.zh-CN.md)私下报告。
 
 ## License
 

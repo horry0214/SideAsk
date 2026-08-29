@@ -26,6 +26,9 @@ const COPY = {
     autoCaptureTitle: "划词后显示解释按钮",
     autoCaptureDescription: "系统确认存在文字选区后才显示“✦ 解释”；普通拖拽不会触发，也不会自动发送 Ctrl+C。默认关闭。",
     autoCaptureSaved: enabled => enabled ? "划词解释按钮已开启" : "已关闭划词解释按钮",
+    browserPriorityTitle: "网页中优先使用浏览器扩展",
+    browserPriorityDescription: "Chrome、Edge 等浏览器内不显示桌面解释按钮；Alt+Shift+A 仍可强制使用桌面端。",
+    browserPrioritySaved: enabled => enabled ? "网页将优先使用浏览器扩展" : "桌面解释按钮也会在浏览器中显示",
     savedProviders: "已保存 Provider",
     add: "＋ 添加",
     noSaved: "还没有 Provider。添加后浏览器与桌面端会立即共用。",
@@ -77,6 +80,9 @@ const COPY = {
     autoCaptureTitle: "Show Explain after selecting text",
     autoCaptureDescription: "Shows ✦ Explain only after Windows confirms a real text selection. Ordinary drags do not trigger it or send Ctrl+C. Off by default.",
     autoCaptureSaved: enabled => enabled ? "Selection Explain button is on" : "Selection Explain button is off",
+    browserPriorityTitle: "Prefer the browser extension on webpages",
+    browserPriorityDescription: "Hides the desktop Explain button in browsers such as Chrome and Edge. Alt+Shift+A still forces the desktop app.",
+    browserPrioritySaved: enabled => enabled ? "Webpages will prefer the browser extension" : "The desktop Explain button can also appear in browsers",
     savedProviders: "Saved Providers",
     add: "＋ Add",
     noSaved: "No Provider yet. Add one and the browser will share it immediately.",
@@ -115,6 +121,7 @@ const state = {
   shortcut: "Alt+Shift+A",
   pinned: false,
   autoCapture: false,
+  preferBrowserExtension: true,
   streaming: false,
   requestId: null,
   selection: "",
@@ -124,7 +131,7 @@ const state = {
   defaultProviderId: null,
   catalog: [],
   health: null,
-  version: "0.7.0",
+  version: "0.7.1-preview.1",
 };
 
 let windowMode = "";
@@ -167,6 +174,11 @@ function applyLocale() {
   $("#auto-capture-title").textContent = copy.autoCaptureTitle;
   $("#auto-capture-description").textContent = copy.autoCaptureDescription;
   $("#auto-capture-toggle").checked = state.autoCapture;
+  $("#auto-capture-toggle").closest("label").setAttribute("aria-label", copy.autoCaptureTitle);
+  $("#browser-priority-title").textContent = copy.browserPriorityTitle;
+  $("#browser-priority-description").textContent = copy.browserPriorityDescription;
+  $("#browser-priority-toggle").checked = state.preferBrowserExtension;
+  $("#browser-priority-toggle").closest("label").setAttribute("aria-label", copy.browserPriorityTitle);
   $("#provider-list-title").textContent = copy.savedProviders;
   $("#add-provider").textContent = copy.add;
   $("#provider-name-label").textContent = copy.displayName;
@@ -462,6 +474,10 @@ api.onDesktopState(payload => {
     state.autoCapture = Boolean(payload.autoCapture);
     copyChanged = true;
   }
+  if (Object.hasOwn(payload || {}, "preferBrowserExtension")) {
+    state.preferBrowserExtension = Boolean(payload.preferBrowserExtension);
+    copyChanged = true;
+  }
   if (Object.hasOwn(payload || {}, "resizing")) {
     document.documentElement.classList.toggle("window-resizing", Boolean(payload.resizing));
   }
@@ -527,6 +543,21 @@ $("#auto-capture-toggle").addEventListener("change", async event => {
     toast(text().autoCaptureSaved(state.autoCapture));
   } catch (error) {
     event.currentTarget.checked = state.autoCapture;
+    toast(error.message, true);
+  } finally {
+    event.currentTarget.disabled = false;
+  }
+});
+$("#browser-priority-toggle").addEventListener("change", async event => {
+  const requested = Boolean(event.currentTarget.checked);
+  event.currentTarget.disabled = true;
+  try {
+    const result = await api.setBrowserPriority(requested);
+    state.preferBrowserExtension = Boolean(result?.preferBrowserExtension);
+    applyLocale();
+    toast(text().browserPrioritySaved(state.preferBrowserExtension));
+  } catch (error) {
+    event.currentTarget.checked = state.preferBrowserExtension;
     toast(error.message, true);
   } finally {
     event.currentTarget.disabled = false;
@@ -602,6 +633,7 @@ state.version = bootstrap.version || state.version;
 state.shortcut = bootstrap.shortcut || state.shortcut;
 state.pinned = Boolean(bootstrap.pinned);
 state.autoCapture = Boolean(bootstrap.autoCapture);
+state.preferBrowserExtension = bootstrap.preferBrowserExtension !== false;
 state.health = bootstrap.health || null;
 state.providers = bootstrap.providers?.providers || [];
 state.defaultProviderId = bootstrap.providers?.defaultProviderId || null;

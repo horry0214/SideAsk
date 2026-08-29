@@ -36,7 +36,7 @@
   bubble.type = "button";
   bubble.setAttribute("aria-label", "用 SideAsk 解释选中的内容");
   bubble.dataset.i18nAria = "content.explainAria";
-  bubble.innerHTML = '<span aria-hidden="true">✦</span><span data-i18n="content.explain">解释</span>';
+  bubble.innerHTML = '<span class="sideask-bubble-spark" aria-hidden="true">✦</span><span class="sideask-bubble-label" data-i18n="content.explain">解释</span>';
   document.documentElement.appendChild(bubble);
 
   const statusDot = document.createElement("button");
@@ -65,10 +65,10 @@
         <div class="sideask-subtitle" data-i18n="brand.tagline">问题走支线，思路留主线</div>
       </div>
       <button class="sideask-icon-btn sideask-language-btn" id="sideask-language-btn" title="Switch to English" aria-label="Switch to English">EN</button>
-      <button class="sideask-icon-btn" id="sideask-dashboard-btn" title="打开 SideAsk 管理页" aria-label="打开 SideAsk 管理页" data-i18n-title="content.dashboardTitle" data-i18n-aria="content.dashboardAria">⌂</button>
-      <button class="sideask-icon-btn" id="sideask-history-btn" title="历史支线" aria-label="查看历史支线" data-i18n-title="content.historyTitle" data-i18n-aria="content.historyAria">☰</button>
-      <button class="sideask-icon-btn" id="sideask-min-btn" title="收起" aria-label="收起 SideAsk" data-i18n-title="content.minimize" data-i18n-aria="content.minimize">—</button>
-      <button class="sideask-icon-btn" id="sideask-close-btn" title="关闭" aria-label="关闭 SideAsk" data-i18n-title="content.close" data-i18n-aria="content.close">×</button>
+      <button class="sideask-icon-btn" id="sideask-dashboard-btn" title="打开 SideAsk 管理页" aria-label="打开 SideAsk 管理页" data-i18n-title="content.dashboardTitle" data-i18n-aria="content.dashboardAria"><svg class="sideask-button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h10m4 0h2M4 17h2m4 0h10M14 4v6M6 14v6"/></svg></button>
+      <button class="sideask-icon-btn" id="sideask-history-btn" title="历史支线" aria-label="查看历史支线" data-i18n-title="content.historyTitle" data-i18n-aria="content.historyAria"><svg class="sideask-button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 6h12M7 12h12M7 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></button>
+      <button class="sideask-icon-btn" id="sideask-min-btn" title="收起" aria-label="收起 SideAsk" data-i18n-title="content.minimize" data-i18n-aria="content.minimize"><svg class="sideask-button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 12h12"/></svg></button>
+      <button class="sideask-icon-btn" id="sideask-close-btn" title="关闭" aria-label="关闭 SideAsk" data-i18n-title="content.close" data-i18n-aria="content.close"><svg class="sideask-button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
     </div>
     <div class="sideask-context" id="sideask-context-card">
       <div class="sideask-context-meta">
@@ -90,7 +90,7 @@
     <div class="sideask-footer" id="sideask-footer">
       <div class="sideask-input-row">
         <textarea class="sideask-input" id="sideask-input" rows="1" placeholder="继续追问…" data-i18n-placeholder="content.followUp"></textarea>
-        <button class="sideask-send" id="sideask-send" title="发送" aria-label="发送问题" data-i18n-title="content.send" data-i18n-aria="content.send">↑</button>
+        <button class="sideask-send" id="sideask-send" title="发送" aria-label="发送问题" data-i18n-title="content.send" data-i18n-aria="content.send"><svg class="sideask-send-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5m-5 6 5-6 5 6"/></svg></button>
       </div>
       <div class="sideask-bottom-actions">
         <div>

@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- Added browser-first desktop routing. With the preference enabled by default, automatic Desktop Explain cues are suppressed in Chrome, Edge, Firefox, Brave, and other supported browsers so the browser extension owns webpage selections; `Alt+Shift+A` remains an unconditional Desktop override.
+- Added a bilingual, persisted **Prefer the browser extension on webpages** setting. Existing desktop settings remain compatible and receive the safer browser-first default.
+- Isolated the desktop WebView2 profile from legacy preview data and made initialization wait for the native window source, preventing orphaned runtimes and startup timing from blocking the upgraded overlay.
+- Matched the browser selection cue and panel controls to the desktop visual system with the same dark Explain capsule, lavender spark, SVG header controls, gradient send button, and restrained hover/press motion.
+
 ## 0.7.0 Browser First + SideAsk Anywhere — 2026-08-29
 
 ### Added
